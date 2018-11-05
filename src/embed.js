@@ -10,29 +10,83 @@
  * governing permissions and limitations under the License.
  */
 const unfurl = require('unfurl.js');
+const URI = require('uri-js');
 
-module.exports = function embed(params) {
-  console.log('embedding', params);
-  const {url} = params;
-  const opts = Object.assign({oembed: true}, params);
+function toHTML({
+  oembed = {}, ogp = {}, twitter = {}, other = {},
+}, fallbackURL) {
+  // there is a provider preference, let's go with it.
+  if (oembed.html) {
+    return `<div class="embed embed-oembed">
+  ${oembed.html}
+</div>`;
+  }
 
-  return unfurl(url, opts).then(metadata => {
-    console.log(metadata);
-    return {
-      headers: {
-        'Content-Type': 'text/html',
-        'Cache-Control': 'max-age=3600'
-      },
-      body: metadata.oembed.html
-    }
-  }).catch(error => {
-    console.log(error);
-    return {
-      headers: {
-        'Content-Type': 'text/html',
-        'Cache-Control': 'max-age=3600'
-      },
-      body: `<!-- ${error} --><a href="${url}">${url}</a>`
-    }
-  });
+  // gather information from different providers
+  const url = oembed.url || twitter.twitterUrl || ogp.ogUrl || other.canonical || fallbackURL;
+  const title = twitter.twitterTitle || ogp.ogTitle || other.title;
+  const description = twitter.twitterDescription || ogp.ogDescription || other.description;
+  const icon = url && other.appleTouchIcon ? URI.resolve(url, other.appleTouchIcon) : null;
+  const twitterImage = twitter.twitterImage ? twitter.twitterImage[0].url : null;
+  const ogImage = ogp.ogImage ? ogp.ogImage[0].url : null;
+  const image = oembed.thumbnail_url || twitterImage || ogImage
+    || oembed.url !== url ? oembed.url : null;
+
+  const classnames = ['embed'];
+  let html = [];
+  if (url) {
+    classnames.push('embed-has-url');
+    html.push(`  <a href="${url}">`);
+  }
+  if (icon) {
+    classnames.push('embed-has-icon');
+    html.push(`    <img src="${icon}" alt="icon" class="icon">`);
+  }
+  if (title) {
+    classnames.push('embed-has-title');
+    html.push(`    <span class="title">${title}</span>`);
+  }
+  if (url) {
+    html.push('  </a>');
+  }
+  if (image) {
+    classnames.push('embed-has-image');
+    html.push(`  <img src="${image}" alt="${title}" class="image">`);
+  }
+  if (description) {
+    classnames.push('embed-has-description');
+    html.push(`    <p class="description">${description}</p>`);
+  }
+
+
+  html = [`<div class="${classnames.join(' ')}">`, ...html, '<div>'];
+
+
+  return html.join('\n');
 }
+
+function fromURL(url) {
+  return `<a href="${url}">${url}</a>`;
+}
+
+function embed(params) {
+  const { url } = params;
+  const opts = Object.assign({ oembed: true }, params);
+
+  return unfurl(url, opts).then(metadata => ({
+    headers: {
+      'Content-Type': 'text/html',
+      'Cache-Control': `max-age=${metadata.oembed && metadata.oembed.cacheAge ? metadata.oembed.cacheAge : '3600'}`,
+    },
+    body: toHTML(metadata),
+  })).catch(error => ({
+    headers: {
+      'Content-Type': 'text/html',
+      'Cache-Control': 'max-age=3600',
+    },
+    body: `<!-- ${error} -->
+${fromURL(url)}`,
+  }));
+}
+
+module.exports = { embed };

@@ -9,10 +9,10 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const embed = require('./src/embed');
+const { embed } = require('./src/embed');
 
 function main(params) {
   return embed(params);
-};
+}
 
 exports.main = main;

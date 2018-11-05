@@ -11,7 +11,7 @@
     "postversion": "git push origin master --follow-tags",
     "delete-git-tag": "git tag -d v$npm_package_version && git push origin :v$npm_package_version",
     "zip": "npm ls --prod --parseable | grep node_modules | sed -e 's/.*node_modules/node_modules/' | xargs zip embed.zip -r src package.json index.js",
-    "deploy": "npm run zip && wsk action update embed embed.zip --kind nodejs:8 --web true --web-secure false"
+    "deploy": "npm run zip && wsk action update embed embed.zip --kind nodejs:8 --web raw --web-secure false"
   },
   "repository": {
     "type": "git",

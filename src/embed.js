@@ -69,9 +69,9 @@ function fromURL(url) {
   return `<a href="${url}">${url}</a>`;
 }
 
-function embed(params) {
-  const { url } = params;
-  const opts = Object.assign({ oembed: true }, params);
+function embed(url) {
+  console.log(url);
+  const opts = { oembed: true, url };
 
   if (!url) {
     return {

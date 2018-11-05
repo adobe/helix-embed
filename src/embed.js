@@ -70,7 +70,6 @@ function fromURL(url) {
 }
 
 function embed(url) {
-  console.log(url);
   const opts = { oembed: true, url };
 
   if (!url) {

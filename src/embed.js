@@ -17,6 +17,7 @@ module.exports = function embed(params) {
   const opts = Object.assign({oembed: true}, params);
 
   return unfurl(url, opts).then(metadata => {
+    console.log(metadata);
     return {
       headers: {
         'Content-Type': 'text/html',
@@ -31,7 +32,7 @@ module.exports = function embed(params) {
         'Content-Type': 'text/html',
         'Cache-Control': 'max-age=3600'
       },
-      body: `<!-- ${error} -->`
+      body: `<!-- ${error} --><a href="${url}">${url}</a>`
     }
   });
 }

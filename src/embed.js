@@ -73,6 +73,16 @@ function embed(params) {
   const { url } = params;
   const opts = Object.assign({ oembed: true }, params);
 
+  if (!url) {
+    return {
+      headers: {
+        'Content-Type': 'text/html',
+        'Cache-Control': 'max-age=3600',
+      },
+      body: '<!-- nothing to embed -->',
+    };
+  }
+
   return unfurl(url, opts).then(metadata => ({
     headers: {
       'Content-Type': 'text/html',

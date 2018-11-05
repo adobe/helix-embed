@@ -10,6 +10,10 @@
 
 > Template repository for nodejs module packages.
 
+## Usage
+
+`curl https://adobeioruntime.net/api/v1/web/helix/default/embed\url\=http://www.adobe.com`
+
 ## Development
 
 

@@ -29,8 +29,8 @@ function toHTML({
   const icon = url && other.appleTouchIcon ? URI.resolve(url, other.appleTouchIcon) : null;
   const twitterImage = twitter.twitterImage ? twitter.twitterImage[0].url : null;
   const ogImage = ogp.ogImage ? ogp.ogImage[0].url : null;
-  const image = oembed.thumbnail_url || twitterImage || ogImage
-    || oembed.url !== url ? oembed.url : null;
+  const oembedImage = oembed.url !== url ? oembed.url : null;
+  const image = oembed.thumbnail_url || twitterImage || ogImage || oembedImage;
 
   const classnames = ['embed'];
   let html = [];

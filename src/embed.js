@@ -11,7 +11,8 @@
  */
 const unfurl = require('unfurl.js');
 
-module.exports.main = function main(params) {
+module.exports = function embed(params) {
+  console.log('embedding', params);
   const {url} = params;
   const opts = Object.assign({oembed: true}, params);
 
@@ -22,6 +23,15 @@ module.exports.main = function main(params) {
         'Cache-Control': 'max-age=3600'
       },
       body: metadata.oembed.html
+    }
+  }).catch(error => {
+    console.log(error);
+    return {
+      headers: {
+        'Content-Type': 'text/html',
+        'Cache-Control': 'max-age=3600'
+      },
+      body: `<!-- ${error} -->`
     }
   });
 }

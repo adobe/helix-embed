@@ -69,6 +69,10 @@ function fromURL(url) {
   return `<a href="${url}">${url}</a>`;
 }
 
+function enrich(metadata) {
+  return Promise.resolve(metadata);
+}
+
 function embed(url) {
   const opts = { oembed: true, url };
 
@@ -82,7 +86,7 @@ function embed(url) {
     };
   }
 
-  return unfurl(url, opts).then(metadata => ({
+  return unfurl(url, opts).then(enrich).then(metadata => ({
     headers: {
       'Content-Type': 'text/html',
       'Cache-Control': `max-age=${metadata.oembed && metadata.oembed.cacheAge ? metadata.oembed.cacheAge : '3600'}`,

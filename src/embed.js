@@ -11,9 +11,13 @@
  */
 const unfurl = require('unfurl.js');
 const URI = require('uri-js');
+const spark = require('./spark');
+
+const matchers = [];
+matchers.push(spark);
 
 function toHTML({
-  oembed = {}, ogp = {}, twitter = {}, other = {},
+  oembed = {}, ogp = {}, twitter = {}, other = {}, classname,
 }, fallbackURL) {
   // there is a provider preference, let's go with it.
   if (oembed.html) {
@@ -32,7 +36,7 @@ function toHTML({
   const oembedImage = oembed.url !== url ? oembed.url : null;
   const image = oembed.thumbnail_url || twitterImage || ogImage || oembedImage;
 
-  const classnames = ['embed'];
+  const classnames = ['embed', classname];
   let html = [];
   if (url) {
     classnames.push('embed-has-url');
@@ -70,7 +74,13 @@ function fromURL(url) {
 }
 
 function enrich(metadata) {
-  return Promise.resolve(metadata);
+  const matching = matchers.reduce((meta, { pattern, decorator }) => {
+    if (pattern(meta)) {
+      return decorator(meta);
+    }
+    return meta;
+  }, metadata);
+  return Promise.resolve(matching);
 }
 
 function embed(url) {

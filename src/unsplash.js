@@ -15,7 +15,7 @@ const URI = require('uri-js');
 const querystring = require('querystring');
 
 function pattern(metadata, options) {
-  if (options&&options.UNSPLASH_AUTH&&metadata.ogp && metadata.ogp.ogUrl && /^https:\/\/unsplash.com\/photos\/[\w]+$/.test(metadata.ogp.ogUrl)) {
+  if (options && options.UNSPLASH_AUTH && metadata.ogp && metadata.ogp.ogUrl && /^https:\/\/unsplash.com\/photos\/[\w]+$/.test(metadata.ogp.ogUrl)) {
     return true;
   }
   return false;

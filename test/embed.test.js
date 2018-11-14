@@ -54,6 +54,19 @@ describe('Embed Tests', () => {
     assertContains(body, ['https://www.nytimes.com/']);
   });
 
+  it('Supports Adobe Spark', async () => {
+    const { headers, body } = await embed('https://spark.adobe.com/post/z4eHLkF8nZII1/');
+    assert.equal(headers['Content-Type'], 'text/html');
+    assert.equal(headers['Cache-Control'], 'max-age=3600');
+    assertContains(body, ['srcset']);
+    assertContains(body, ['width/size/1200']);
+    assertContains(body, ['width/size/900']);
+    assertContains(body, ['width/size/600']);
+    assertContains(body, ['width/size/300']);
+    assertContains(body, ['Helix Hackathon']);
+    assertContains(body, ['embed-spark']);
+  });
+
   it('Fails Gracefully', async () => {
     const { headers, body } = await embed('http://localhost');
     assert.equal(headers['Content-Type'], 'text/html');

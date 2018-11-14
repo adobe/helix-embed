@@ -11,9 +11,13 @@
  */
 const unfurl = require('unfurl.js');
 const URI = require('uri-js');
+const spark = require('./spark');
+
+const matchers = [];
+matchers.push(spark);
 
 function toHTML({
-  oembed = {}, ogp = {}, twitter = {}, other = {},
+  oembed = {}, ogp = {}, twitter = {}, other = {}, classname,
 }, fallbackURL) {
   // there is a provider preference, let's go with it.
   if (oembed.html) {
@@ -32,7 +36,7 @@ function toHTML({
   const oembedImage = oembed.url !== url ? oembed.url : null;
   const image = oembed.thumbnail_url || twitterImage || ogImage || oembedImage;
 
-  const classnames = ['embed'];
+  const classnames = ['embed', classname];
   let html = [];
   if (url) {
     classnames.push('embed-has-url');
@@ -69,6 +73,16 @@ function fromURL(url) {
   return `<a href="${url}">${url}</a>`;
 }
 
+function enrich(metadata) {
+  const matching = matchers.reduce((meta, { pattern, decorator }) => {
+    if (pattern(meta)) {
+      return decorator(meta);
+    }
+    return meta;
+  }, metadata);
+  return Promise.resolve(matching);
+}
+
 function embed(url) {
   const opts = { oembed: true, url };
 
@@ -82,7 +96,7 @@ function embed(url) {
     };
   }
 
-  return unfurl(url, opts).then(metadata => ({
+  return unfurl(url, opts).then(enrich).then(metadata => ({
     headers: {
       'Content-Type': 'text/html',
       'Cache-Control': `max-age=${metadata.oembed && metadata.oembed.cacheAge ? metadata.oembed.cacheAge : '3600'}`,

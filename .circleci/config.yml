@@ -34,6 +34,7 @@ jobs:
     steps:
       - checkout
       - run: wsk property set --auth WSK_AUTH
+      - run: wsk property set --apihost runtime.adobe.io
       - run: npm install
       - run: npm run deploy
 

@@ -35,6 +35,7 @@ jobs:
       - checkout
       - run: wsk property set --auth WSK_AUTH
       - run: wsk property set --apihost runtime.adobe.io
+      - run: wsk property set --namespace helix
       - run: npm install
       - run: npm run deploy
 

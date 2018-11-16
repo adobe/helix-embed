@@ -27,7 +27,7 @@ function srcpair(src, width, factor) {
 }
 
 function srcset(src) {
-  const [_, width] = src.match(re);
+  const width = src.match(re)[1];
   const maxwidth = parseInt(width, 10);
 
   return `${src} ${maxwidth}px, 
@@ -38,7 +38,7 @@ ${srcpair(src, width, 0.25)}`;
 
 function decorator(metadata) {
   const enriched = Object.assign({}, metadata);
-  const alt = metadata.other.title.replace('\n', '');
+  const alt = metadata.other.title.replace(/\n/g, '');
   const src = metadata.ogp.ogImage[0].url;
   enriched.oembed = {
     html: `<img alt="${alt}" class="embed-spark" sizes="100vw" src="${src}" srcset="${srcset(src)}">`,

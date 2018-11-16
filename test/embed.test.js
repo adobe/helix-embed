@@ -67,6 +67,21 @@ describe('Embed Tests', () => {
     assertContains(body, ['embed-spark']);
   });
 
+
+  if (process.env.UNSPLASH_AUTH) {
+    it('Supports Unsplash', async () => {
+      const { headers, body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH });
+      assert.equal(headers['Content-Type'], 'text/html');
+      assert.equal(headers['Cache-Control'], 'max-age=3600');
+      assertContains(body, ['srcset']);
+      assertContains(body, ['1080px']);
+      assertContains(body, ['Unsplash']);
+      assertContains(body, ['Shifaaz shamoon']);
+    });
+  } else {
+    it.skip('Supports Unsplash (set UNSPLASH_AUTH environment var)', () => {});
+  }
+
   it('Fails Gracefully', async () => {
     const { headers, body } = await embed('http://localhost');
     assert.equal(headers['Content-Type'], 'text/html');

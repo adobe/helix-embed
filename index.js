@@ -17,8 +17,9 @@ function main(params) {
   const url = `${params.__ow_path.substring(1)}?${params.__ow_query || ''}`;
   if (params.api) {
     // filter all __ow_something parameters out
+    // and all parameters in all caps
     const qs = Object.keys(params).reduce((pv, cv) => {
-      if (/^__ow_/.test(cv) || cv === 'api') {
+      if (/^__ow_/.test(cv) || /^[A-Z]+_[A-Z]+/.test(cv) || cv === 'api') {
         return pv;
       }
       const retval = Object.assign({}, pv);
@@ -41,7 +42,7 @@ function main(params) {
       return embed(url);
     });
   }
-  return embed(url);
+  return embed(url, params);
 }
 
 exports.main = main;

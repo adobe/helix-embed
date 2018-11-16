@@ -12,9 +12,11 @@
 const unfurl = require('unfurl.js');
 const URI = require('uri-js');
 const spark = require('./spark');
+const unsplash = require('./unsplash');
 
 const matchers = [];
 matchers.push(spark);
+matchers.push(unsplash);
 
 function toHTML({
   oembed = {}, ogp = {}, twitter = {}, other = {}, classname,
@@ -73,17 +75,19 @@ function fromURL(url) {
   return `<a href="${url}">${url}</a>`;
 }
 
-function enrich(metadata) {
-  const matching = matchers.reduce((meta, { pattern, decorator }) => {
-    if (pattern(meta)) {
-      return decorator(meta);
-    }
-    return meta;
-  }, metadata);
-  return Promise.resolve(matching);
+function enrich(params) {
+  return function enricher(metadata) {
+    const matching = matchers.reduce((meta, { pattern, decorator }) => {
+      if (pattern(meta, params)) {
+        return decorator(meta, params);
+      }
+      return meta;
+    }, metadata);
+    return Promise.resolve(matching);
+  };
 }
 
-function embed(url) {
+function embed(url, params) {
   const opts = { oembed: true, url };
 
   if (!url) {
@@ -96,7 +100,7 @@ function embed(url) {
     };
   }
 
-  return unfurl(url, opts).then(enrich).then(metadata => ({
+  return unfurl(url, opts).then(enrich(params)).then(metadata => ({
     headers: {
       'Content-Type': 'text/html',
       'Cache-Control': `max-age=${metadata.oembed && metadata.oembed.cacheAge ? metadata.oembed.cacheAge : '3600'}`,

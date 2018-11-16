@@ -28,6 +28,17 @@ commands:
         command: git config --global user.email "circleci@example.com" && git config --global user.name "CircleCi Build"
 
 jobs:
+  deploy:
+    docker: 
+      - image: trieloff/githop:node8
+    steps:
+      - checkout
+      - run: wsk property set --apihost runtime.adobe.io
+      - run: wsk property set --auth $WSK_AUTH
+      - run: wsk property set --namespace helix
+      - run: npm install
+      - run: npm run deploy
+
   build:
     executor: node8
 
@@ -93,6 +104,12 @@ workflows:
   build:
     jobs:
     - build
+    - deploy:
+        requires:
+          - build
+        filters:
+          branches:
+            only: master
     # the publish-pre-release jobs needs a $NPM_TOKEN environment to be setup and also have a
     # valid SSH_KEY added for the `github.com` host.
     - publish-pre-release:

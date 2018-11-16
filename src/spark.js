@@ -27,7 +27,7 @@ function srcpair(src, width, factor) {
 }
 
 function srcset(src) {
-  const [_, width] = src.match(re);
+  const width = src.match(re)[1];
   const maxwidth = parseInt(width, 10);
 
   return `${src} ${maxwidth}px, 

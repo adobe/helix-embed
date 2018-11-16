@@ -32,7 +32,7 @@ function srcset(urls, width) {
 }
 
 async function meta(src, clientid) {
-  const [_, id] = src.match(re);
+  const id = src.match(re)[1];
   const qs = {
     client_id: clientid,
   };

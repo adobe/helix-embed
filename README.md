@@ -1,6 +1,6 @@
 # Helix Embedding Microservice
 
-> This is a simple microservice (to be used in conjunction with [Project Helix](https://www.project-helix.io) that turns URLs into HTML-previews of the web page behind it. It uses HTML Meta Tags, [Twitter Cards](https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/abouts-cards.html), [Open Graph Protocol](http://ogp.me) and [OEmbed](https://oembed.com) to generate a rich preview and can be configured to use 3rd-party embed providers like Embdely or Iframely.
+> This is a simple microservice (to be used in conjunction with [Project Helix](https://www.project-helix.io)) that turns URLs into HTML-previews of the web page behind it. It uses HTML Meta Tags, [Twitter Cards](https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/abouts-cards.html), [Open Graph Protocol](http://ogp.me) and [OEmbed](https://oembed.com) to generate a rich preview and can be configured to use 3rd-party embed providers like Embdely or Iframely.
 
 ## Status
 [![codecov](https://img.shields.io/codecov/c/github/adobe/helix-embed.svg)](https://codecov.io/gh/adobe/helix-embed)

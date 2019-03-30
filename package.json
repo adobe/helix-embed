@@ -33,7 +33,7 @@
   "devDependencies": {
     "ajv": "^6.5.3",
     "codecov": "^3.0.2",
-    "eslint": "^5.4.0",
+    "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-header": "^2.0.0",
     "eslint-plugin-import": "^2.14.0",

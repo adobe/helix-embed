@@ -10,10 +10,10 @@
     "preversion": "npm run junit",
     "postversion": "git push origin master --follow-tags",
     "delete-git-tag": "git tag -d v$npm_package_version && git push origin :v$npm_package_version",
-    "zip": "npm ls --prod --parseable | grep node_modules | sed -e 's/.*node_modules/node_modules/' | xargs zip embed.zip -r src package.json index.js", 
-    "deploy": "npm run zip && wsk action update embed embed.zip --kind nodejs:8 --web raw --web-secure false -p api http://iframe.ly/api/oembed -p api '' -p UNSPLASH_AUTH $UNSPLASH_AUTH",
-    "deploy-iframely": "npm run zip && wsk action update embed embed.zip --kind nodejs:8 --web raw --web-secure false -p api http://iframe.ly/api/oembed -p api_key insert-here",
-    "deploy-embedly": "npm run zip && wsk action update embed embed.zip --kind nodejs:8 --web raw --web-secure false -p api https://api.embedly.com/1/oembed -p key insert-here"
+    "zip": "npm ls --prod --parseable | grep node_modules | sed -e 's/.*node_modules/node_modules/' | xargs zip embed.zip -r src package.json index.js",
+    "deploy": "npm run zip && wsk action update embed embed.zip --kind nodejs:10 --web raw --web-secure false -p api http://iframe.ly/api/oembed -p api '' -p UNSPLASH_AUTH $UNSPLASH_AUTH",
+    "deploy-iframely": "npm run zip && wsk action update embed embed.zip --kind nodejs:10 --web raw --web-secure false -p api http://iframe.ly/api/oembed -p api_key insert-here",
+    "deploy-embedly": "npm run zip && wsk action update embed embed.zip --kind nodejs:10 --web raw --web-secure false -p api https://api.embedly.com/1/oembed -p key insert-here"
   },
   "repository": {
     "type": "git",

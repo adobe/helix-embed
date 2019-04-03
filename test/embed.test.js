@@ -35,9 +35,9 @@ describe('Embed Tests', () => {
   });
 
   it('Supports Image Cards', async () => {
-    const { headers, body } = await embed('https://blog.twitter.com/official/en_us/a/2015/history-of-tbt-on-twitter.html');
+    const { headers, body } = await embed('https://blog.twitter.com/en_us/a/2015/history-of-tbt-on-twitter.html');
     assert.equal(headers['Content-Type'], 'text/html');
-    assertContains(body, ['https://blog.twitter.com/official/en_us/a/2015/history-of-tbt-on-twitter.html']);
+    assertContains(body, ['https://blog.twitter.com/en_us/a/2015/history-of-tbt-on-twitter.html']);
   });
 
   it('Supports Images', async () => {
@@ -50,14 +50,12 @@ describe('Embed Tests', () => {
   it('Supports OEmbed Providers', async () => {
     const { headers, body } = await embed('https://www.nytimes.com/2018/11/05/us/politics/house-senate-elections-georgia-trump.html');
     assert.equal(headers['Content-Type'], 'text/html');
-    assert.equal(headers['Cache-Control'], 'max-age=86400');
     assertContains(body, ['https://www.nytimes.com/']);
   });
 
   it('Supports Adobe Spark', async () => {
     const { headers, body } = await embed('https://spark.adobe.com/post/z4eHLkF8nZII1/');
     assert.equal(headers['Content-Type'], 'text/html');
-    assert.equal(headers['Cache-Control'], 'max-age=3600');
     assertContains(body, ['srcset']);
     assertContains(body, ['width/size/1200']);
     assertContains(body, ['width/size/900']);

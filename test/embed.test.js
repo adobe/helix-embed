@@ -35,9 +35,9 @@ describe('Embed Tests', () => {
   });
 
   it('Supports Image Cards', async () => {
-    const { headers, body } = await embed('https://blog.twitter.com/official/en_us/a/2015/history-of-tbt-on-twitter.html');
+    const { headers, body } = await embed('https://blog.twitter.com/en_us/a/2015/history-of-tbt-on-twitter.html');
     assert.equal(headers['Content-Type'], 'text/html');
-    assertContains(body, ['https://blog.twitter.com/official/en_us/a/2015/history-of-tbt-on-twitter.html']);
+    assertContains(body, ['https://blog.twitter.com/en_us/a/2015/history-of-tbt-on-twitter.html']);
   });
 
   it('Supports Images', async () => {

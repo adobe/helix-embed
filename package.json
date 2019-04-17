@@ -37,7 +37,7 @@
     "@pollyjs/core": "^2.3.0",
     "@pollyjs/persister-fs": "^2.1.0",
     "ajv": "^6.5.3",
-    "codecov": "^3.0.2",
+    "codecov": "^3.3.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-header": "^2.0.0",

@@ -26,11 +26,16 @@
   },
   "homepage": "https://github.com/adobe/helix-embed#readme",
   "dependencies": {
+    "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
     "unfurl.js": "^1.1.6",
     "uri-js": "^4.2.2"
   },
   "devDependencies": {
+    "@pollyjs/adapter-fetch": "^2.3.0",
+    "@pollyjs/adapter-node-http": "^2.3.0",
+    "@pollyjs/core": "^2.3.0",
+    "@pollyjs/persister-fs": "^2.1.0",
     "ajv": "^6.5.3",
     "codecov": "^3.0.2",
     "eslint": "^5.4.0",

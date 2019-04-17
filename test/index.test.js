@@ -15,10 +15,27 @@
 'use strict';
 
 const assert = require('assert');
+const path = require('path');
+const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
+const FSPersister = require('@pollyjs/persister-fs');
+const { setupMocha: setupPolly } = require('@pollyjs/core');
 const { main } = require('../index.js');
 
 
 describe('Index Tests', () => {
+  setupPolly({
+    recordFailedRequests: true,
+    recordIfMissing: false,
+    logging: false,
+    adapters: [NodeHttpAdapter],
+    persister: FSPersister,
+    persisterOptions: {
+      fs: {
+        recordingsDir: path.resolve(__dirname, 'fixtures/recordings'),
+      },
+    },
+  });
+
   it('Index works with parameters', async () => {
     const params = {
       api: 'http://iframe.ly/api/oembed',
@@ -30,7 +47,7 @@ describe('Index Tests', () => {
       },
       __ow_path: '/https://github.com/request/request-promise',
     };
-    assert.ok(main(params));
+    assert.ok(await main(params));
   });
 
   it('Index without parameters', async () => {
@@ -43,6 +60,6 @@ describe('Index Tests', () => {
       },
       __ow_path: '/https://github.com/request/request-promise',
     };
-    assert.ok(main(params));
+    assert.ok(await main(params));
   });
 });

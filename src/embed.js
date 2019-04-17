@@ -19,7 +19,8 @@ matchers.push(spark);
 matchers.push(unsplash);
 
 function toHTML({
-  oembed = {}, ogp = {}, twitter = {}, other = {}, classname,
+  oembed = {}, open_graph = {}, twitter_card = {}, other = {},
+  title: otherTitle, description: otherDescription, classname,
 }, fallbackURL) {
   // there is a provider preference, let's go with it.
   if (oembed.html) {
@@ -29,12 +30,12 @@ function toHTML({
   }
 
   // gather information from different providers
-  const url = oembed.url || twitter.twitterUrl || ogp.ogUrl || other.canonical || fallbackURL;
-  const title = twitter.twitterTitle || ogp.ogTitle || other.title;
-  const description = twitter.twitterDescription || ogp.ogDescription || other.description;
+  const url = oembed.url || twitter_card.url || open_graph.url || other.canonical || fallbackURL;
+  const title = twitter_card.title || open_graph.title || other.title || otherTitle;
+  const description = twitter_card.description || open_graph.description || otherDescription;
   const icon = url && other.appleTouchIcon ? URI.resolve(url, other.appleTouchIcon) : null;
-  const twitterImage = twitter.twitterImage ? twitter.twitterImage[0].url : null;
-  const ogImage = ogp.ogImage ? ogp.ogImage[0].url : null;
+  const twitterImage = twitter_card.images ? twitter_card.images[0].url : null;
+  const ogImage = open_graph.images ? open_graph.images[0].url : null;
   const oembedImage = oembed.url !== url ? oembed.url : null;
   const image = oembed.thumbnail_url || twitterImage || ogImage || oembedImage;
 
@@ -105,7 +106,7 @@ function embed(url, params) {
       'Content-Type': 'text/html',
       'Cache-Control': `max-age=${metadata.oembed && metadata.oembed.cacheAge ? metadata.oembed.cacheAge : '3600'}`,
     },
-    body: toHTML(metadata),
+    body: toHTML(metadata, url),
   })).catch(error => ({
     headers: {
       'Content-Type': 'text/html',

@@ -12,7 +12,7 @@
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "_" }] */
 
 function pattern(metadata) {
-  if (metadata.ogp && metadata.ogp.ogUrl && /^https:\/\/spark.adobe.com\/post\/[\w]+$/.test(metadata.ogp.ogUrl)) {
+  if (metadata.open_graph && metadata.open_graph.url && /^https:\/\/spark.adobe.com\/post\/[\w]+$/.test(metadata.open_graph.url)) {
     return true;
   }
   return false;
@@ -38,8 +38,8 @@ ${srcpair(src, width, 0.25)}`;
 
 function decorator(metadata) {
   const enriched = Object.assign({}, metadata);
-  const alt = metadata.other.title.replace(/\n/g, '');
-  const src = metadata.ogp.ogImage[0].url;
+  const alt = metadata.title.replace(/\n/g, '');
+  const src = metadata.open_graph.images[0].url;
   enriched.oembed = {
     html: `<img alt="${alt}" class="embed-spark" sizes="100vw" src="${src}" srcset="${srcset(src)}">`,
   };

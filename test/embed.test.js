@@ -52,7 +52,7 @@ describe('Embed Tests', () => {
   it('Response is cacheable', async () => {
     const { headers, body } = await embed('http://www.adobe.com');
     assert.equal(headers['Cache-Control'], 'max-age=3600');
-    assertContains(body, ['https://www.adobe.com']);
+    assertContains(body, ['https://www.adobe.com/']);
   });
 
   it('Response is HTML', async () => {

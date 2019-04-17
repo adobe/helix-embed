@@ -15,7 +15,7 @@ const URI = require('uri-js');
 const querystring = require('querystring');
 
 function pattern(metadata, options) {
-  if (options && options.UNSPLASH_AUTH && metadata.ogp && metadata.ogp.ogUrl && /^https:\/\/unsplash.com\/photos\/[\w]+$/.test(metadata.ogp.ogUrl)) {
+  if (options && options.UNSPLASH_AUTH && metadata.open_graph && metadata.open_graph.url && /^https:\/\/unsplash.com\/photos\/[\w]+$/.test(metadata.open_graph.url)) {
     return true;
   }
   return false;
@@ -41,7 +41,7 @@ async function meta(src, clientid) {
 
 async function decorator(metadata, options) {
   const enriched = Object.assign({}, metadata);
-  const src = metadata.other.canonical;
+  const src = metadata.twitter_card.url;
 
   const {
     user, urls, description, width,

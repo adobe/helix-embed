@@ -39,10 +39,20 @@ describe('Embed Tests', () => {
     },
   });
 
+  beforeEach(function beforeEach() {
+    this.polly.configure({
+      matchRequestsBy: {
+        headers: {
+          exclude: ['user-agent', 'accept'],
+        },
+      },
+    });
+  });
+
   it('Response is cacheable', async () => {
     const { headers, body } = await embed('http://www.adobe.com');
     assert.equal(headers['Cache-Control'], 'max-age=3600');
-    assertContains(body, ['https://www.adobe.com']);
+    assertContains(body, ['https://www.adobe.com/']);
   });
 
   it('Response is HTML', async () => {
@@ -85,6 +95,9 @@ describe('Embed Tests', () => {
   it('Supports Unsplash', async function test() {
     this.polly.configure({
       matchRequestsBy: {
+        headers: {
+          exclude: ['user-agent', 'accept'],
+        },
         url: {
           query(query) {
             return { ...query, client_id: 'dummy' };

@@ -82,23 +82,35 @@ describe('Embed Tests', () => {
     assertContains(body, ['embed-spark']);
   });
 
-
-  if (process.env.UNSPLASH_AUTH) {
-    it('Supports Unsplash', async function test() {
-      if (!process.env.UNSPLASH_AUTH) {
-        this.skip();
-      }
-      const { headers, body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH });
-      assert.equal(headers['Content-Type'], 'text/html');
-      assert.equal(headers['Cache-Control'], 'max-age=3600');
-      assertContains(body, ['srcset']);
-      assertContains(body, ['1080px']);
-      assertContains(body, ['Unsplash']);
-      assertContains(body, ['Shifaaz shamoon']);
+  it('Supports Unsplash', async function test() {
+    this.polly.configure({
+      matchRequestsBy: {
+        url: {
+          query(query) {
+            return { ...query, client_id: 'dummy' };
+          },
+        },
+      },
     });
-  } else {
-    it.skip('Supports Unsplash (set UNSPLASH_AUTH environment var)', () => {});
-  }
+    this.polly.server.any().on('beforePersist', (req, recording) => {
+      // this is really missing in pollyjs!
+      const idx = recording.request.url.indexOf('?client_id');
+      if (idx > 0) {
+        // eslint-disable-next-line no-param-reassign
+        recording.request.queryString = recording.request.queryString.filter(p => p.name !== 'client_id');
+        // eslint-disable-next-line no-param-reassign
+        recording.request.url = `${recording.request.url.substring(0, idx)}?client_id=dummy`;
+      }
+    });
+
+    const { headers, body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'dummy' });
+    assert.equal(headers['Content-Type'], 'text/html');
+    assert.equal(headers['Cache-Control'], 'max-age=3600');
+    assertContains(body, ['srcset']);
+    assertContains(body, ['1080px']);
+    assertContains(body, ['Unsplash']);
+    assertContains(body, ['Shifaaz shamoon']);
+  });
 
   it('Fails Gracefully', async () => {
     const { headers, body } = await embed('http://localhost');

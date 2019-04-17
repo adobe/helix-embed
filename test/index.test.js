@@ -36,6 +36,16 @@ describe('Index Tests', () => {
     },
   });
 
+  beforeEach(function beforeEach() {
+    this.polly.configure({
+      matchRequestsBy: {
+        headers: {
+          exclude: ['user-agent', 'accept'],
+        },
+      },
+    });
+  });
+
   it('Index works with parameters', async () => {
     const params = {
       api: 'http://iframe.ly/api/oembed',

@@ -26,8 +26,8 @@
   },
   "homepage": "https://github.com/adobe/helix-embed#readme",
   "dependencies": {
+    "request-promise-native": "^1.0.7",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.5",
     "unfurl.js": "^1.1.6",
     "uri-js": "^4.2.2"
   },

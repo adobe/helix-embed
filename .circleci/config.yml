@@ -99,7 +99,7 @@ jobs:
 
     - run:
         name: Branch Deployment
-        command: npx wsk-builder -v --deploy --test --name helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM
+        command: npx wsk-builder -v --entryFile index.js --deploy --test --name helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM
 
     - run:
         name: Set Epsagon Token

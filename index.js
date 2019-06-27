@@ -11,6 +11,7 @@
  */
 const request = require('request-promise-native');
 const { wrap } = require('@adobe/helix-pingdom-status');
+const { openWhiskWrapper } = require('epsagon');
 const { embed } = require('./src/embed');
 
 /* eslint-disable no-underscore-dangle, no-console */
@@ -46,4 +47,8 @@ async function main(params) {
   return embed(url, params);
 }
 
-exports.main = wrap(main);
+exports.main = wrap(openWhiskWrapper(main, {
+  token_param: 'EPSAGON_TOKEN',
+  appName: 'Helix Services',
+  metadataOnly: false, // Optional, send more trace data
+}));

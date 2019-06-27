@@ -114,8 +114,8 @@ jobs:
 
     - run:
         name: Set Unsplash Token
-        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@`node -e "console.log(require('./package.json').version)"` -p UNSPLASH_AUTH $UNSPLASH_AUTH
-                
+        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM -p UNSPLASH_AUTH $UNSPLASH_AUTH
+
     - run:
         name: Post-Deployment Integration Test
         command: npm run test-postdeploy

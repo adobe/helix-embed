@@ -47,7 +47,7 @@ async function decorator(metadata, options) {
     user, urls, description, width,
   } = await meta(src, options.UNSPLASH_AUTH);
 
-  enriched.oembed = {
+  enriched.oEmbed = {
     html: `<img alt="${description}" class="embed-unsplash" sizes="100vw" src="${urls.full}" srcset="${srcset(urls, width)}">
 <p class="unsplash-attribution">Photo by <a href="https://unsplash.com/@${user.username}?utm_source=Helix%20Embed&utm_medium=referral">${user.name}</a> on <a href="https://unsplash.com/?utm_source=Helix%20Embed&utm_medium=referral">Unsplash</a>
 </p>`,

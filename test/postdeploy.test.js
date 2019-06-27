@@ -36,6 +36,7 @@ describe('Running Post-Deployment Integration Tests', () => {
       .get(getbaseurl() + "/https://www.youtube.com/watch?v=TTCVn4EByfI")
       .then((response) => {
         expect(response).to.have.status(200);
+        expect(response.body).to.contain('youtube');
       }).catch((e) => {
         throw e;
       });
@@ -48,7 +49,7 @@ describe('Running Post-Deployment Integration Tests', () => {
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response).to.have.header('Content-Type', 'application/xml; charset=UTF-8');
-        expect(response).to.contain('<pingdom_http_custom_check>');
+        expect(response.body).to.contain('<pingdom_http_custom_check>');
       }).catch((e) => {
         throw e;
       });

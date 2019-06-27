@@ -80,8 +80,8 @@ jobs:
         path: junit
 
     - run:
-        name: Set Epsagon Token
-        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@`node -e "console.log(require('./package.json').version)"` -p EPSAGON_TOKEN $EPSAGON_TOKEN
+        name: Set Epsagon Token and Unspash Token
+        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@`node -e "console.log(require('./package.json').version)"` -p EPSAGON_TOKEN $EPSAGON_TOKEN -p UNSPLASH_AUTH $UNSPLASH_AUTH
 
     - run:
         name: Link Sequence (Latest)
@@ -121,8 +121,8 @@ jobs:
         command: npm run test-postdeploy
         
     - run:
-        name: Set Epsagon Token
-        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM -p EPSAGON_TOKEN $EPSAGON_TOKEN
+        name: Set Epsagon Token and Unsplash Token
+        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM -p EPSAGON_TOKEN $EPSAGON_TOKEN  -p UNSPLASH_AUTH $UNSPLASH_AUTH
 
     - store_test_results:
         path: junit

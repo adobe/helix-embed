@@ -63,6 +63,7 @@ describe('Running Post-Deployment Integration Tests', () => {
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('Unsplash');
+        expect(response.text).to.contain('srcset');
       }).catch((e) => {
         throw e;
       });

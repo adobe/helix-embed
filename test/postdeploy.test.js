@@ -40,4 +40,17 @@ describe('Running Post-Deployment Integration Tests', () => {
         throw e;
       });
   });
+
+  it('Service reports status', async () => {
+    await chai
+      .request('https://adobeioruntime.net/')
+      .get(getbaseurl() + "")
+      .then((response) => {
+        expect(response).to.have.status(200);
+        expect(response).to.have.header('Content-Type', 'application/xml; charset=UTF-8');
+        expect(response).to.contain('<pingdom_http_custom_check>');
+      }).catch((e) => {
+        throw e;
+      });
+  });
 });

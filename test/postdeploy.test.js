@@ -37,7 +37,7 @@ describe('Running Post-Deployment Integration Tests', () => {
       .then((response) => {
         expect(response).to.have.status(200);
         // eslint-disable-next-line  no-console
-        console.log(response);
+        expect(response.text).to.contain('youtube.com');
       }).catch((e) => {
         throw e;
       });
@@ -50,8 +50,6 @@ describe('Running Post-Deployment Integration Tests', () => {
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response).to.have.header('Content-Type', 'application/xml; charset=UTF-8');
-        // eslint-disable-next-line  no-console
-        console.log(response);
       }).catch((e) => {
         throw e;
       });

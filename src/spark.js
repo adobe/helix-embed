@@ -12,7 +12,7 @@
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "_" }] */
 
 function pattern(metadata) {
-  if (metadata.open_graph && metadata.open_graph.url && /^https:\/\/spark.adobe.com\/post\/[\w]+$/.test(metadata.open_graph.url)) {
+  if (metadata.open_graph && metadata.open_graph.url && /^https:\/\/spark\.adobe\.com\/post\/[\w]+$/.test(metadata.open_graph.url)) {
     return true;
   }
   return false;

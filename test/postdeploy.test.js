@@ -62,7 +62,7 @@ describe('Running Post-Deployment Integration Tests', () => {
       .get(`${getbaseurl()}/https://unsplash.com/photos/0lD9SSMC6jo`)
       .then((response) => {
         expect(response).to.have.status(200);
-        expect(response.text).to.contain('srcset');
+        expect(response.text).to.contain('Unsplash');
       }).catch((e) => {
         throw e;
       });

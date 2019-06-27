@@ -25,10 +25,19 @@ function assertContains(actual, patterns) {
   patterns.map(expected => assert.ok(new RegExp(expected).test(actual), `${actual} does not match ${expected}`));
 }
 
+describe('Standalone Tests', () => {
+  // this test fails when recorded with Polly
+  it('Supports OEmbed for Youtube', async () => {
+    const { headers, body } = await embed('https://www.youtube.com/watch?v=ccYpEv4APec');
+    assert.equal(headers['Content-Type'], 'text/html');
+    assertContains(body, ['https://www.youtube.com/', 'iframe', 'oembed']);
+  });
+});
+
 describe('Embed Tests', () => {
   setupPolly({
-    recordFailedRequests: true,
-    recordIfMissing: false,
+    recordFailedRequests: false,
+    recordIfMissing: true,
     logging: false,
     adapters: [NodeHttpAdapter],
     persister: FSPersister,
@@ -71,13 +80,6 @@ describe('Embed Tests', () => {
     const { headers, body } = await embed('https://unsplash.com/photos/VS_kFx4yF5g');
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['embed-has-image']);
-  });
-
-
-  it('Supports OEmbed Providers', async () => {
-    const { headers, body } = await embed('https://www.nytimes.com/2018/11/05/us/politics/house-senate-elections-georgia-trump.html');
-    assert.equal(headers['Content-Type'], 'text/html');
-    assertContains(body, ['https://www.nytimes.com/']);
   });
 
   it('Supports Adobe Spark', async () => {

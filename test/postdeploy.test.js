@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Adobe. All rights reserved.
+ * Copyright 2018 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -33,11 +33,12 @@ describe('Running Post-Deployment Integration Tests', () => {
   it('Service is reachable', async () => {
     await chai
       .request('https://adobeioruntime.net/')
-      .get(getbaseurl() + "/https://www.youtube.com/watch?v=TTCVn4EByfI")
+      .get(`${getbaseurl()}/https://www.youtube.com/watch?v=TTCVn4EByfI`)
       .then((response) => {
         expect(response).to.have.status(200);
-        // eslint-disable-next-line  no-console
         expect(response.text).to.contain('youtube.com');
+        expect(response.text).to.contain('iframe');
+        expect(response.text).to.contain('oembed');
       }).catch((e) => {
         throw e;
       });
@@ -46,7 +47,7 @@ describe('Running Post-Deployment Integration Tests', () => {
   it('Service reports status', async () => {
     await chai
       .request('https://adobeioruntime.net/')
-      .get(getbaseurl() + "")
+      .get(`${getbaseurl()}`)
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response).to.have.header('Content-Type', 'application/xml; charset=UTF-8');

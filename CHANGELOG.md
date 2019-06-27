@@ -1,3 +1,11 @@
+## [1.0.1](https://github.com/adobe/helix-embed/compare/v1.0.0...v1.0.1) (2019-06-27)
+
+
+### Bug Fixes
+
+* **embed:** fix oEmbed handling ([d2ed03f](https://github.com/adobe/helix-embed/commit/d2ed03f)), closes [#35](https://github.com/adobe/helix-embed/issues/35)
+* **embed:** fix unsplash and spark embedding (broken by last commit) ([c4801aa](https://github.com/adobe/helix-embed/commit/c4801aa))
+
 # 1.0.0 (2019-06-27)
 
 

@@ -69,6 +69,10 @@ jobs:
         command: npm run semantic-release
 
     - run:
+        name: Set Unsplash Token
+        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@`node -e "console.log(require('./package.json').version)"` -p UNSPLASH_AUTH $UNSPLASH_AUTH
+
+    - run:
         name: Post-Deployment Integration Test
         command: npm run test-postdeploy
 
@@ -76,8 +80,8 @@ jobs:
         path: junit
 
     - run:
-        name: Set Epsagon Token
-        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@`node -e "console.log(require('./package.json').version)"` -p EPSAGON_TOKEN $EPSAGON_TOKEN
+        name: Set Epsagon Token and Unspash Token
+        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@`node -e "console.log(require('./package.json').version)"` -p EPSAGON_TOKEN $EPSAGON_TOKEN -p UNSPLASH_AUTH $UNSPLASH_AUTH
 
     - run:
         name: Link Sequence (Latest)
@@ -106,18 +110,22 @@ jobs:
 
     - run:
         name: Branch Deployment
-        command: npx wsk-builder -v --entryFile index.js --deploy --test --name helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM
-        
+        command: npx wsk-builder -v --raw-http --entryFile index.js --deploy --test --name helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM
+
+    - run:
+        name: Set Unsplash Token
+        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM -p UNSPLASH_AUTH $UNSPLASH_AUTH
+
     - run:
         name: Post-Deployment Integration Test
         command: npm run test-postdeploy
+        
+    - run:
+        name: Set Epsagon Token and Unsplash Token
+        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM -p EPSAGON_TOKEN $EPSAGON_TOKEN  -p UNSPLASH_AUTH $UNSPLASH_AUTH
 
     - store_test_results:
         path: junit
-        
-    - run:
-        name: Set Epsagon Token
-        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM -p EPSAGON_TOKEN $EPSAGON_TOKEN
 
     - run:
         name: Link Sequence (CI)

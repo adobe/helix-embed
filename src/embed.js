@@ -19,25 +19,25 @@ matchers.push(spark);
 matchers.push(unsplash);
 
 function toHTML({
-  oembed = {}, open_graph = {}, twitter_card = {}, other = {},
+  oEmbed = {}, open_graph = {}, twitter_card = {}, other = {},
   title: otherTitle, description: otherDescription, classname,
 }, fallbackURL) {
   // there is a provider preference, let's go with it.
-  if (oembed.html) {
+  if (oEmbed.html) {
     return `<div class="embed embed-oembed">
-  ${oembed.html}
+  ${oEmbed.html}
 </div>`;
   }
 
   // gather information from different providers
-  const url = oembed.url || twitter_card.url || open_graph.url || other.canonical || fallbackURL;
+  const url = oEmbed.url || twitter_card.url || open_graph.url || other.canonical || fallbackURL;
   const title = twitter_card.title || open_graph.title || other.title || otherTitle;
   const description = twitter_card.description || open_graph.description || otherDescription;
   const icon = url && other.appleTouchIcon ? URI.resolve(url, other.appleTouchIcon) : null;
   const twitterImage = twitter_card.images ? twitter_card.images[0].url : null;
   const ogImage = open_graph.images ? open_graph.images[0].url : null;
-  const oembedImage = oembed.url !== url ? oembed.url : null;
-  const image = oembed.thumbnail_url || twitterImage || ogImage || oembedImage;
+  const oembedImage = oEmbed.url !== url ? oEmbed.url : null;
+  const image = oEmbed.thumbnail_url || twitterImage || ogImage || oembedImage;
 
   const classnames = ['embed', classname];
   let html = [];
@@ -101,13 +101,15 @@ function embed(url, params) {
     };
   }
 
-  return unfurl(url, opts).then(enrich(params)).then(metadata => ({
-    headers: {
-      'Content-Type': 'text/html',
-      'Cache-Control': `max-age=${metadata.oembed && metadata.oembed.cacheAge ? metadata.oembed.cacheAge : '3600'}`,
-    },
-    body: toHTML(metadata, url),
-  })).catch(error => ({
+  return unfurl(url, opts).then(enrich(params)).then((metadata) => {
+    return {
+      headers: {
+        'Content-Type': 'text/html',
+        'Cache-Control': `max-age=${metadata.oembed && metadata.oembed.cacheAge ? metadata.oembed.cacheAge : '3600'}`,
+      },
+      body: toHTML(metadata, url),
+    };
+  }).catch(error => ({
     headers: {
       'Content-Type': 'text/html',
       'Cache-Control': 'max-age=3600',

@@ -40,7 +40,7 @@ function decorator(metadata) {
   const enriched = Object.assign({}, metadata);
   const alt = metadata.title.replace(/\n/g, '');
   const src = metadata.open_graph.images[0].url;
-  enriched.oembed = {
+  enriched.oEmbed = {
     html: `<img alt="${alt}" class="embed-spark" sizes="100vw" src="${src}" srcset="${srcset(src)}">`,
   };
   return Object.assign(enriched);

@@ -28,8 +28,9 @@
   },
   "homepage": "https://github.com/adobe/helix-embed#readme",
   "dependencies": {
-    "request-promise-native": "^1.0.7",
+    "@adobe/helix-pingdom-status": "^1.4.0",
     "request": "^2.88.0",
+    "request-promise-native": "^1.0.7",
     "unfurl.js": "^3.0.1",
     "uri-js": "^4.2.2"
   },

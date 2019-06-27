@@ -72,6 +72,9 @@ jobs:
         name: Post-Deployment Integration Test
         command: npm run test-postdeploy
 
+    - store_test_results:
+        path: junit
+
     - run:
         name: Set Epsagon Token
         command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@`node -e "console.log(require('./package.json').version)"` -p EPSAGON_TOKEN $EPSAGON_TOKEN
@@ -108,6 +111,9 @@ jobs:
     - run:
         name: Post-Deployment Integration Test
         command: npm run test-postdeploy
+
+    - store_test_results:
+        path: junit
         
     - run:
         name: Set Epsagon Token

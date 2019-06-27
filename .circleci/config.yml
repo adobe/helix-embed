@@ -1,10 +1,11 @@
 version: 2.1
 executors:
-  node8:
+  node10:
     docker:
-    - image: circleci/node:8-stretch
-    environment:
-      NPM_CONFIG_PREFIX: ~/.npm-global
+    - image: trieloff/githop:node
+      environment:
+        NPM_CONFIG_PREFIX: "~/.npm-global"
+    working_directory: ~/repo
 
 commands:
   setup:
@@ -12,47 +13,31 @@ commands:
     - checkout
     - restore_cache:
         keys:
-        - v1-dependencies-{{ arch }}-{{ checksum "package-lock.json" }}
-    - run:
-        name: install npm 6.4.1
-        command: sudo npm -g install npm@6.4.1
+        - v5-dependencies-{{ arch }}-{{ checksum "package-lock.json" }}
+
     - run:
         name: Installing Dependencies
         command: npm install
     - save_cache:
         paths:
         - node_modules
-        key: v1-dependencies-{{ arch }}-{{ checksum "package-lock.json" }}
+        key: v5-dependencies-{{ arch }}-{{ checksum "package-lock.json" }}
     - run:
         name: prepare test git user
         command: git config --global user.email "circleci@example.com" && git config --global user.name "CircleCi Build"
 
 jobs:
-  deploy:
-    docker: 
-      - image: trieloff/githop:node8
-    steps:
-      - checkout
-      - run: wsk property set --apihost runtime.adobe.io
-      - run: wsk property set --auth $WSK_AUTH
-      - run: wsk property set --namespace helix
-      - run: npm install
-      - run: npm run deploy
-
   build:
-    executor: node8
+    executor: node10
 
     steps:
     - setup
     - run: mkdir junit
-    - run:
-        name: Lint
-        command: npm run lint
 
     # test & get code coverage
     - run:
-        name: Getting Code Coverage
-        command: circleci tests glob test/test*.js | circleci tests split --split-by=timings | xargs ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- -R mocha-junit-reporter --exit && npx codecov
+        name: Test and Code Coverage
+        command: npm run test-ci
         environment:
           MOCHA_FILE: junit/test-results.xml
 
@@ -62,60 +47,96 @@ jobs:
     - store_artifacts:
         path: junit
 
-  publish-pre-release:
-    executor: node8
+  semantic-release:
+    executor: node10
 
     steps:
     - setup
-
-    # uncomment and add proper fingerprint of the github.com R/W private key
-    #- add_ssh_keys:
-    #    fingerprints:
-    #    - "6c:30:89:4d:a5:0f:8a:89:a7:4d:bb:98:d3:59:c4:f7"
-
     - run:
         name: revert changes to package-lock.json
         command: git checkout -- package-lock.json
 
     - run:
-        name: configure npm registry
-        command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+        name: configure wsk
+        command: echo -e "APIHOST=https://adobeioruntime.net\nNAMESPACE=helix\nAUTH=$WSK_AUTH\n" > ~/.wskprops
 
     - run:
-        name: version pre-release
-        command: npm version prerelease --preid=pre -m "Release %s [ci skip]"
-        environment:
-          MOCHA_FILE: junit/test-results.xml
+        name: configure env
+        command: echo -e "LOG_LEVEL=info\n" > .env
+
+    - run:
+        name: Semantic Release
+        command: npm run semantic-release
+
+    - run:
+        name: Post-Deployment Integration Test
+        command: npm run test-postdeploy
 
     - store_test_results:
         path: junit
 
-    # unfortunately we cannot create a release commit with no tag with `npm version`, so we need to delete it here again
     - run:
-        name: delete pre-release tag
-        command: npm run delete-git-tag
+        name: Set Epsagon Token
+        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@`node -e "console.log(require('./package.json').version)"` -p EPSAGON_TOKEN $EPSAGON_TOKEN
 
     - run:
-        name: publish pre-release
-        command: npm publish --tag next --access public
+        name: Link Sequence (Latest)
+        command: wsk action update --sequence /helix/helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@latest helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@`node -e "console.log(require('./package.json').version)"` --web=true --web-secure=false
+
+    - run:
+        name: Link Sequence (Major)
+        command: wsk action update --sequence /helix/helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@v`node -e "console.log(require('./package.json').version.match(/^[0-9]+/)[0])"` helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@`node -e "console.log(require('./package.json').version)"` --web=true --web-secure=false
+
+    - run:
+        name: Link Sequence (Minor)
+        command: wsk action update --sequence /helix/helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@v`node -e "console.log(require('./package.json').version.match(/^[0-9]+.[0-9]+/)[0])"` helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@`node -e "console.log(require('./package.json').version)"` --web=true --web-secure=false
+
+  branch-deploy:
+    executor: node10
+
+    steps:
+    - setup
+    - run:
+        name: revert changes to package-lock.json
+        command: git checkout -- package-lock.json
+
+    - run:
+        name: configure wsk
+        command: echo -e "APIHOST=https://adobeioruntime.net\nNAMESPACE=helix\nAUTH=$WSK_AUTH\n" > ~/.wskprops
+
+    - run:
+        name: Branch Deployment
+        command: npx wsk-builder -v --entryFile index.js --deploy --test --name helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM
+        
+    - run:
+        name: Post-Deployment Integration Test
+        command: npm run test-postdeploy
+
+    - store_test_results:
+        path: junit
+        
+    - run:
+        name: Set Epsagon Token
+        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM -p EPSAGON_TOKEN $EPSAGON_TOKEN
+
+    - run:
+        name: Link Sequence (CI)
+        command: wsk action update --sequence /helix/helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM --web=true --web-secure=false
 
 workflows:
   version: 2
   build:
     jobs:
     - build
-    - deploy:
+    - branch-deploy:
         requires:
           - build
         filters:
           branches:
-            only: master
-    # the publish-pre-release jobs needs a $NPM_TOKEN environment to be setup and also have a
-    # valid SSH_KEY added for the `github.com` host.
-    - publish-pre-release:
+            ignore: master
+    - semantic-release:
         requires:
         - build
         filters:
           branches:
-            # rename to `master` once $NPM_TOKEN and github.com ssh key is setup.
-            only: master_disabled
+            only: master

@@ -46,6 +46,7 @@
     "@semantic-release/npm": "^5.1.13",
     "@semantic-release/release-notes-generator": "^7.2.1",
     "ajv": "^6.10.0",
+    "chai-http": "^4.3.0",
     "codecov": "^3.3.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",

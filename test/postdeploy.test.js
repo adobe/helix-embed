@@ -80,4 +80,4 @@ describe('Running Post-Deployment Integration Tests', () => {
         throw e;
       });
   });
-});
+}).timeout(10000);

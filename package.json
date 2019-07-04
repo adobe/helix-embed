@@ -15,7 +15,9 @@
     "deploy-iframely": "npm run zip && wsk action update embed embed.zip --kind nodejs:10 --web raw --web-secure false -p api http://iframe.ly/api/oembed -p api_key insert-here",
     "deploy-embedly": "npm run zip && wsk action update embed embed.zip --kind nodejs:10 --web raw --web-secure false -p api https://api.embedly.com/1/oembed -p key insert-here",
     "build": "wsk-builder -v --entryFile index.js",
-    "deploy": "wsk-builder -v  --raw-http --deploy --test --entryFile index.js"
+    "deploy": "wsk-builder -v  --raw-http --deploy --test --entryFile index.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -33,7 +35,8 @@
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
     "unfurl.js": "^3.0.1",
-    "uri-js": "^4.2.2"
+    "uri-js": "^4.2.2",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "@adobe/openwhisk-action-builder": "^1.1.0",

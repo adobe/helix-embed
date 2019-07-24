@@ -72,7 +72,7 @@ describe('Running Post-Deployment Integration Tests', () => {
   it('Service reports status', async () => {
     await chai
       .request('https://adobeioruntime.net/')
-      .get(`${getbaseurl()}`)
+      .get(`${getbaseurl()}/_status_check/pingdom.xml`)
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response).to.have.header('Content-Type', 'application/xml; charset=UTF-8');

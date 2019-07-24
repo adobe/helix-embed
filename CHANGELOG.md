@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/adobe/helix-embed/compare/v1.0.1...v1.0.2) (2019-07-24)
+
+
+### Bug Fixes
+
+* **package:** update to @adobe/helix-pingdom-status-2.0.0 ([66a500a](https://github.com/adobe/helix-embed/commit/66a500a))
+
 ## [1.0.1](https://github.com/adobe/helix-embed/compare/v1.0.0...v1.0.1) (2019-06-27)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@adobe/helix-embed",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Example Package",
   "main": "index.js",
   "scripts": {
@@ -68,6 +68,6 @@
   },
   "snyk": true,
   "wsk": {
-    "name": "helix-services/embed@1.0.2"
+    "name": "helix-services/embed@1.0.3"
   }
 }

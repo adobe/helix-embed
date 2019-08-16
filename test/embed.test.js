@@ -22,7 +22,7 @@ const { setupMocha: setupPolly } = require('@pollyjs/core');
 const { embed } = require('../src/embed.js');
 
 function assertContains(actual, patterns) {
-  patterns.map(expected => assert.ok(new RegExp(expected).test(actual), `${actual} does not match ${expected}`));
+  patterns.map((expected) => assert.ok(new RegExp(expected).test(actual), `${actual} does not match ${expected}`));
 }
 
 describe('Standalone Tests', () => {
@@ -112,7 +112,7 @@ describe('Embed Tests', () => {
       const idx = recording.request.url.indexOf('?client_id');
       if (idx > 0) {
         // eslint-disable-next-line no-param-reassign
-        recording.request.queryString = recording.request.queryString.filter(p => p.name !== 'client_id');
+        recording.request.queryString = recording.request.queryString.filter((p) => p.name !== 'client_id');
         // eslint-disable-next-line no-param-reassign
         recording.request.url = `${recording.request.url.substring(0, idx)}?client_id=dummy`;
       }

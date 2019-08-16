@@ -24,7 +24,7 @@ async function main(params) {
       if (/^__ow_/.test(cv) || /^[A-Z]+_[A-Z]+/.test(cv) || cv === 'api') {
         return pv;
       }
-      const retval = Object.assign({}, pv);
+      const retval = { ...pv };
       retval[cv] = params[cv];
       return retval;
     }, {});
@@ -32,7 +32,7 @@ async function main(params) {
     // add the URL
     qs.url = url;
 
-    return request({ uri: params.api, qs, json: true }).then(json => ({
+    return request({ uri: params.api, qs, json: true }).then((json) => ({
       headers: {
         'Content-Type': 'text/html',
         'Cache-Control': `max-age=${json.cache_age ? json.cache_age : '3600'}`,

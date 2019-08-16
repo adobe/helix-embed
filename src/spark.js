@@ -37,7 +37,7 @@ ${srcpair(src, width, 0.25)}`;
 }
 
 function decorator(metadata) {
-  const enriched = Object.assign({}, metadata);
+  const enriched = { ...metadata };
   const alt = metadata.title.replace(/\n/g, '');
   const src = metadata.open_graph.images[0].url;
   enriched.oEmbed = {

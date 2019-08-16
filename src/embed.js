@@ -101,15 +101,13 @@ function embed(url, params) {
     };
   }
 
-  return unfurl(url, opts).then(enrich(params)).then((metadata) => {
-    return {
-      headers: {
-        'Content-Type': 'text/html',
-        'Cache-Control': `max-age=${metadata.oembed && metadata.oembed.cacheAge ? metadata.oembed.cacheAge : '3600'}`,
-      },
-      body: toHTML(metadata, url),
-    };
-  }).catch(error => ({
+  return unfurl(url, opts).then(enrich(params)).then((metadata) => ({
+    headers: {
+      'Content-Type': 'text/html',
+      'Cache-Control': `max-age=${metadata.oembed && metadata.oembed.cacheAge ? metadata.oembed.cacheAge : '3600'}`,
+    },
+    body: toHTML(metadata, url),
+  })).catch((error) => ({
     headers: {
       'Content-Type': 'text/html',
       'Cache-Control': 'max-age=3600',

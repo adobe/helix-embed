@@ -40,7 +40,7 @@ async function meta(src, clientid) {
 }
 
 async function decorator(metadata, options) {
-  const enriched = Object.assign({}, metadata);
+  const enriched = { ...metadata };
   const src = metadata.twitter_card.url;
 
   const {

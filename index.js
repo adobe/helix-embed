@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 const request = require('request-promise-native');
-const { wrap } = require('@adobe/helix-pingdom-status');
+const { wrap } = require('@adobe/helix-status');
 const { openWhiskWrapper } = require('epsagon');
 const { embed } = require('./src/embed');
 

@@ -1,3 +1,15 @@
+# [1.1.0](https://github.com/adobe/helix-embed/compare/v1.0.3...v1.1.0) (2019-08-21)
+
+
+### Bug Fixes
+
+* **package:** update unfurl.js to version 4.0.0 ([450c3c3](https://github.com/adobe/helix-embed/commit/450c3c3))
+
+
+### Features
+
+* **unfurl:** upgrade to unfurl.js 4.0.0 ([edfdced](https://github.com/adobe/helix-embed/commit/edfdced))
+
 ## [1.0.3](https://github.com/adobe/helix-embed/compare/v1.0.2...v1.0.3) (2019-07-26)
 
 

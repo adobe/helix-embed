@@ -50,5 +50,6 @@ async function main(params) {
 exports.main = wrap(openWhiskWrapper(main, {
   token_param: 'EPSAGON_TOKEN',
   appName: 'Helix Services',
-  metadataOnly: false, // Optional, send more trace data
+  metadataOnly: false, // Optional, send more trace data,
+  ignoredKeys: [/[A-Z0-9_]+/],
 }));

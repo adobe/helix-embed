@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/adobe/helix-embed/compare/v1.1.0...v1.1.1) (2019-08-26)
+
+
+### Bug Fixes
+
+* **monitoring:** upgrade epsagon and hide more params ([0a03b2c](https://github.com/adobe/helix-embed/commit/0a03b2c))
+
 # [1.1.0](https://github.com/adobe/helix-embed/compare/v1.0.3...v1.1.0) (2019-08-21)
 
 

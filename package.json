@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/adobe/helix-embed#readme",
   "dependencies": {
-    "@adobe/helix-status": "4.3.3",
+    "@adobe/helix-status": "4.3.4",
     "epsagon": "^1.33.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",

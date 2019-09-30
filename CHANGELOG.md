@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/adobe/helix-embed/compare/v1.1.3...v1.1.4) (2019-09-30)
+
+
+### Bug Fixes
+
+* **package:** update @adobe/helix-status to version 4.3.4 ([8ce1e2e](https://github.com/adobe/helix-embed/commit/8ce1e2e))
+
 ## [1.1.3](https://github.com/adobe/helix-embed/compare/v1.1.2...v1.1.3) (2019-09-04)
 
 

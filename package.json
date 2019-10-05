@@ -21,7 +21,7 @@
     "deploy-ci": "wsk-builder -v --deploy --test=/_status_check/healthcheck.json --entryFile index.js  -p UNSPLASH_AUTH=$UNSPLASH_AUTH --pkgVersion=ci$CIRCLE_BUILD_NUM -l ci"
   },
   "wsk": {
-    "name": "helix-services-private/embed@1.1.4",
+    "name": "helix-services-private/embed@${version}",
     "linksPackage": "helix-services"
   },
   "repository": {

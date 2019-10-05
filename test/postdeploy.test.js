@@ -20,7 +20,7 @@ const { expect } = chai;
 
 function getbaseurl() {
   const namespace = 'helix';
-  const package = 'helix-services';
+  const package = 'helix-services-private';
   const name = packjson.name.replace('@adobe/helix-', '');
   let version = `${packjson.version}`;
   if (process.env.CI && process.env.CIRCLE_BUILD_NUM && process.env.CIRCLE_BRANCH !== 'master') {
@@ -37,8 +37,7 @@ describe('Running Post-Deployment Integration Tests', () => {
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('youtube.com');
-        expect(response.text).to.contain('iframe');
-        expect(response.text).to.contain('oembed');
+        expect(response.text).to.contain('embed-has-image');
       }).catch((e) => {
         throw e;
       });
@@ -72,10 +71,10 @@ describe('Running Post-Deployment Integration Tests', () => {
   it('Service reports status', async () => {
     await chai
       .request('https://adobeioruntime.net/')
-      .get(`${getbaseurl()}/_status_check/pingdom.xml`)
+      .get(`${getbaseurl()}/_status_check/healthcheck.json`)
       .then((response) => {
         expect(response).to.have.status(200);
-        expect(response).to.have.header('Content-Type', 'application/xml; charset=UTF-8');
+        expect(response).to.have.header('Content-Type', 'application/json');
       }).catch((e) => {
         throw e;
       });

@@ -69,10 +69,6 @@ jobs:
         command: npm run semantic-release
 
     - run:
-        name: Set Unsplash Token
-        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@`node -e "console.log(require('./package.json').version)"` -p UNSPLASH_AUTH $UNSPLASH_AUTH
-
-    - run:
         name: Post-Deployment Integration Test
         command: npm run test-postdeploy
 
@@ -80,24 +76,13 @@ jobs:
         path: junit
 
     - run:
-        name: Set Epsagon Token and Unspash Token
-        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@`node -e "console.log(require('./package.json').version)"` -p EPSAGON_TOKEN $EPSAGON_TOKEN -p UNSPLASH_AUTH $UNSPLASH_AUTH
+        name: Link Sequences
+        command: npm run deploy-sequences
 
-    - run:
-        name: Link Sequence (Latest)
-        command: wsk action update --sequence /helix/helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@latest helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@`node -e "console.log(require('./package.json').version)"` --web=true --web-secure=false
-
-    - run:
-        name: Link Sequence (Major)
-        command: wsk action update --sequence /helix/helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@v`node -e "console.log(require('./package.json').version.match(/^[0-9]+/)[0])"` helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@`node -e "console.log(require('./package.json').version)"` --web=true --web-secure=false
-
-    - run:
-        name: Link Sequence (Minor)
-        command: wsk action update --sequence /helix/helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@v`node -e "console.log(require('./package.json').version.match(/^[0-9]+.[0-9]+/)[0])"` helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@`node -e "console.log(require('./package.json').version)"` --web=true --web-secure=false
     - run:
         name: Set Up Monitoring
         command: node ./node_modules/.bin/newrelic setup https://adobeioruntime.net/api/v1/web/helix/helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@v`node -e "console.log(require('./package.json').version.match(/^[0-9]+.[0-9]+/)[0])"`/_status_check/healthcheck.json `node ./node_modules/.bin/statuspage setup --silent`
-        
+
   branch-deploy:
     executor: node10
 
@@ -113,26 +98,14 @@ jobs:
 
     - run:
         name: Branch Deployment
-        command: npx wsk-builder -v --raw-http --entryFile index.js --deploy --test --name helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM
-
-    - run:
-        name: Set Unsplash Token
-        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM -p UNSPLASH_AUTH $UNSPLASH_AUTH
+        command: npm run deploy-ci
 
     - run:
         name: Post-Deployment Integration Test
         command: npm run test-postdeploy
-        
-    - run:
-        name: Set Epsagon Token and Unsplash Token
-        command: wsk action update helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM -p EPSAGON_TOKEN $EPSAGON_TOKEN  -p UNSPLASH_AUTH $UNSPLASH_AUTH
 
     - store_test_results:
         path: junit
-
-    - run:
-        name: Link Sequence (CI)
-        command: wsk action update --sequence /helix/helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci helix-services/`node -e "console.log(require('./package.json').name.replace('@adobe/helix-', ''))"`@ci$CIRCLE_BUILD_NUM --web=true --web-secure=false
 
 workflows:
   version: 2

@@ -37,7 +37,8 @@ describe('Running Post-Deployment Integration Tests', () => {
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('youtube.com');
-        expect(response.text).to.contain('embed-has-image');
+        expect(response.text).to.contain('iframe');
+        expect(response.text).to.contain('oembed');
       }).catch((e) => {
         throw e;
       });

@@ -1,5 +1,6 @@
 {
   "name": "@adobe/helix-embed",
+  "private": true,
   "version": "1.1.4",
   "description": "Helix Embed",
   "main": "index.js",
@@ -15,7 +16,13 @@
     "deploy-iframely": "npm run zip && wsk action update embed embed.zip --kind nodejs:10 --web raw --web-secure false -p api http://iframe.ly/api/oembed -p api_key insert-here",
     "deploy-embedly": "npm run zip && wsk action update embed embed.zip --kind nodejs:10 --web raw --web-secure false -p api https://api.embedly.com/1/oembed -p key insert-here",
     "build": "wsk-builder -v --entryFile index.js",
-    "deploy": "wsk-builder -v  --raw-http --deploy --test --entryFile index.js"
+    "deploy": "wsk-builder -v --raw-http --deploy --test=/_status_check/healthcheck.json --entryFile index.js -p UNSPLASH_AUTH=$UNSPLASH_AUTH",
+    "deploy-sequences": "wsk-builder --no-build -no-hints -l latest -l major -l minor",
+    "deploy-ci": "wsk-builder -v --deploy --test=/_status_check/healthcheck.json --entryFile index.js  -p UNSPLASH_AUTH=$UNSPLASH_AUTH --pkgVersion=ci$CIRCLE_BUILD_NUM -l ci"
+  },
+  "wsk": {
+    "name": "helix-services-private/embed@1.1.4",
+    "linksPackage": "helix-services"
   },
   "repository": {
     "type": "git",
@@ -65,9 +72,6 @@
     "semantic-release": "15.13.24"
   },
   "snyk": true,
-  "wsk": {
-    "name": "helix-services/embed@1.1.4"
-  },
   "statuspage": {
     "name": "Helix Embed",
     "group": "Delivery"

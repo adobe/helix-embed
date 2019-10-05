@@ -26,7 +26,10 @@ function getbaseurl() {
   if (process.env.CI && process.env.CIRCLE_BUILD_NUM && process.env.CIRCLE_BRANCH !== 'master') {
     version = `ci${process.env.CIRCLE_BUILD_NUM}`;
   }
-  return `api/v1/web/${namespace}/${package}/${name}@${version}`;
+  const url = `api/v1/web/${namespace}/${package}/${name}@${version}`;
+  // eslint-disable-next-line no-console
+  console.log('baseurl:', url);
+  return url;
 }
 
 describe('Running Post-Deployment Integration Tests', () => {
@@ -72,10 +75,10 @@ describe('Running Post-Deployment Integration Tests', () => {
   it('Service reports status', async () => {
     await chai
       .request('https://adobeioruntime.net/')
-      .get(`${getbaseurl()}/_status_check/pingdom.xml`)
+      .get(`${getbaseurl()}/_status_check/healthcheck.json`)
       .then((response) => {
         expect(response).to.have.status(200);
-        expect(response).to.have.header('Content-Type', 'application/xml; charset=UTF-8');
+        expect(response).to.have.header('Content-Type', 'application/json');
       }).catch((e) => {
         throw e;
       });

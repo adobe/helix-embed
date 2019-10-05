@@ -26,10 +26,7 @@ function getbaseurl() {
   if (process.env.CI && process.env.CIRCLE_BUILD_NUM && process.env.CIRCLE_BRANCH !== 'master') {
     version = `ci${process.env.CIRCLE_BUILD_NUM}`;
   }
-  const url = `api/v1/web/${namespace}/${package}/${name}@${version}`;
-  // eslint-disable-next-line no-console
-  console.log('baseurl:', url);
-  return url;
+  return `api/v1/web/${namespace}/${package}/${name}@${version}`;
 }
 
 describe('Running Post-Deployment Integration Tests', () => {
@@ -40,8 +37,7 @@ describe('Running Post-Deployment Integration Tests', () => {
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('youtube.com');
-        expect(response.text).to.contain('iframe');
-        expect(response.text).to.contain('oembed');
+        expect(response.text).to.contain('embed-has-image');
       }).catch((e) => {
         throw e;
       });

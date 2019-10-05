@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/adobe/helix-embed/compare/v1.1.4...v1.1.5) (2019-10-05)
+
+
+### Bug Fixes
+
+* **deploy:** use helix-services-private for deployment ([15403d1](https://github.com/adobe/helix-embed/commit/15403d1))
+
 ## [1.1.4](https://github.com/adobe/helix-embed/compare/v1.1.3...v1.1.4) (2019-09-30)
 
 

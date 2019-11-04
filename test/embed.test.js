@@ -32,6 +32,12 @@ describe('Standalone Tests', () => {
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['https://www.youtube.com/', 'iframe', 'oembed']);
   });
+
+  it('Supports OEmbed for Youtube II', async () => {
+    const { headers, body } = await embed('https://www.youtube.com/watch?v=TTCVn4EByfI');
+    assert.equal(headers['Content-Type'], 'text/html');
+    assertContains(body, ['https://www.youtube.com/', 'iframe', 'oembed']);
+  });
 });
 
 describe('Embed Tests', () => {

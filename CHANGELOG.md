@@ -1,3 +1,11 @@
+## [1.1.9](https://github.com/adobe/helix-embed/compare/v1.1.8...v1.1.9) (2019-11-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency unfurl.js to v5 ([1343930](https://github.com/adobe/helix-embed/commit/1343930))
+* **openwhisk:** guard against missing __ow_query parameter ([74ebb42](https://github.com/adobe/helix-embed/commit/74ebb42))
+
 ## [1.1.8](https://github.com/adobe/helix-embed/compare/v1.1.7...v1.1.8) (2019-10-05)
 
 

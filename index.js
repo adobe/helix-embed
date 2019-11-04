@@ -16,6 +16,7 @@ const { embed } = require('./src/embed');
 
 /* eslint-disable no-underscore-dangle, no-console */
 async function main(params) {
+  console.log(params);
   const url = `${params.__ow_path.substring(1)}?${params.__ow_query || ''}`;
   if (params.api) {
     // filter all __ow_something parameters out

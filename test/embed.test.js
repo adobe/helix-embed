@@ -20,10 +20,7 @@ const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
 const { embed } = require('../src/embed.js');
-
-function assertContains(actual, patterns) {
-  patterns.map((expected) => assert.ok(new RegExp(expected).test(actual), `${actual} does not match ${expected}`));
-}
+const { assertContains } = require('./utils');
 
 describe('Standalone Tests', () => {
   // this test fails when recorded with Polly

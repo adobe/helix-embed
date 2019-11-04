@@ -14,9 +14,22 @@ const { wrap } = require('@adobe/helix-status');
 const { openWhiskWrapper } = require('epsagon');
 const { embed } = require('./src/embed');
 
-/* eslint-disable no-underscore-dangle, no-console */
+/* eslint-disable no-underscore-dangle, no-console, no-param-reassign */
 async function main(params) {
-  console.log(params);
+  if (!params.__ow_query) {
+    // reconstruct __ow_query
+    const query = Object.keys(params)
+      .filter((key) => !/^[A-Z]+_[A-Z]+/.test(key))
+      .filter((key) => key !== 'api')
+      .filter((key) => !/^__ow_/.test(key))
+      .reduce((pv, cv) => {
+        if (pv) {
+          return `${pv}&${cv}=${params[cv]}`;
+        }
+        return `${cv}=${params[cv]}`;
+      }, '');
+    params.__ow_query = query;
+  }
   const url = `${params.__ow_path.substring(1)}?${params.__ow_query || ''}`;
   if (params.api) {
     // filter all __ow_something parameters out
@@ -32,6 +45,7 @@ async function main(params) {
 
     // add the URL
     qs.url = url;
+
 
     return request({ uri: params.api, qs, json: true }).then((json) => ({
       headers: {

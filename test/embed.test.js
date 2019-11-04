@@ -20,15 +20,18 @@ const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
 const { embed } = require('../src/embed.js');
-
-function assertContains(actual, patterns) {
-  patterns.map((expected) => assert.ok(new RegExp(expected).test(actual), `${actual} does not match ${expected}`));
-}
+const { assertContains } = require('./utils');
 
 describe('Standalone Tests', () => {
   // this test fails when recorded with Polly
   it('Supports OEmbed for Youtube', async () => {
     const { headers, body } = await embed('https://www.youtube.com/watch?v=ccYpEv4APec');
+    assert.equal(headers['Content-Type'], 'text/html');
+    assertContains(body, ['https://www.youtube.com/', 'iframe', 'oembed']);
+  });
+
+  it('Supports OEmbed for Youtube II', async () => {
+    const { headers, body } = await embed('https://www.youtube.com/watch?v=TTCVn4EByfI');
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['https://www.youtube.com/', 'iframe', 'oembed']);
   });

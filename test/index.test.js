@@ -20,7 +20,7 @@ const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
 const { main } = require('../index.js');
-
+const { assertContains } = require('./utils');
 
 describe('Index Tests', () => {
   setupPolly({
@@ -44,6 +44,28 @@ describe('Index Tests', () => {
         },
       },
     });
+  });
+
+  it('Index works with Youtube URL parameters', async () => {
+    const params = {
+      __ow_headers: {
+        'accept-encoding': 'gzip, deflate',
+        connection: 'close',
+        host: 'controller-a',
+        'perf-br-req-in': '1572859933.107',
+        'user-agent': 'node-superagent/3.8.3',
+        'x-forwarded-for': '3.80.39.228',
+        'x-forwarded-port': '443',
+        'x-forwarded-proto': 'https',
+      },
+      __ow_method: 'get',
+      __ow_path: '/https://www.youtube.com/watch',
+      v: 'TTCVn4EByfI',
+      w: '1',
+      UNSPLASH_AUTH: 'SECRET',
+    };
+    const result = await main(params);
+    assertContains(result.body, ['https://www.youtube.com/', 'iframe', 'oembed']);
   });
 
   it('Index works with parameters', async () => {

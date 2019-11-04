@@ -1,3 +1,10 @@
+## [1.1.11](https://github.com/adobe/helix-embed/compare/v1.1.10...v1.1.11) (2019-11-04)
+
+
+### Bug Fixes
+
+* **deps:** pin dependencies ([e7daa03](https://github.com/adobe/helix-embed/commit/e7daa033677c3ce7af74b813bc90b21decb1d97f))
+
 ## [1.1.10](https://github.com/adobe/helix-embed/compare/v1.1.9...v1.1.10) (2019-11-04)
 
 

@@ -36,7 +36,7 @@
   "homepage": "https://github.com/adobe/helix-embed#readme",
   "dependencies": {
     "@adobe/helix-status": "5.3.0",
-    "epsagon": "1.40.3",
+    "epsagon": "1.40.4",
     "request": "2.88.0",
     "request-promise-native": "1.0.8",
     "unfurl.js": "5.0.1",
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@adobe/eslint-config-helix": "1.1.0",
-    "@adobe/openwhisk-action-builder": "2.1.1",
+    "@adobe/openwhisk-action-builder": "2.2.1",
     "@pollyjs/adapter-fetch": "2.6.3",
     "@pollyjs/adapter-node-http": "2.6.3",
     "@pollyjs/core": "2.6.3",
@@ -52,7 +52,7 @@
     "@semantic-release/changelog": "3.0.5",
     "@semantic-release/commit-analyzer": "6.3.2",
     "@semantic-release/exec": "3.3.8",
-    "@semantic-release/git": "7.0.17",
+    "@semantic-release/git": "7.0.18",
     "@semantic-release/github": "5.5.5",
     "@semantic-release/npm": "5.3.4",
     "@semantic-release/release-notes-generator": "7.3.2",

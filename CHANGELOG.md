@@ -1,3 +1,10 @@
+## [1.1.12](https://github.com/adobe/helix-embed/compare/v1.1.11...v1.1.12) (2019-11-16)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-status to v6 ([18d58be](https://github.com/adobe/helix-embed/commit/18d58be84276acc133cafd6678e5ea157251a32c))
+
 ## [1.1.11](https://github.com/adobe/helix-embed/compare/v1.1.10...v1.1.11) (2019-11-04)
 
 

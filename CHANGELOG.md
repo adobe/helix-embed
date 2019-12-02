@@ -1,3 +1,10 @@
+## [1.1.15](https://github.com/adobe/helix-embed/compare/v1.1.14...v1.1.15) (2019-12-02)
+
+
+### Bug Fixes
+
+* **release:** triggering release ([2eb8a2c](https://github.com/adobe/helix-embed/commit/2eb8a2cba17eb7267c5bb3adb409427065291de0))
+
 ## [1.1.14](https://github.com/adobe/helix-embed/compare/v1.1.13...v1.1.14) (2019-11-21)
 
 

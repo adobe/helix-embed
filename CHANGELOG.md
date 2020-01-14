@@ -1,3 +1,10 @@
+## [1.1.18](https://github.com/adobe/helix-embed/compare/v1.1.17...v1.1.18) (2020-01-14)
+
+
+### Bug Fixes
+
+* **deps:** update external ([#117](https://github.com/adobe/helix-embed/issues/117)) ([462f4f2](https://github.com/adobe/helix-embed/commit/462f4f2093c297a6e34c0e6bf5753ac07c877a6c))
+
 ## [1.1.17](https://github.com/adobe/helix-embed/compare/v1.1.16...v1.1.17) (2020-01-09)
 
 

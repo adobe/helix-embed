@@ -36,6 +36,7 @@
   "homepage": "https://github.com/adobe/helix-embed#readme",
   "dependencies": {
     "@adobe/helix-status": "7.0.3",
+    "@braintree/sanitize-url": "4.0.0",
     "epsagon": "1.46.2",
     "request": "2.88.0",
     "request-promise-native": "1.0.8",

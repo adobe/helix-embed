@@ -11,7 +11,7 @@
  */
 const { unfurl } = require('unfurl.js');
 const URI = require('uri-js');
-const sanitize = require('@braintree/sanitize-url');
+const sanitize = require('@braintree/sanitize-url').sanitizeUrl;
 const spark = require('./spark');
 const unsplash = require('./unsplash');
 

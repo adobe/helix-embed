@@ -44,7 +44,7 @@ function toHTML({
   let html = [];
   if (url) {
     classnames.push('embed-has-url');
-    html.push(`  <a href="${sanitize(url)}">`);
+    html.push(`  <a href="${sanitizeUrl(url)}">`);
   }
   if (icon) {
     classnames.push('embed-has-icon');
@@ -74,7 +74,7 @@ function toHTML({
 }
 
 function fromURL(url) {
-  return `<a href="${sanitize(url)}">${url}</a>`;
+  return `<a href="${sanitizeUrl(url)}">${url}</a>`;
 }
 
 function enrich(params) {

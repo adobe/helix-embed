@@ -135,4 +135,11 @@ describe('Embed Tests', () => {
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['http://localhost']);
   });
+
+  it('Sanitizes Malicious URLs', async () => {
+    // eslint-disable-next-line no-script-url
+    const { headers, body } = await embed('javascript:alert(1)');
+    assert.equal(headers['Content-Type'], 'text/html');
+    assertContains(body, ['about:blank']);
+  });
 });

@@ -11,6 +11,7 @@
  */
 const { unfurl } = require('unfurl.js');
 const URI = require('uri-js');
+const { sanitizeUrl } = require('@braintree/sanitize-url');
 const spark = require('./spark');
 const unsplash = require('./unsplash');
 
@@ -43,7 +44,7 @@ function toHTML({
   let html = [];
   if (url) {
     classnames.push('embed-has-url');
-    html.push(`  <a href="${url}">`);
+    html.push(`  <a href="${sanitizeUrl(url)}">`);
   }
   if (icon) {
     classnames.push('embed-has-icon');
@@ -73,7 +74,7 @@ function toHTML({
 }
 
 function fromURL(url) {
-  return `<a href="${url}">${url}</a>`;
+  return `<a href="${sanitizeUrl(url)}">${url}</a>`;
 }
 
 function enrich(params) {

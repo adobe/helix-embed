@@ -1,3 +1,13 @@
+## [1.1.19](https://github.com/adobe/helix-embed/compare/v1.1.18...v1.1.19) (2020-01-17)
+
+
+### Bug Fixes
+
+* **embed:** sanitize url in output ([8c7bc6c](https://github.com/adobe/helix-embed/commit/8c7bc6ce83e9f14502101675a126b68446629ad4))
+* **embed:** sanitize url in output ([2b9bc9d](https://github.com/adobe/helix-embed/commit/2b9bc9d5abf023096e74a00cb406d1f0188fae39))
+* **embed:** sanitize url in putput ([e8d3f76](https://github.com/adobe/helix-embed/commit/e8d3f76b07d753c7d1bdfdb14f33d140401a3843))
+* **embed:** use renamed variable ([f008adf](https://github.com/adobe/helix-embed/commit/f008adfd6f530127af86a4bccb5c2376eeea5437))
+
 ## [1.1.18](https://github.com/adobe/helix-embed/compare/v1.1.17...v1.1.18) (2020-01-14)
 
 

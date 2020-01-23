@@ -1,3 +1,10 @@
+## [1.1.21](https://github.com/adobe/helix-embed/compare/v1.1.20...v1.1.21) (2020-01-23)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-status to v7.1.1 ([18d1ebe](https://github.com/adobe/helix-embed/commit/18d1ebe4b3c671eb39c36e1583d39c03d600f740))
+
 ## [1.1.20](https://github.com/adobe/helix-embed/compare/v1.1.19...v1.1.20) (2020-01-22)
 
 

@@ -19,7 +19,7 @@ const path = require('path');
 const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
-const { main } = require('../index.js');
+const { main } = require('../src/index.js');
 const { assertContains } = require('./utils');
 
 describe('Index Tests', () => {

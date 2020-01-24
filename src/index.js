@@ -10,12 +10,15 @@
  * governing permissions and limitations under the License.
  */
 const request = require('request-promise-native');
-const { wrap } = require('@adobe/helix-status');
-const { openWhiskWrapper } = require('epsagon');
-const { embed } = require('./src/embed');
+const { wrap: status } = require('@adobe/helix-status');
+const { wrap } = require('@adobe/openwhisk-action-utils');
+const { logger } = require('@adobe/openwhisk-action-logger');
+const { epsagon } = require('@adobe/helix-epsagon');
+const { embed } = require('./embed.js');
 
 /* eslint-disable no-underscore-dangle, no-console, no-param-reassign */
-async function main(params) {
+async function run(params) {
+  const { __ow_logger: log = console } = params;
   if (!params.__ow_query) {
     // reconstruct __ow_query
     const query = Object.keys(params)
@@ -54,7 +57,7 @@ async function main(params) {
       },
       body: json.html,
     })).catch((error) => {
-      console.log(error.response.body.error);
+      log.error(error.response.body.error);
       // falling back to normal
       return embed(url);
     });
@@ -62,9 +65,13 @@ async function main(params) {
   return embed(url, params);
 }
 
-exports.main = wrap(openWhiskWrapper(main, {
-  token_param: 'EPSAGON_TOKEN',
-  appName: 'Helix Services',
-  metadataOnly: false, // Optional, send more trace data,
-  ignoredKeys: [/[A-Z0-9_]+/],
-}));
+/**
+ * Main function called by the openwhisk invoker.
+ * @param params Action params
+ * @returns {Promise<*>} The response
+ */
+module.exports.main = wrap(run)
+  .with(epsagon)
+  .with(status)
+  .with(logger.trace)
+  .with(logger);

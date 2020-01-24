@@ -1,3 +1,10 @@
+## [1.1.22](https://github.com/adobe/helix-embed/compare/v1.1.21...v1.1.22) (2020-01-24)
+
+
+### Bug Fixes
+
+* **epsagon:** use helix-epsagon wrapper ([#125](https://github.com/adobe/helix-embed/issues/125)) ([e76d12c](https://github.com/adobe/helix-embed/commit/e76d12c6e2ccf72cc1b0aa82f221c59108bf33b0))
+
 ## [1.1.21](https://github.com/adobe/helix-embed/compare/v1.1.20...v1.1.21) (2020-01-23)
 
 

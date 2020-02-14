@@ -16,6 +16,8 @@ const { logger } = require('@adobe/openwhisk-action-logger');
 const { epsagon } = require('@adobe/helix-epsagon');
 const { embed } = require('./embed.js');
 
+const ips = request('https://api.fastly.com/public-ip-list', { json: true });
+
 /* eslint-disable no-underscore-dangle, no-console, no-param-reassign */
 async function run(params) {
   const { __ow_logger: log = console } = params;
@@ -34,7 +36,7 @@ async function run(params) {
     params.__ow_query = query;
   }
   const url = `${params.__ow_path.substring(1)}?${params.__ow_query || ''}`;
-  if (params.api) {
+  if (params.api || params.OEMBED_RESOLVER_URI) {
     // filter all __ow_something parameters out
     // and all parameters in all caps
     const qs = Object.keys(params).reduce((pv, cv) => {
@@ -49,8 +51,13 @@ async function run(params) {
     // add the URL
     qs.url = url;
 
+    if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY) {
+      const { addresses } = await ips;
+      console.log(addresses);
+      qs[params.OEMBED_RESOLVER_PARAM] = params.OEMBED_RESOLVER_KEY;
+    }
 
-    return request({ uri: params.api, qs, json: true }).then((json) => ({
+    return request({ uri: params.api || params.RESOLVER_URI, qs, json: true }).then((json) => ({
       headers: {
         'Content-Type': 'text/html',
         'Cache-Control': `max-age=${json.cache_age ? json.cache_age : '3600'}`,

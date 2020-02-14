@@ -97,6 +97,12 @@ describe('Embed Tests', () => {
     assertContains(body, ['embed-spark']);
   });
 
+  it('Supports Soundcloud', async () => {
+    const { headers, body } = await embed('https://soundcloud.com/cheryl-lin-fielding/chanson-pour-jeanne?in=cheryl-lin-fielding/sets/website');
+    assert.equal(headers['Content-Type'], 'text/html');
+    assertContains(body, ['iframe']);
+  });
+
   it('Supports Unsplash', async function test() {
     this.polly.configure({
       matchRequestsBy: {

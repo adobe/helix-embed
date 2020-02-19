@@ -43,7 +43,7 @@
     "@braintree/sanitize-url": "4.0.0",
     "request": "2.88.0",
     "request-promise-native": "1.0.8",
-    "unfurl.js": "5.0.1",
+    "unfurl.js": "5.1.0",
     "uri-js": "4.2.2"
   },
   "devDependencies": {

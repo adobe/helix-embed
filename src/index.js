@@ -21,6 +21,8 @@ const ips = request('https://api.fastly.com/public-ip-list', { json: true });
 /* eslint-disable no-underscore-dangle, no-console, no-param-reassign */
 async function run(params) {
   const { __ow_logger: log = console } = params;
+  log.info('called embed with params', params);
+
   if (!params.__ow_query) {
     // reconstruct __ow_query
     const query = Object.keys(params)

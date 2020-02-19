@@ -14,14 +14,34 @@ const { wrap: status } = require('@adobe/helix-status');
 const { wrap } = require('@adobe/openwhisk-action-utils');
 const { logger } = require('@adobe/openwhisk-action-logger');
 const { epsagon } = require('@adobe/helix-epsagon');
+const range = require('range_check');
 const { embed } = require('./embed.js');
 
 const ips = request('https://api.fastly.com/public-ip-list', { json: true });
 
+async function isWithinRange(forwardedFor, whitelistedIps = '') {
+  /* eslint-disable camelcase */
+  const { addresses, ipv6_addresses } = await ips;
+
+  const whitelistedRanges = whitelistedIps
+    .split(',')
+    .map((ip) => ip.trim())
+    .filter((ip) => range.isIP(ip) || range.isRange(ip));
+
+  const ranges = [...addresses, ...ipv6_addresses, whitelistedRanges];
+  const forwarded = forwardedFor
+    .split(',')
+    .map((ip) => ip.trim())
+    .filter((ip) => range.isIP(ip));
+  /* eslint-enable camelcase */
+
+  return forwarded.some((ip) => ranges
+    .some((myranges) => (range.isRange ? range.inRange(ip, myranges) : range === ip)));
+}
+
 /* eslint-disable no-underscore-dangle, no-console, no-param-reassign */
 async function run(params) {
   const { __ow_logger: log = console } = params;
-  log.info('called embed with params', params);
 
   if (!params.__ow_query) {
     // reconstruct __ow_query
@@ -53,19 +73,22 @@ async function run(params) {
     // add the URL
     qs.url = url;
 
-    if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY) {
-      const { addresses } = await ips;
-      console.log(addresses);
+    if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY && await isWithinRange(params.__ow_headers['x-forwarded-for'], params.WHITELISTED_IPS)) {
       qs[params.OEMBED_RESOLVER_PARAM] = params.OEMBED_RESOLVER_KEY;
+      log.info(`Using embedding service ${params.api || params.OEMBED_RESOLVER_URI} for URL ${url}`);
     }
 
-    return request({ uri: params.api || params.RESOLVER_URI, qs, json: true }).then((json) => ({
+    return request({
+      uri: params.api || params.OEMBED_RESOLVER_URI,
+      qs,
+      json: true,
+    }).then((json) => ({
       headers: {
         'X-Client-IP': params.__ow_headers['x-forwarded-for'],
         'Content-Type': 'text/html',
         'Cache-Control': `max-age=${json.cache_age ? json.cache_age : '3600'}`,
       },
-      body: json.html,
+      body: `<div class="embed embed-oembed embed-advanced">${json.html}</div>`,
     })).catch((error) => {
       log.error(error.response.body.error);
       // falling back to normal

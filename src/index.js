@@ -59,6 +59,7 @@ async function run(params) {
 
     return request({ uri: params.api || params.RESOLVER_URI, qs, json: true }).then((json) => ({
       headers: {
+        'X-Client-IP': params.__ow_headers['x-forwarded-for'],
         'Content-Type': 'text/html',
         'Cache-Control': `max-age=${json.cache_age ? json.cache_age : '3600'}`,
       },

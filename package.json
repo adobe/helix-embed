@@ -16,7 +16,7 @@
     "deploy-iframely": "npm run zip && wsk action update embed embed.zip --kind nodejs:10 --web raw --web-secure false -p api http://iframe.ly/api/oembed -p api_key insert-here",
     "deploy-embedly": "npm run zip && wsk action update embed embed.zip --kind nodejs:10 --web raw --web-secure false -p api https://api.embedly.com/1/oembed -p key insert-here",
     "build": "wsk-builder -v",
-    "deploy": "wsk-builder -v --deploy --test=/_status_check/healthcheck.json -p UNSPLASH_AUTH=$UNSPLASH_AUTH",
+    "deploy": "wsk-builder -v --deploy --test=/_status_check/healthcheck.json -p UNSPLASH_AUTH=$UNSPLASH_AUTH -p OEMBED_RESOLVER_KEY=$OEMBED_RESOLVER_KEY -p OEMBED_RESOLVER_PARAM=$OEMBED_RESOLVER_PARAM -p OEMBED_RESOLVER_URI=$OEMBED_RESOLVER_URI -p WHITELISTED_IPS=192.150.10.210",
     "deploy-sequences": "wsk-builder --no-build -no-hints -l latest -l major -l minor",
     "deploy-ci": "wsk-builder -v --deploy --test=/_status_check/healthcheck.json -p UNSPLASH_AUTH=$UNSPLASH_AUTH --pkgVersion=ci$CIRCLE_BUILD_NUM -l ci"
   },

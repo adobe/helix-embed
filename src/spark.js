@@ -40,6 +40,7 @@ function decorator(metadata) {
   const enriched = { ...metadata };
   const alt = metadata.title.replace(/\n/g, '');
   const src = metadata.open_graph.images[0].url;
+  enriched.enriched = true;
   enriched.oEmbed = {
     html: `<img alt="${alt}" class="embed-spark" sizes="100vw" src="${src}" srcset="${srcset(src)}">`,
   };

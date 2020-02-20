@@ -1,3 +1,16 @@
+# [1.2.0](https://github.com/adobe/helix-embed/compare/v1.1.29...v1.2.0) (2020-02-20)
+
+
+### Bug Fixes
+
+* **unsplash:** add missing alt description ([94e679f](https://github.com/adobe/helix-embed/commit/94e679f5ae302f53690a13a86497090e7348d123))
+
+
+### Features
+
+* **embed:** restrict usage of key-protected embed service to whitelisted IP addresses ([a080a17](https://github.com/adobe/helix-embed/commit/a080a17728d2b8aa2e1881f02ce5dede46c18302))
+* **http:** add response header with client ip address ([abe8625](https://github.com/adobe/helix-embed/commit/abe8625738b481116e82ed1b2d9329a40317945a))
+
 ## [1.1.29](https://github.com/adobe/helix-embed/compare/v1.1.28...v1.1.29) (2020-02-18)
 
 

@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/adobe/helix-embed/compare/v1.2.0...v1.2.1) (2020-02-20)
+
+
+### Bug Fixes
+
+* **deps:** pin dependency range_check to 1.4.0 ([6d7e958](https://github.com/adobe/helix-embed/commit/6d7e958111e0a482c75cc46c1b8e9a99edf40a3a))
+
 # [1.2.0](https://github.com/adobe/helix-embed/compare/v1.1.29...v1.2.0) (2020-02-20)
 
 

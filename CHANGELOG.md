@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/adobe/helix-embed/compare/v1.2.1...v1.2.2) (2020-02-25)
+
+
+### Bug Fixes
+
+* **deps:** update [@adobe](https://github.com/adobe) ([#151](https://github.com/adobe/helix-embed/issues/151)) ([858ba6f](https://github.com/adobe/helix-embed/commit/858ba6f498a742c5025bc8f1f86f164b6ee7c405))
+
 ## [1.2.1](https://github.com/adobe/helix-embed/compare/v1.2.0...v1.2.1) (2020-02-20)
 
 

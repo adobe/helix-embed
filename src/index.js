@@ -66,14 +66,16 @@ async function serviceembed(params, url, log) {
     });
     log.info(`Using embedding service ${params.api || params.OEMBED_RESOLVER_URI} for URL ${url}`);
   }
-  else{
-    return embed(url);
-  }
 
   return fetch(api.href)
     .then(async (data) => {
-      return data.json();
-    })
+        if(!data.ok){
+          throw new Error(`Status ${data.status}: ${data.statusText || 'request failed, check your url'}`);
+        }
+        else{
+          return await data.json();
+        }
+      })
     .then((json) => ({
       headers: {
         'X-Provider': params.OEMBED_RESOLVER_URI,
@@ -83,11 +85,11 @@ async function serviceembed(params, url, log) {
       },
       body: `<div class="embed embed-oembed embed-advanced">${json.html}</div>`,
     })).catch((error) => {
-      log.error(error.response.body.error);
+      log.error(error.message);
       // falling back to normal
-      return embed(url);
+      throw error;
     });
-}
+  }
 
 
 /* eslint-disable no-underscore-dangle, no-console, no-param-reassign */
@@ -115,9 +117,12 @@ async function run(params) {
   if ((params.api || params.OEMBED_RESOLVER_URI) && result.headers['X-Provider'] !== 'Helix') {
     // filter all __ow_something parameters out
     // and all parameters in all caps
-    return serviceembed(params, url, log);
+    try{
+      return await serviceembed(params, url, log);
+    }catch {
+      log.info("service embed failed, falling back to normal embed");
+    }
   }
-
   return result;
 }
 

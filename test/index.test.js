@@ -25,7 +25,7 @@ const { assertContains } = require('./utils');
 describe('Index Tests', () => {
   setupPolly({
     recordFailedRequests: true,
-    recordIfMissing: false,
+    recordIfMissing: true,
     logging: false,
     adapters: [NodeHttpAdapter],
     persister: FSPersister,

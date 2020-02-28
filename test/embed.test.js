@@ -39,7 +39,7 @@ describe('Standalone Tests', () => {
 
 describe('Embed Tests', () => {
   setupPolly({
-    recordFailedRequests: false,
+    recordFailedRequests: true,
     recordIfMissing: true,
     logging: false,
     adapters: [NodeHttpAdapter],

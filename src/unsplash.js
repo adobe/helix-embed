@@ -10,18 +10,19 @@
  * governing permissions and limitations under the License.
  */
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "_" }] */
+const { fetch } = require('@adobe/helix-fetch');
 const request = require('request-promise-native');
 const URI = require('uri-js');
 const querystring = require('querystring');
 
+const re = /^https:\/\/unsplash.com\/photos\/([\w]+)$/;
+
 function pattern(metadata, options) {
-  if (options && options.UNSPLASH_AUTH && metadata.open_graph && metadata.open_graph.url && /^https:\/\/unsplash.com\/photos\/[\w]+$/.test(metadata.open_graph.url)) {
+  if (options && options.UNSPLASH_AUTH && metadata.open_graph && metadata.open_graph.url && re.test(metadata.open_graph.url)) {
     return true;
   }
   return false;
 }
-
-const re = /^https:\/\/unsplash.com\/photos\/([\w]+)$/;
 
 function srcset(urls, width) {
   return Object.values(urls).map((url) => {
@@ -36,16 +37,22 @@ async function meta(src, clientid) {
   const qs = {
     client_id: clientid,
   };
-  return request({ uri: `https://api.unsplash.com/photos/${id}`, qs, json: true });
+  // const ret1 = await request({uri:`https://api.unsplash.com/photos/${id}`, qs, json: true });
+  return fetch(`https://api.unsplash.com/photos/${id}?client_id=${qs.client_id}`);
 }
 
 async function decorator(metadata, options) {
   const enriched = { ...metadata };
   const src = metadata.twitter_card.url;
+  const resp = await meta(src, options.UNSPLASH_AUTH);
+
+  if (!resp.ok) {
+    return Promise.reject(resp);
+  }
 
   const {
     user, urls, alt_description, width,
-  } = await meta(src, options.UNSPLASH_AUTH);
+  } = await resp.json();
 
   enriched.enriched = true;
   enriched.oEmbed = {

@@ -72,7 +72,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: 'fake',
+      OEMBED_RESOLVER_KEY: '274002f65e59fa3c1d1370',
       WHITELISTED_IPS: '3.80.39.228',
     };
     const result = await main(params);
@@ -101,7 +101,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: 'fake',
+      OEMBED_RESOLVER_KEY: '274002f65e59fa3c1d1370',
     };
     const result = await main(params);
 
@@ -130,7 +130,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: 'fake',
+      OEMBED_RESOLVER_KEY: '274002f65e59fa3c1d1370',
     };
     const result = await main(params);
 

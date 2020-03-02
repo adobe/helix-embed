@@ -44,6 +44,7 @@ describe('Embed Tests', () => {
     logging: false,
     adapters: [NodeHttpAdapter],
     persister: FSPersister,
+    mode: 'record',
     persisterOptions: {
       fs: {
         recordingsDir: path.resolve(__dirname, 'fixtures/recordings'),
@@ -62,9 +63,9 @@ describe('Embed Tests', () => {
   });
 
   it('Response is cacheable', async () => {
-    const { headers, body } = await embed('http://www.adobe.com');
+    const { headers, body } = await embed('http://httpbin.org');
     assert.equal(headers['Cache-Control'], 'max-age=3600');
-    assertContains(body, ['https://www.adobe.com/']);
+    assertContains(body, ['http://httpbin.org']);
   });
 
   it('Response is HTML', async () => {
@@ -121,7 +122,7 @@ describe('Embed Tests', () => {
       }
     });
 
-    const { headers, body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'dummy' });
+    const { headers, body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || '7-N6a19uizlwDntR9sAxxeBFfZuC6FV_VYYp1AbAros' });
     assert.equal(headers['Content-Type'], 'text/html');
     assert.equal(headers['Cache-Control'], 'max-age=3600');
     assertContains(body, ['srcset']);
@@ -134,6 +135,11 @@ describe('Embed Tests', () => {
     const { headers, body } = await embed('http://localhost');
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['http://localhost']);
+  });
+
+  it('unsplash failes gracefully', async () => {
+    const { headers } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'dummy' });
+    assert.equal(headers['Content-Type'], 'text/html');
   });
 
   it('Sanitizes Malicious URLs', async () => {

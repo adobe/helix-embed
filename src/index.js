@@ -9,7 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const { fetch } = require('@adobe/helix-fetch');
+const { fetch, disconnectAll } = require('@adobe/helix-fetch');
 const { wrap: status } = require('@adobe/helix-status');
 const { wrap } = require('@adobe/openwhisk-action-utils');
 const { logger } = require('@adobe/openwhisk-action-logger');
@@ -19,9 +19,7 @@ const range = require('range_check');
 const { embed } = require('./embed.js');
 
 const ipList = fetch('https://api.fastly.com/public-ip-list')
-.then((data) => {
-  return data.json();
-});
+  .then((data) => data.json());
 
 async function isWithinRange(forwardedFor, fastlyPublicIps, whitelistedIps = '') {
   /* eslint-disable camelcase */
@@ -56,8 +54,8 @@ async function serviceembed(params, url, log) {
   // add the URL
   qs.url = url;
   const api = new URL(params.api || params.OEMBED_RESOLVER_URI);
-  if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY && 
-  await isWithinRange(params.__ow_headers['x-forwarded-for'], await ipList, params.WHITELISTED_IPS)){
+  if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY
+  && await isWithinRange(params.__ow_headers['x-forwarded-for'], await ipList, params.WHITELISTED_IPS)) {
     qs[params.OEMBED_RESOLVER_PARAM] = params.OEMBED_RESOLVER_KEY;
     Object.entries(qs).forEach(([k, v]) => {
       if (!(k in queryParams)) {
@@ -68,28 +66,28 @@ async function serviceembed(params, url, log) {
   }
 
   return fetch(api.href)
-    .then(async (data) => {
-        if(!data.ok){
-          throw new Error(`Status ${data.status}: ${data.statusText || 'request failed, check your url'}`);
-        }
-        else{
-          return await data.json();
-        }
-      })
-    .then((json) => ({
-      headers: {
-        'X-Provider': params.OEMBED_RESOLVER_URI,
-        'X-Client-IP': params.__ow_headers['x-forwarded-for'],
-        'Content-Type': 'text/html',
-        'Cache-Control': `max-age=${json.cache_age ? json.cache_age : '3600'}`,
-      },
-      body: `<div class="embed embed-oembed embed-advanced">${json.html}</div>`,
-    })).catch((error) => {
+    .then((data) => {
+      if (!data.ok) {
+        throw new Error(`Status ${data.status}: ${data.statusText || 'request failed, check your url'}`);
+      } else {
+        return data.json();
+      }
+    })
+    .then((json) => (
+      {
+        headers: {
+          'X-Provider': params.OEMBED_RESOLVER_URI,
+          'X-Client-IP': params.__ow_headers['x-forwarded-for'],
+          'Content-Type': 'text/html',
+          'Cache-Control': `max-age=${json.cache_age ? json.cache_age : '3600'}`,
+        },
+        body: `<div class="embed embed-oembed embed-advanced">${json.html}</div>`,
+      })).catch((error) => {
       log.error(error.message);
       // falling back to normal
-      throw error;
+      return embed(url);
     });
-  }
+}
 
 
 /* eslint-disable no-underscore-dangle, no-console, no-param-reassign */
@@ -117,12 +115,10 @@ async function run(params) {
   if ((params.api || params.OEMBED_RESOLVER_URI) && result.headers['X-Provider'] !== 'Helix') {
     // filter all __ow_something parameters out
     // and all parameters in all caps
-    try{
-      return await serviceembed(params, url, log);
-    }catch {
-      log.info("service embed failed, falling back to normal embed");
-    }
+    return serviceembed(params, url, log);
   }
+
+  await disconnectAll();
   return result;
 }
 

@@ -11,14 +11,15 @@
  */
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "_" }] */
 const { fetch } = require('@adobe/helix-fetch');
-const request = require('request-promise-native');
 const URI = require('uri-js');
 const querystring = require('querystring');
 
 const re = /^https:\/\/unsplash.com\/photos\/([\w]+)$/;
 
 function pattern(metadata, options) {
-  if (options && options.UNSPLASH_AUTH && metadata.open_graph && metadata.open_graph.url && re.test(metadata.open_graph.url)) {
+  if (options && options.UNSPLASH_AUTH
+    && metadata.open_graph && metadata.open_graph.url
+    && re.test(metadata.open_graph.url)) {
     return true;
   }
   return false;
@@ -47,9 +48,10 @@ async function decorator(metadata, options) {
   const resp = await meta(src, options.UNSPLASH_AUTH);
 
   if (!resp.ok) {
-    return Promise.reject(resp);
+    return new Error(`Statuscode: ${resp.status} with status test: ${resp.statusText}`);
   }
 
+  /* eslint-disable camelcase */
   const {
     user, urls, alt_description, width,
   } = await resp.json();

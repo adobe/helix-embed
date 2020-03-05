@@ -40,11 +40,10 @@ describe('Standalone Tests', () => {
 describe('Embed Tests', () => {
   setupPolly({
     recordFailedRequests: true,
-    recordIfMissing: true,
+    recordIfMissing: false,
     logging: false,
     adapters: [NodeHttpAdapter],
     persister: FSPersister,
-    mode: 'record',
     persisterOptions: {
       fs: {
         recordingsDir: path.resolve(__dirname, 'fixtures/recordings'),
@@ -60,6 +59,11 @@ describe('Embed Tests', () => {
         },
       },
     });
+  });
+
+  it('Unsplash Failes Gracefully', async () => {
+    const { headers } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'dummy' });
+    assert.equal(headers['Content-Type'], 'text/html');
   });
 
   it('Response is cacheable', async () => {
@@ -132,14 +136,11 @@ describe('Embed Tests', () => {
   });
 
   it('Fails Gracefully', async () => {
+
+
     const { headers, body } = await embed('http://localhost');
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['http://localhost']);
-  });
-
-  it('unsplash failes gracefully', async () => {
-    const { headers } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'dummy' });
-    assert.equal(headers['Content-Type'], 'text/html');
   });
 
   it('Sanitizes Malicious URLs', async () => {

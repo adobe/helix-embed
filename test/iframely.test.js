@@ -20,6 +20,7 @@ const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
 const { main } = require('../src/index.js');
 const { assertContains } = require('./utils');
+const sinon = require('sinon');
 
 function dropFromRecording(polly) {
   polly.server.any().on('beforePersist', (req, recording) => {
@@ -47,8 +48,23 @@ describe('IFramely Tests', () => {
     },
     matchRequestsBy: {
       url: false,
+      body: false,
+      headers: true, 
+      method: true,
+      order: false
     },
   });
+
+  beforeEach(function first(){
+    this.polly.server.any().on('beforePersist', (req, recording) => {
+      recording.request.headers['primary-key'] = 'helix';
+      console.log('debug');
+    });
+
+    this.polly.server.any().on('request', (req) => {
+      req.headers['primary-key'] = 'helix';
+    });
+  })
 
   it('IFramely used for whitelisted IP addresses', async function test() {
     dropFromRecording(this.polly);
@@ -72,9 +88,10 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: '274002f65e59fa3c1d1370',
+      OEMBED_RESOLVER_KEY: 'fake',
       WHITELISTED_IPS: '3.80.39.228',
     };
+
     const result = await main(params);
     assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?rel=0']);
   });
@@ -101,7 +118,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: '274002f65e59fa3c1d1370',
+      OEMBED_RESOLVER_KEY: 'fake',
     };
     const result = await main(params);
 
@@ -130,7 +147,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: '274002f65e59fa3c1d1370',
+      OEMBED_RESOLVER_KEY: 'fake',
     };
     const result = await main(params);
 

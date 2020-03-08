@@ -18,27 +18,20 @@ const path = require('path');
 const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
-const { main } = require('../src/index.js');
 const { assertContains } = require('./utils');
-const sinon = require('sinon');
+const proxyquire = require('proxyquire');
+const testFetch  = require('@adobe/helix-fetch').context({
+  httpsProtocols: ['http1'],
+  httpProtocols: ['http1'],
+}).fetch;
 
-function dropFromRecording(polly) {
-  polly.server.any().on('beforePersist', (req, recording) => {
-    // this is really missing in pollyjs!
-    if (recording.request.url.match(/[&?]api_key=[^&]*/)) {
-      // eslint-disable-next-line no-param-reassign
-      recording.request.queryString = recording.request.queryString.filter((p) => p.name !== 'api_key');
-      // eslint-disable-next-line no-param-reassign
-      recording.request.url = recording.request.url.replace(/([&?])api_key=[^&]*/, '$1api_key=dummy');
-    }
-  });
-}
+//proxyquires
+const { main } = proxyquire('../src/index.js', {'@adobe/helix-fetch' :  { fetch: (url) => testFetch(url) }}); 
 
 describe('IFramely Tests', () => {
   setupPolly({
-    recordFailedRequests: true,
-    recordIfMissing: true,
-    logging: false,
+    recordFailedRequests: false,
+    recordIfMissing: false,
     adapters: [NodeHttpAdapter],
     persister: FSPersister,
     persisterOptions: {
@@ -55,6 +48,28 @@ describe('IFramely Tests', () => {
     },
   });
 
+  beforeEach(function test(){
+    this.polly.server.any().on('beforePersist', (req, recording) => {
+      if (recording.response.cookies.length > 0){
+        recording.response.cookies = [];
+      }
+  
+      Object.entries(recording.response.headers).forEach(([k, v]) => {
+        if (v.name === 'set-cookie'){
+          recording.response.headers[parseInt(k)] = {};
+        }
+      });
+  
+      if (recording.request.url.match(/[&?]api_key=[^&]*/)) {
+        // eslint-disable-next-line no-param-reassign
+        recording.request.queryString = recording.request.queryString.filter((p) => p.name !== 'api_key');
+        // eslint-disable-next-line no-param-reassign
+        recording.request.url = recording.request.url.replace(/([&?])api_key=[^&]*/, '$1api_key=dummy');
+      }
+    });
+  });
+
+  /*
   beforeEach(function first(){
     this.polly.server.any().on('beforePersist', (req, recording) => {
       recording.request.headers['primary-key'] = 'helix';
@@ -65,10 +80,8 @@ describe('IFramely Tests', () => {
       req.headers['primary-key'] = 'helix';
     });
   })
-
+  */
   it('IFramely used for whitelisted IP addresses', async function test() {
-    dropFromRecording(this.polly);
-
     const params = {
       __ow_headers: {
         'accept-encoding': 'gzip, deflate',
@@ -97,8 +110,6 @@ describe('IFramely Tests', () => {
   });
 
   it('IFramely not used for other IP addresses', async function test() {
-    dropFromRecording(this.polly);
-
     const params = {
       __ow_headers: {
         'accept-encoding': 'gzip, deflate',
@@ -126,8 +137,6 @@ describe('IFramely Tests', () => {
   });
 
   it('IFramely used for Fastly IP addresses', async function test() {
-    dropFromRecording(this.polly);
-
     const params = {
       __ow_headers: {
         'accept-encoding': 'gzip, deflate',

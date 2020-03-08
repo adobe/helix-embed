@@ -39,7 +39,7 @@ describe('Standalone Tests', () => {
 
 describe('Embed Tests', () => {
   setupPolly({
-    recordFailedRequests: true,
+    recordFailedRequests: false,
     recordIfMissing: false,
     logging: false,
     adapters: [NodeHttpAdapter],
@@ -52,18 +52,27 @@ describe('Embed Tests', () => {
   });
 
   beforeEach(function beforeEach() {
+    this.polly.server.any().on('beforePersist', (req, recording) => {
+      // this is really missing in pollyjs!
+      if (recording.response.cookies.length > 0){
+        recording.response.cookies = [];
+      }
+
+      Object.entries(recording.response.headers).forEach(([k, v]) => {
+        if (v.name === 'set-cookie'){
+          recording.response.headers[parseInt(k)] = {};
+        }
+      });
+    });
+
     this.polly.configure({
       matchRequestsBy: {
         headers: {
           exclude: ['user-agent', 'accept'],
         },
+        url: false,
       },
     });
-  });
-
-  it('Unsplash Failes Gracefully', async () => {
-    const { headers } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'dummy' });
-    assert.equal(headers['Content-Type'], 'text/html');
   });
 
   it('Response is cacheable', async () => {
@@ -126,7 +135,7 @@ describe('Embed Tests', () => {
       }
     });
 
-    const { headers, body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || '7-N6a19uizlwDntR9sAxxeBFfZuC6FV_VYYp1AbAros' });
+    const { headers, body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'dummy' });
     assert.equal(headers['Content-Type'], 'text/html');
     assert.equal(headers['Cache-Control'], 'max-age=3600');
     assertContains(body, ['srcset']);
@@ -135,18 +144,15 @@ describe('Embed Tests', () => {
     assertContains(body, ['Shifaaz shamoon']);
   });
 
-  it('Fails Gracefully', async () => {
-
-
-    const { headers, body } = await embed('http://localhost');
-    assert.equal(headers['Content-Type'], 'text/html');
-    assertContains(body, ['http://localhost']);
-  });
-
   it('Sanitizes Malicious URLs', async () => {
     // eslint-disable-next-line no-script-url
     const { headers, body } = await embed('javascript:alert(1)');
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['about:blank']);
+  });
+
+  it('Unsplash Failes Gracefully', async function test(){
+    const { headers } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'dummy' });
+    assert.equal(headers['Content-Type'], 'text/html');
   });
 });

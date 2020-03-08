@@ -37,6 +37,18 @@ describe('Index Tests', () => {
   });
 
   beforeEach(function beforeEach() {
+    this.polly.server.any().on('beforePersist', (req, recording) => {
+      if (recording.response.cookies.length > 0){
+        recording.response.cookies = [];
+      }
+
+      Object.entries(recording.response.headers).forEach(([k, v]) => {
+        if (v.name === 'set-cookie'){
+          recording.response.headers[parseInt(k)] = {};
+        }
+      });
+    });
+
     this.polly.configure({
       matchRequestsBy: {
         headers: {

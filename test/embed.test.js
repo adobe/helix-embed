@@ -17,10 +17,17 @@
 const assert = require('assert');
 const path = require('path');
 const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
+const proxyquire = require('proxyquire');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
-const { embed } = require('../src/embed.js');
 const { assertContains } = require('./utils');
+const testFetch  = require('@adobe/helix-fetch').context({
+  httpsProtocols: ['http1'],
+  httpProtocols: ['http1'],
+}).fetch;
+const { disconnectAll } = require('@adobe/helix-fetch');
+
+const { embed } = proxyquire('../src/embed', { './unsplash': proxyquire('../src/unsplash.js', { '@adobe/helix-fetch': { fetch : (url) => testFetch(url) } })});
 
 describe('Standalone Tests', () => {
   // this test fails when recorded with Polly
@@ -64,15 +71,10 @@ describe('Embed Tests', () => {
         }
       });
     });
+  });
 
-    this.polly.configure({
-      matchRequestsBy: {
-        headers: {
-          exclude: ['user-agent', 'accept'],
-        },
-        url: false,
-      },
-    });
+  after(async () => {
+    await disconnectAll();
   });
 
   it('Response is cacheable', async () => {
@@ -134,6 +136,7 @@ describe('Embed Tests', () => {
         recording.request.url = `${recording.request.url.substring(0, idx)}?client_id=dummy`;
       }
     });
+
 
     const { headers, body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'dummy' });
     assert.equal(headers['Content-Type'], 'text/html');

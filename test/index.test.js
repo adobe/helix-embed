@@ -19,8 +19,19 @@ const path = require('path');
 const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
-const { main } = require('../src/index.js');
 const { assertContains } = require('./utils');
+const { disconnectAll } = require('@adobe/helix-fetch');
+const proxyquire = require('proxyquire');
+const testFetch  = require('@adobe/helix-fetch').context({
+  http1: {
+    keepAlive: false,
+  },
+  httpsProtocols: ['http1'],
+  httpProtocols: ['http1'],
+}).fetch;
+
+//proxyquires
+const { main } = proxyquire('../src/index.js', {'@adobe/helix-fetch' :  { fetch: (url) => testFetch(url) }}); 
 
 describe('Index Tests', () => {
   setupPolly({

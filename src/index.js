@@ -9,7 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const { fetch, disconnectAll } = require('@adobe/helix-fetch');
+const { fetch } = require('@adobe/helix-fetch');
 const { wrap: status } = require('@adobe/helix-status');
 const { wrap } = require('@adobe/openwhisk-action-utils');
 const { logger } = require('@adobe/openwhisk-action-logger');
@@ -117,8 +117,6 @@ async function run(params) {
     // and all parameters in all caps
     return serviceembed(params, url, log);
   }
-
-  await disconnectAll();
   return result;
 }
 

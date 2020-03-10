@@ -19,8 +19,12 @@ const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
 const { assertContains } = require('./utils');
+const { disconnectAll } = require('@adobe/helix-fetch');
 const proxyquire = require('proxyquire');
 const testFetch  = require('@adobe/helix-fetch').context({
+  http1: {
+    keepAlive: false
+  },
   httpsProtocols: ['http1'],
   httpProtocols: ['http1'],
 }).fetch;
@@ -69,18 +73,6 @@ describe('IFramely Tests', () => {
     });
   });
 
-  /*
-  beforeEach(function first(){
-    this.polly.server.any().on('beforePersist', (req, recording) => {
-      recording.request.headers['primary-key'] = 'helix';
-      console.log('debug');
-    });
-
-    this.polly.server.any().on('request', (req) => {
-      req.headers['primary-key'] = 'helix';
-    });
-  })
-  */
   it('IFramely used for whitelisted IP addresses', async function test() {
     const params = {
       __ow_headers: {
@@ -101,7 +93,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: 'fake',
+      OEMBED_RESOLVER_KEY: 'dummy',
       WHITELISTED_IPS: '3.80.39.228',
     };
 
@@ -129,7 +121,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: 'fake',
+      OEMBED_RESOLVER_KEY: 'dummy',
     };
     const result = await main(params);
 
@@ -156,7 +148,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: 'fake',
+      OEMBED_RESOLVER_KEY: 'dummy',
     };
     const result = await main(params);
 

@@ -21,13 +21,16 @@ const proxyquire = require('proxyquire');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
 const { assertContains } = require('./utils');
+const { disconnectAll } = require('@adobe/helix-fetch');
 const testFetch  = require('@adobe/helix-fetch').context({
+  http1: {
+    keepAlive: false
+  },
   httpsProtocols: ['http1'],
   httpProtocols: ['http1'],
 }).fetch;
-const { disconnectAll } = require('@adobe/helix-fetch');
 
-const { embed } = proxyquire('../src/embed', { './unsplash': proxyquire('../src/unsplash.js', { '@adobe/helix-fetch': { fetch : (url) => testFetch(url) } })});
+const { embed } = proxyquire('../src/embed', { './unsplash': proxyquire('../src/unsplash.js', { '@adobe/helix-fetch': { fetch : (url) => testFetch(url) } })}); 
 
 describe('Standalone Tests', () => {
   // this test fails when recorded with Polly
@@ -58,7 +61,7 @@ describe('Embed Tests', () => {
     },
   });
 
-  beforeEach(function beforeEach() {
+  beforeEach(function test() {   
     this.polly.server.any().on('beforePersist', (req, recording) => {
       // this is really missing in pollyjs!
       if (recording.response.cookies.length > 0){
@@ -71,10 +74,6 @@ describe('Embed Tests', () => {
         }
       });
     });
-  });
-
-  after(async () => {
-    await disconnectAll();
   });
 
   it('Response is cacheable', async () => {
@@ -123,6 +122,7 @@ describe('Embed Tests', () => {
           query(query) {
             return { ...query, client_id: 'dummy' };
           },
+          order: false,
         },
       },
     });
@@ -154,8 +154,8 @@ describe('Embed Tests', () => {
     assertContains(body, ['about:blank']);
   });
 
-  it('Unsplash Failes Gracefully', async function test(){
-    const { headers } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'dummy' });
-    assert.equal(headers['Content-Type'], 'text/html');
+  it('Fails Gracefully', async function test(){
+    const { body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'dummy' });
+    assertContains(body, ['<a href="https://unsplash.com/photos/0lD9SSMC6jo">']);
   });
 });

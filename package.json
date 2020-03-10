@@ -43,7 +43,6 @@
     "@adobe/openwhisk-action-utils": "4.1.0",
     "@braintree/sanitize-url": "4.0.0",
     "range_check": "1.4.0",
-    "request": "2.88.2",
     "unfurl.js": "5.1.0",
     "uri-js": "4.2.2"
   },

@@ -20,7 +20,6 @@ const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
 const { assertContains } = require('./utils');
-const { disconnectAll } = require('@adobe/helix-fetch');
 const proxyquire = require('proxyquire');
 const testFetch  = require('@adobe/helix-fetch').context({
   http1: {

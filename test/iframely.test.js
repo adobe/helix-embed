@@ -33,8 +33,8 @@ const { main } = proxyquire('../src/index.js', {'@adobe/helix-fetch' :  { fetch:
 
 describe('IFramely Tests', () => {
   setupPolly({
-    recordFailedRequests: true,
-    recordIfMissing: true,
+    recordFailedRequests: false,
+    recordIfMissing: false,
     adapters: [NodeHttpAdapter],
     persister: FSPersister,
     persisterOptions: {
@@ -92,7 +92,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: '274002f65e59fa3c1d1370',
+      OEMBED_RESOLVER_KEY: 'dummy',
       WHITELISTED_IPS: '3.80.39.228',
     };
 
@@ -120,7 +120,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: '274002f65e59fa3c1d1370',
+      OEMBED_RESOLVER_KEY: 'dummy',
     };
     const result = await main(params);
 
@@ -147,7 +147,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: '274002f65e59fa3c1d1370',
+      OEMBED_RESOLVER_KEY: 'dummy',
     };
     const result = await main(params);
 

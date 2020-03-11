@@ -19,12 +19,7 @@ const range = require('range_check');
 const { embed } = require('./embed.js');
 
 const ipList = fetch('https://api.fastly.com/public-ip-list')
-  .then((resp) => {
-    if (!resp.ok) {
-      return new Error(`Statuscode: ${resp.status} with status test: ${resp.statusText}`);
-    }
-    return resp.json();
-  });
+  .then((data) => data.json());
 
 async function isWithinRange(forwardedFor, fastlyPublicIps, whitelistedIps = '') {
   /* eslint-disable camelcase */

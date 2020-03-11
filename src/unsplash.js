@@ -35,26 +35,22 @@ function srcset(urls, width) {
 
 async function meta(src, clientid) {
   const id = src.match(re)[1];
-  const qs = {
-    client_id: clientid,
-  };
   // const ret1 = await request({uri:`https://api.unsplash.com/photos/${id}`, qs, json: true });
-  return fetch(`https://api.unsplash.com/photos/${id}?client_id=${qs.client_id}`);
+  const resp = await fetch(`https://api.unsplash.com/photos/${id}?client_id=${clientid}`);
+  if (!resp.ok) {
+    return new Error(`Statuscode: ${resp.status} with status test: ${resp.statusText}`);
+  }
+  return resp.json();
 }
 
 async function decorator(metadata, options) {
   const enriched = { ...metadata };
   const src = metadata.twitter_card.url;
-  const resp = await meta(src, options.UNSPLASH_AUTH);
-
-  if (!resp.ok) {
-    return new Error(`Statuscode: ${resp.status} with status test: ${resp.statusText}`);
-  }
 
   /* eslint-disable camelcase */
   const {
     user, urls, alt_description, width,
-  } = await resp.json();
+  } = await meta(src, options.UNSPLASH_AUTH);
 
   enriched.enriched = true;
   enriched.oEmbed = {

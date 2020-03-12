@@ -9,19 +9,21 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const request = require('request-promise-native');
+const { fetch } = require('@adobe/helix-fetch');
 const { wrap: status } = require('@adobe/helix-status');
 const { wrap } = require('@adobe/openwhisk-action-utils');
 const { logger } = require('@adobe/openwhisk-action-logger');
 const { epsagon } = require('@adobe/helix-epsagon');
+const querystring = require('querystring');
 const range = require('range_check');
 const { embed } = require('./embed.js');
 
-const ips = request('https://api.fastly.com/public-ip-list', { json: true });
+const ipList = fetch('https://api.fastly.com/public-ip-list')
+  .then((data) => data.json());
 
-async function isWithinRange(forwardedFor, whitelistedIps = '') {
+async function isWithinRange(forwardedFor, fastlyPublicIps, whitelistedIps = '') {
   /* eslint-disable camelcase */
-  const { addresses, ipv6_addresses } = await ips;
+  const { addresses, ipv6_addresses } = fastlyPublicIps;
 
   const whitelistedRanges = whitelistedIps
     .split(',')
@@ -40,6 +42,7 @@ async function isWithinRange(forwardedFor, whitelistedIps = '') {
 }
 
 async function serviceembed(params, url, log) {
+  const queryParams = querystring.parse(params.__ow_query);
   const qs = Object.keys(params).reduce((pv, cv) => {
     if (/^__ow_/.test(cv) || /^[A-Z]+_[A-Z]+/.test(cv) || cv === 'api') {
       return pv;
@@ -50,27 +53,41 @@ async function serviceembed(params, url, log) {
   }, {});
   // add the URL
   qs.url = url;
-  if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY && await isWithinRange(params.__ow_headers['x-forwarded-for'], params.WHITELISTED_IPS)) {
+  const api = new URL(params.api || params.OEMBED_RESOLVER_URI);
+  if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY
+  && await isWithinRange(params.__ow_headers['x-forwarded-for'], await ipList, params.WHITELISTED_IPS)) {
     qs[params.OEMBED_RESOLVER_PARAM] = params.OEMBED_RESOLVER_KEY;
     log.info(`Using embedding service ${params.api || params.OEMBED_RESOLVER_URI} for URL ${url}`);
   }
-  return request({
-    uri: params.api || params.OEMBED_RESOLVER_URI,
-    qs,
-    json: true,
-  }).then((json) => ({
-    headers: {
-      'X-Provider': params.OEMBED_RESOLVER_URI,
-      'X-Client-IP': params.__ow_headers['x-forwarded-for'],
-      'Content-Type': 'text/html',
-      'Cache-Control': `max-age=${json.cache_age ? json.cache_age : '3600'}`,
-    },
-    body: `<div class="embed embed-oembed embed-advanced">${json.html}</div>`,
-  })).catch((error) => {
-    log.error(error.response.body.error);
-    // falling back to normal
-    return embed(url);
+
+  Object.entries(qs).forEach(([k, v]) => {
+    if (!(k in queryParams)) {
+      api.searchParams.append(k, v);
+    }
   });
+
+  return fetch(api.href)
+    .then((data) => {
+      if (!data.ok) {
+        throw new Error(`Status ${data.status}: ${data.statusText || 'request failed, check your url'}`);
+      } else {
+        return data.json();
+      }
+    })
+    .then((json) => (
+      {
+        headers: {
+          'X-Provider': params.OEMBED_RESOLVER_URI,
+          'X-Client-IP': params.__ow_headers['x-forwarded-for'],
+          'Content-Type': 'text/html',
+          'Cache-Control': `max-age=${json.cache_age ? json.cache_age : '3600'}`,
+        },
+        body: `<div class="embed embed-oembed embed-advanced">${json.html}</div>`,
+      })).catch((error) => {
+      log.error(error.message);
+      // falling back to normal
+      return embed(url);
+    });
 }
 
 
@@ -101,7 +118,6 @@ async function run(params) {
     // and all parameters in all caps
     return serviceembed(params, url, log);
   }
-
   return result;
 }
 

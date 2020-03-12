@@ -17,10 +17,19 @@
 const assert = require('assert');
 const path = require('path');
 const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
+const proxyquire = require('proxyquire');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
-const { embed } = require('../src/embed.js');
 const { assertContains } = require('./utils');
+const testFetch  = require('@adobe/helix-fetch').context({
+  http1: {
+    keepAlive: false
+  },
+  httpsProtocols: ['http1'],
+  httpProtocols: ['http1'],
+}).fetch;
+
+const { embed } = proxyquire('../src/embed', { './unsplash': proxyquire('../src/unsplash.js', { '@adobe/helix-fetch': { fetch : (url) => testFetch(url) } })}); 
 
 describe('Standalone Tests', () => {
   // this test fails when recorded with Polly
@@ -40,7 +49,7 @@ describe('Standalone Tests', () => {
 describe('Embed Tests', () => {
   setupPolly({
     recordFailedRequests: false,
-    recordIfMissing: true,
+    recordIfMissing: false,
     logging: false,
     adapters: [NodeHttpAdapter],
     persister: FSPersister,
@@ -51,20 +60,22 @@ describe('Embed Tests', () => {
     },
   });
 
-  beforeEach(function beforeEach() {
-    this.polly.configure({
-      matchRequestsBy: {
-        headers: {
-          exclude: ['user-agent', 'accept'],
-        },
-      },
+  beforeEach(function test() {   
+    this.polly.server.any().on('beforePersist', (req, recording) => {
+      // this is really missing in pollyjs!
+      if (recording.response.cookies.length > 0){
+        recording.response.cookies = [];
+      }
+
+      recording.response.headers = recording.response.headers
+      .filter((entry) => (entry.name !== 'set-cookie'));
     });
   });
 
   it('Response is cacheable', async () => {
-    const { headers, body } = await embed('http://www.adobe.com');
+    const { headers, body } = await embed('http://httpbin.org');
     assert.equal(headers['Cache-Control'], 'max-age=3600');
-    assertContains(body, ['https://www.adobe.com/']);
+    assertContains(body, ['http://httpbin.org']);
   });
 
   it('Response is HTML', async () => {
@@ -107,6 +118,7 @@ describe('Embed Tests', () => {
           query(query) {
             return { ...query, client_id: 'dummy' };
           },
+          order: false,
         },
       },
     });
@@ -130,16 +142,15 @@ describe('Embed Tests', () => {
     assertContains(body, ['Shifaaz shamoon']);
   });
 
-  it('Fails Gracefully', async () => {
-    const { headers, body } = await embed('http://localhost');
-    assert.equal(headers['Content-Type'], 'text/html');
-    assertContains(body, ['http://localhost']);
-  });
-
   it('Sanitizes Malicious URLs', async () => {
     // eslint-disable-next-line no-script-url
     const { headers, body } = await embed('javascript:alert(1)');
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['about:blank']);
+  });
+
+  it('Fails Gracefully', async function test(){
+    const { body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'superFake' });
+    assertContains(body, ['<a href="https://unsplash.com/photos/0lD9SSMC6jo">']);
   });
 });

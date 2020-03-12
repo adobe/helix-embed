@@ -35,7 +35,6 @@ function srcset(urls, width) {
 
 async function meta(src, clientid) {
   const id = src.match(re)[1];
-  // const ret1 = await request({uri:`https://api.unsplash.com/photos/${id}`, qs, json: true });
   const resp = await fetch(`https://api.unsplash.com/photos/${id}?client_id=${clientid}`);
   if (!resp.ok) {
     return new Error(`Statuscode: ${resp.status} with status test: ${resp.statusText}`);

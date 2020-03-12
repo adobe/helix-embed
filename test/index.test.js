@@ -51,12 +51,9 @@ describe('Index Tests', () => {
       if (recording.response.cookies.length > 0){
         recording.response.cookies = [];
       }
-
-      Object.entries(recording.response.headers).forEach(([k, v]) => {
-        if (v.name === 'set-cookie'){
-          recording.response.headers[parseInt(k)] = {};
-        }
-      });
+      
+      recording.response.headers = recording.response.headers
+      .filter((entry) => (entry.name !== 'set-cookie'));
     });
 
     this.polly.configure({

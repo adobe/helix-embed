@@ -67,11 +67,8 @@ describe('Embed Tests', () => {
         recording.response.cookies = [];
       }
 
-      Object.entries(recording.response.headers).forEach(([k, v]) => {
-        if (v.name === 'set-cookie'){
-          recording.response.headers[parseInt(k)] = {};
-        }
-      });
+      recording.response.headers = recording.response.headers
+      .filter((entry) => (entry.name !== 'set-cookie'));
     });
   });
 
@@ -135,7 +132,6 @@ describe('Embed Tests', () => {
         recording.request.url = `${recording.request.url.substring(0, idx)}?client_id=dummy`;
       }
     });
-
 
     const { headers, body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'dummy' });
     assert.equal(headers['Content-Type'], 'text/html');

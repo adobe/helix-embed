@@ -57,13 +57,14 @@ async function serviceembed(params, url, log) {
   if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY
   && await isWithinRange(params.__ow_headers['x-forwarded-for'], await ipList, params.WHITELISTED_IPS)) {
     qs[params.OEMBED_RESOLVER_PARAM] = params.OEMBED_RESOLVER_KEY;
-    Object.entries(qs).forEach(([k, v]) => {
-      if (!(k in queryParams)) {
-        api.searchParams.append(k, v);
-      }
-    });
     log.info(`Using embedding service ${params.api || params.OEMBED_RESOLVER_URI} for URL ${url}`);
   }
+
+  Object.entries(qs).forEach(([k, v]) => {
+    if (!(k in queryParams)) {
+      api.searchParams.append(k, v);
+    }
+  });
 
   return fetch(api.href)
     .then((data) => {

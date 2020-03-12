@@ -56,13 +56,10 @@ describe('IFramely Tests', () => {
       if (recording.response.cookies.length > 0){
         recording.response.cookies = [];
       }
-  
-      Object.entries(recording.response.headers).forEach(([k, v]) => {
-        if (v.name === 'set-cookie'){
-          recording.response.headers[parseInt(k)] = {};
-        }
-      });
-  
+
+      recording.response.headers = recording.response.headers
+      .filter((entry) => (entry.name !== 'set-cookie'));
+    
       if (recording.request.url.match(/[&?]api_key=[^&]*/)) {
         // eslint-disable-next-line no-param-reassign
         recording.request.queryString = recording.request.queryString.filter((p) => p.name !== 'api_key');

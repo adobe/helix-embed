@@ -158,4 +158,9 @@ describe('Embed Tests', () => {
     const { headers, body } = await embed('https://lottiefiles.com/17003-control-animated-volume-1');
     assertContains(body, ['<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js']);
   });
+
+  it('Lottifiles Fails Gracefully', async function test(){
+    const { headers, body } = await embed('https://lottiefiles.com/this-will-definitely-fail-helix-141343151');
+    assertContains(body, ['<div class="embed  embed-has-url embed-has-title embed-has-image embed-has-description"']);
+  });
 });

@@ -150,7 +150,7 @@ describe('Embed Tests', () => {
   });
 
   it('Fails Gracefully', async function test(){
-    const { body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'superFake' });
+    const { body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: 'superFake' });
     assertContains(body, ['<a href="https://unsplash.com/photos/0lD9SSMC6jo">']);
   });
 

@@ -153,4 +153,9 @@ describe('Embed Tests', () => {
     const { body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'superFake' });
     assertContains(body, ['<a href="https://unsplash.com/photos/0lD9SSMC6jo">']);
   });
+
+  it('Supports Lottifiles', async function test(){
+    const { headers, body } = await embed('https://lottiefiles.com/17003-control-animated-volume-1');
+    assertContains(body, ['<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js']);
+  });
 });

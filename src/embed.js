@@ -14,10 +14,12 @@ const URI = require('uri-js');
 const { sanitizeUrl } = require('@braintree/sanitize-url');
 const spark = require('./spark');
 const unsplash = require('./unsplash');
+const lottie = require('./lottifile');
 
 const matchers = [];
 matchers.push(spark);
 matchers.push(unsplash);
+matchers.push(lottie);
 
 function toHTML({
   oEmbed = {}, open_graph = {}, twitter_card = {}, other = {},

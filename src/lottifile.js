@@ -11,8 +11,6 @@
  */
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "_" }] */
 const { fetch } = require('@adobe/helix-fetch');
-const URI = require('uri-js');
-const querystring = require('querystring');
 
 const re = /https:\/\/lottiefiles.com/
 const srcRe = /lottie="(https:\/\/assets.*json)"/;

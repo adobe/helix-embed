@@ -1,7 +1,7 @@
 {
   "name": "@adobe/helix-embed",
   "private": true,
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "Helix Embed",
   "main": "src/index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "junit": "mocha --exit -R mocha-junit-reporter",
     "semantic-release": "semantic-release",
     "semantic-prepare": "node ./build/prepare.js",
-    "preversion": "npm run junit",
+    "preversion": "npm run test-ci",
     "deploy-iframely": "npm run zip && wsk action update embed embed.zip --kind nodejs:10 --web raw --web-secure false -p api http://iframe.ly/api/oembed -p api_key insert-here",
     "deploy-embedly": "npm run zip && wsk action update embed embed.zip --kind nodejs:10 --web raw --web-secure false -p api https://api.embedly.com/1/oembed -p key insert-here",
     "build": "wsk-builder -v",
@@ -36,8 +36,8 @@
   },
   "homepage": "https://github.com/adobe/helix-embed#readme",
   "dependencies": {
-    "@adobe/helix-epsagon": "1.1.5",
     "@adobe/helix-fetch": "^1.1.0",
+    "@adobe/helix-epsagon": "1.1.6",
     "@adobe/helix-status": "7.1.2",
     "@adobe/openwhisk-action-logger": "2.2.0",
     "@adobe/openwhisk-action-utils": "4.2.2",

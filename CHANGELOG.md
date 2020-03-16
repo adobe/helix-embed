@@ -1,3 +1,10 @@
+## [1.2.10](https://github.com/adobe/helix-embed/compare/v1.2.9...v1.2.10) (2020-03-16)
+
+
+### Bug Fixes
+
+* **deps:** pin dependency @adobe/helix-fetch to 1.4.0 ([f21024d](https://github.com/adobe/helix-embed/commit/f21024d24a481cbf5a650b1eb4a143f9b18405a3))
+
 ## [1.2.9](https://github.com/adobe/helix-embed/compare/v1.2.8...v1.2.9) (2020-03-16)
 
 

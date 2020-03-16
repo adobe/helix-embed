@@ -1,3 +1,86 @@
+## [1.2.9](https://github.com/adobe/helix-embed/compare/v1.2.8...v1.2.9) (2020-03-16)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-epsagon to v1.1.6 ([#166](https://github.com/adobe/helix-embed/issues/166)) ([88578f0](https://github.com/adobe/helix-embed/commit/88578f086ff0c0a38b75a95f640b5d2e3a9fcca5))
+
+## [1.2.8](https://github.com/adobe/helix-embed/compare/v1.2.7...v1.2.8) (2020-03-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-utils to v4.2.2 ([e1bd04a](https://github.com/adobe/helix-embed/commit/e1bd04ae916a656602f1bb1c7d1f8fa839411672))
+
+## [1.2.7](https://github.com/adobe/helix-embed/compare/v1.2.6...v1.2.7) (2020-03-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-utils to v4.2.1 ([9abc325](https://github.com/adobe/helix-embed/commit/9abc3255bccfdf63c9fe78b7df7e6c8628c787cf))
+
+## [1.2.6](https://github.com/adobe/helix-embed/compare/v1.2.5...v1.2.6) (2020-03-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-utils to v4.2.0 ([dbc9544](https://github.com/adobe/helix-embed/commit/dbc9544baf4eb15fa095735c22ccb3e4a4a8dd19))
+
+## [1.2.5](https://github.com/adobe/helix-embed/compare/v1.2.4...v1.2.5) (2020-03-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-logger to v2.2.0 ([7437b92](https://github.com/adobe/helix-embed/commit/7437b92989761237dd2499cd6e17935df3b44345))
+
+## [1.2.4](https://github.com/adobe/helix-embed/compare/v1.2.3...v1.2.4) (2020-03-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-epsagon to v1.1.5 ([5d5f553](https://github.com/adobe/helix-embed/commit/5d5f5538493df49ed6921abcf848022804d72381))
+
+## [1.2.3](https://github.com/adobe/helix-embed/compare/v1.2.2...v1.2.3) (2020-03-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-epsagon to v1.1.4 ([a805b2a](https://github.com/adobe/helix-embed/commit/a805b2a11c81453326b6029549ce8fb532db9722))
+
+## [1.2.2](https://github.com/adobe/helix-embed/compare/v1.2.1...v1.2.2) (2020-02-25)
+
+
+### Bug Fixes
+
+* **deps:** update [@adobe](https://github.com/adobe) ([#151](https://github.com/adobe/helix-embed/issues/151)) ([858ba6f](https://github.com/adobe/helix-embed/commit/858ba6f498a742c5025bc8f1f86f164b6ee7c405))
+
+## [1.2.1](https://github.com/adobe/helix-embed/compare/v1.2.0...v1.2.1) (2020-02-20)
+
+
+### Bug Fixes
+
+* **deps:** pin dependency range_check to 1.4.0 ([6d7e958](https://github.com/adobe/helix-embed/commit/6d7e958111e0a482c75cc46c1b8e9a99edf40a3a))
+
+# [1.2.0](https://github.com/adobe/helix-embed/compare/v1.1.29...v1.2.0) (2020-02-20)
+
+
+### Bug Fixes
+
+* **unsplash:** add missing alt description ([94e679f](https://github.com/adobe/helix-embed/commit/94e679f5ae302f53690a13a86497090e7348d123))
+
+
+### Features
+
+* **embed:** restrict usage of key-protected embed service to whitelisted IP addresses ([a080a17](https://github.com/adobe/helix-embed/commit/a080a17728d2b8aa2e1881f02ce5dede46c18302))
+* **http:** add response header with client ip address ([abe8625](https://github.com/adobe/helix-embed/commit/abe8625738b481116e82ed1b2d9329a40317945a))
+
+## [1.1.29](https://github.com/adobe/helix-embed/compare/v1.1.28...v1.1.29) (2020-02-18)
+
+
+### Bug Fixes
+
+* **deps:** update external ([#144](https://github.com/adobe/helix-embed/issues/144)) ([fdd80cf](https://github.com/adobe/helix-embed/commit/fdd80cf7d63c0ac1bb3c65c2510c06cd2f1ec359))
+
 ## [1.1.28](https://github.com/adobe/helix-embed/compare/v1.1.27...v1.1.28) (2020-01-31)
 
 

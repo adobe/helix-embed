@@ -14,10 +14,12 @@ const URI = require('uri-js');
 const { sanitizeUrl } = require('@braintree/sanitize-url');
 const spark = require('./spark');
 const unsplash = require('./unsplash');
+const lottie = require('./lottifile');
 
 const matchers = [];
 matchers.push(spark);
 matchers.push(unsplash);
+matchers.push(lottie);
 
 function toHTML({
   oEmbed = {}, open_graph = {}, twitter_card = {}, other = {},
@@ -104,8 +106,9 @@ function embed(url, params) {
 
   return unfurl(url, opts).then(enrich(params)).then((metadata) => ({
     headers: {
+      'X-Provider': metadata.enriched ? 'Helix' : 'unfurl.js',
       'Content-Type': 'text/html',
-      'Cache-Control': `max-age=${metadata.oembed && metadata.oembed.cacheAge ? metadata.oembed.cacheAge : '3600'}`,
+      'Cache-Control': `max-age=${metadata.oEmbed && metadata.oEmbed.cacheAge ? metadata.oEmbed.cacheAge : '3600'}`,
     },
     body: toHTML(metadata, url),
   })).catch((error) => ({

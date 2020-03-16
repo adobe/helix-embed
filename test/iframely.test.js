@@ -18,26 +18,23 @@ const path = require('path');
 const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
-const { main } = require('../src/index.js');
 const { assertContains } = require('./utils');
+const proxyquire = require('proxyquire');
+const testFetch  = require('@adobe/helix-fetch').context({
+  http1: {
+    keepAlive: false
+  },
+  httpsProtocols: ['http1'],
+  httpProtocols: ['http1'],
+}).fetch;
 
-function dropFromRecording(polly) {
-  polly.server.any().on('beforePersist', (req, recording) => {
-    // this is really missing in pollyjs!
-    if (recording.request.url.match(/[&?]api_key=[^&]*/)) {
-      // eslint-disable-next-line no-param-reassign
-      recording.request.queryString = recording.request.queryString.filter((p) => p.name !== 'api_key');
-      // eslint-disable-next-line no-param-reassign
-      recording.request.url = recording.request.url.replace(/([&?])api_key=[^&]*/, '$1api_key=dummy');
-    }
-  });
-}
+//proxyquires
+const { main } = proxyquire('../src/index.js', {'@adobe/helix-fetch' :  { fetch: (url) => testFetch(url) }}); 
 
 describe('IFramely Tests', () => {
   setupPolly({
-    recordFailedRequests: true,
-    recordIfMissing: true,
-    logging: false,
+    recordFailedRequests: false,
+    recordIfMissing: false,
     adapters: [NodeHttpAdapter],
     persister: FSPersister,
     persisterOptions: {
@@ -47,12 +44,32 @@ describe('IFramely Tests', () => {
     },
     matchRequestsBy: {
       url: false,
+      body: false,
+      headers: true, 
+      method: true,
+      order: false
     },
   });
 
-  it('IFramely used for whitelisted IP addresses', async function test() {
-    dropFromRecording(this.polly);
+  beforeEach(function test(){
+    this.polly.server.any().on('beforePersist', (req, recording) => {
+      if (recording.response.cookies.length > 0){
+        recording.response.cookies = [];
+      }
 
+      recording.response.headers = recording.response.headers
+      .filter((entry) => (entry.name !== 'set-cookie'));
+    
+      if (recording.request.url.match(/[&?]api_key=[^&]*/)) {
+        // eslint-disable-next-line no-param-reassign
+        recording.request.queryString = recording.request.queryString.filter((p) => p.name !== 'api_key');
+        // eslint-disable-next-line no-param-reassign
+        recording.request.url = recording.request.url.replace(/([&?])api_key=[^&]*/, '$1api_key=dummy');
+      }
+    });
+  });
+
+  it('IFramely used for whitelisted IP addresses', async function test() {
     const params = {
       __ow_headers: {
         'accept-encoding': 'gzip, deflate',
@@ -72,16 +89,15 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: 'fake',
+      OEMBED_RESOLVER_KEY: 'dummy',
       WHITELISTED_IPS: '3.80.39.228',
     };
+
     const result = await main(params);
     assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?rel=0']);
   });
 
   it('IFramely not used for other IP addresses', async function test() {
-    dropFromRecording(this.polly);
-
     const params = {
       __ow_headers: {
         'accept-encoding': 'gzip, deflate',
@@ -101,7 +117,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: 'fake',
+      OEMBED_RESOLVER_KEY: 'dummy',
     };
     const result = await main(params);
 
@@ -109,8 +125,6 @@ describe('IFramely Tests', () => {
   });
 
   it('IFramely used for Fastly IP addresses', async function test() {
-    dropFromRecording(this.polly);
-
     const params = {
       __ow_headers: {
         'accept-encoding': 'gzip, deflate',
@@ -130,7 +144,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: 'fake',
+      OEMBED_RESOLVER_KEY: 'dummy',
     };
     const result = await main(params);
 

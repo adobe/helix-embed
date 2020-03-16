@@ -19,12 +19,22 @@ const path = require('path');
 const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
-const { main } = require('../src/index.js');
 const { assertContains } = require('./utils');
+const proxyquire = require('proxyquire');
+const testFetch  = require('@adobe/helix-fetch').context({
+  http1: {
+    keepAlive: false,
+  },
+  httpsProtocols: ['http1'],
+  httpProtocols: ['http1'],
+}).fetch;
+
+//proxyquires
+const { main } = proxyquire('../src/index.js', {'@adobe/helix-fetch' :  { fetch: (url) => testFetch(url) }}); 
 
 describe('Index Tests', () => {
   setupPolly({
-    recordFailedRequests: true,
+    recordFailedRequests: false,
     recordIfMissing: false,
     logging: false,
     adapters: [NodeHttpAdapter],
@@ -37,6 +47,15 @@ describe('Index Tests', () => {
   });
 
   beforeEach(function beforeEach() {
+    this.polly.server.any().on('beforePersist', (req, recording) => {
+      if (recording.response.cookies.length > 0){
+        recording.response.cookies = [];
+      }
+      
+      recording.response.headers = recording.response.headers
+      .filter((entry) => (entry.name !== 'set-cookie'));
+    });
+
     this.polly.configure({
       matchRequestsBy: {
         headers: {

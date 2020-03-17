@@ -20,16 +20,16 @@ const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const proxyquire = require('proxyquire');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
-const { assertContains } = require('./utils');
-const testFetch  = require('@adobe/helix-fetch').context({
+const testFetch = require('@adobe/helix-fetch').context({
   http1: {
-    keepAlive: false
+    keepAlive: false,
   },
   httpsProtocols: ['http1'],
   httpProtocols: ['http1'],
 }).fetch;
+const { assertContains } = require('./utils');
 
-const { embed } = proxyquire('../src/embed', { './unsplash': proxyquire('../src/unsplash.js', { '@adobe/helix-fetch': { fetch : (url) => testFetch(url) } })}); 
+const { embed } = proxyquire('../src/embed', { './unsplash': proxyquire('../src/unsplash.js', { '@adobe/helix-fetch': { fetch: (url) => testFetch(url) } }) });
 
 describe('Standalone Tests', () => {
   // this test fails when recorded with Polly
@@ -60,15 +60,16 @@ describe('Embed Tests', () => {
     },
   });
 
-  beforeEach(function test() {   
+  beforeEach(function test() {
     this.polly.server.any().on('beforePersist', (req, recording) => {
       // this is really missing in pollyjs!
-      if (recording.response.cookies.length > 0){
-        recording.response.cookies = [];
+      const { response } = recording;
+      if (response.cookies.length > 0) {
+        response.cookies = [];
       }
 
-      recording.response.headers = recording.response.headers
-      .filter((entry) => (entry.name !== 'set-cookie'));
+      response.headers = response.headers
+        .filter((entry) => (entry.name !== 'set-cookie'));
     });
   });
 
@@ -111,7 +112,10 @@ describe('Embed Tests', () => {
   it('Supports Soundcloud', async () => {
     const { headers, body } = await embed('https://soundcloud.com/cheryl-lin-fielding/chanson-pour-jeanne?in=cheryl-lin-fielding/sets/website');
     assert.equal(headers['Content-Type'], 'text/html');
-    assertContains(body, ['iframe']);
+    assertContains(body, [
+      'embed-has-url embed-has-title embed-has-image embed-has-description',
+      'Chabrier: Chanson pour Jeanne - Efrain Solis, Baritone & Cheryl Lin Fielding, Piano',
+    ]);
   });
 
   it('Supports Unsplash', async function test() {
@@ -155,18 +159,18 @@ describe('Embed Tests', () => {
     assertContains(body, ['about:blank']);
   });
 
-  it('Fails Gracefully', async function test(){
+  it('Fails Gracefully', async () => {
     const { body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: 'superFake' });
     assertContains(body, ['<a href="https://unsplash.com/photos/0lD9SSMC6jo">']);
   });
 
-  it('Supports Lottifiles', async function test(){
-    const { headers, body } = await embed('https://lottiefiles.com/17003-control-animated-volume-1');
+  it('Supports Lottifiles', async () => {
+    const { body } = await embed('https://lottiefiles.com/17003-control-animated-volume-1');
     assertContains(body, ['<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js']);
   });
 
-  it('Lottifiles Fails Gracefully', async function test(){
-    const { headers, body } = await embed('https://lottiefiles.com/this-will-definitely-fail-helix-141343151');
+  it('Lottifiles Fails Gracefully', async () => {
+    const { body } = await embed('https://lottiefiles.com/this-will-definitely-fail-helix-141343151');
     assertContains(body, ['<div class="embed  embed-has-url embed-has-title embed-has-image embed-has-description"']);
   });
 });

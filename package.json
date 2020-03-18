@@ -5,8 +5,8 @@
   "description": "Helix Embed",
   "main": "src/index.js",
   "scripts": {
-    "test": "nyc mocha -i -g Post-Deployment",
-    "test-ci": "nyc --reporter=text --reporter=lcov --check-coverage --branches 70 --statements 95 --lines 95 mocha --reporter xunit --reporter-options output=./junit/test-results.xml -i -g Post-Deployment && codecov",
+    "test": "nyc mocha -i -g Post-Deployment && npm run lint",
+    "test-ci": "npm run lint && nyc --reporter=text --reporter=lcov --check-coverage --branches 70 --statements 95 --lines 95 mocha --reporter xunit --reporter-options output=./junit/test-results.xml -i -g Post-Deployment && codecov",
     "test-postdeploy": "mocha --reporter xunit --reporter-options output=./junit/test-results.xml -g Post-Deployment",
     "lint": "./node_modules/.bin/eslint .",
     "junit": "mocha --exit -R mocha-junit-reporter",

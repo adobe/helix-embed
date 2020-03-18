@@ -21,9 +21,6 @@ const proxyquire = require('proxyquire');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
 const fetchAPI = require('@adobe/helix-fetch').context({
-  http1: {
-    keepAlive: false,
-  },
   httpsProtocols: ['http1'],
   httpProtocols: ['http1'],
 });

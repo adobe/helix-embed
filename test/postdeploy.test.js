@@ -61,7 +61,6 @@ describe('Running Post-Deployment Integration Tests', () => {
       .request('https://adobeioruntime.net/')
       .get(`${getbaseurl()}/https://unsplash.com/photos/0lD9SSMC6jo`)
       .then((response) => {
-        console.log(response.text);
         expect(response).to.have.status(200);
         expect(response.text).to.contain('Unsplash');
         expect(response.text).to.contain('srcset');

@@ -18,18 +18,18 @@ const path = require('path');
 const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
-const { assertContains } = require('./utils');
 const proxyquire = require('proxyquire');
-const testFetch  = require('@adobe/helix-fetch').context({
+const testFetch = require('@adobe/helix-fetch').context({
   http1: {
-    keepAlive: false
+    keepAlive: false,
   },
   httpsProtocols: ['http1'],
   httpProtocols: ['http1'],
 }).fetch;
+const { assertContains } = require('./utils.js');
 
-//proxyquires
-const { main } = proxyquire('../src/index.js', {'@adobe/helix-fetch' :  { fetch: (url) => testFetch(url) }}); 
+// proxyquires
+const { main } = proxyquire('../src/index.js', { '@adobe/helix-fetch': { fetch: (url) => testFetch(url) } });
 
 describe('IFramely Tests', () => {
   setupPolly({
@@ -45,21 +45,22 @@ describe('IFramely Tests', () => {
     matchRequestsBy: {
       url: false,
       body: false,
-      headers: true, 
+      headers: true,
       method: true,
-      order: false
+      order: false,
     },
   });
 
-  beforeEach(function test(){
+  beforeEach(function test() {
     this.polly.server.any().on('beforePersist', (req, recording) => {
-      if (recording.response.cookies.length > 0){
-        recording.response.cookies = [];
+      const { response } = recording;
+      if (response.cookies.length > 0) {
+        response.cookies = [];
       }
 
-      recording.response.headers = recording.response.headers
-      .filter((entry) => (entry.name !== 'set-cookie'));
-    
+      response.headers = response.headers
+        .filter((entry) => (entry.name !== 'set-cookie'));
+
       if (recording.request.url.match(/[&?]api_key=[^&]*/)) {
         // eslint-disable-next-line no-param-reassign
         recording.request.queryString = recording.request.queryString.filter((p) => p.name !== 'api_key');
@@ -69,7 +70,7 @@ describe('IFramely Tests', () => {
     });
   });
 
-  it('IFramely used for whitelisted IP addresses', async function test() {
+  it('IFramely used for whitelisted IP addresses', async () => {
     const params = {
       __ow_headers: {
         'accept-encoding': 'gzip, deflate',
@@ -97,7 +98,7 @@ describe('IFramely Tests', () => {
     assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?rel=0']);
   });
 
-  it('IFramely not used for other IP addresses', async function test() {
+  it('IFramely not used for other IP addresses', async () => {
     const params = {
       __ow_headers: {
         'accept-encoding': 'gzip, deflate',
@@ -124,7 +125,7 @@ describe('IFramely Tests', () => {
     assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?feature=oembed']);
   });
 
-  it('IFramely used for Fastly IP addresses', async function test() {
+  it('IFramely used for Fastly IP addresses', async () => {
     const params = {
       __ow_headers: {
         'accept-encoding': 'gzip, deflate',

@@ -19,18 +19,17 @@ const path = require('path');
 const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
-const { assertContains } = require('./utils');
 const proxyquire = require('proxyquire');
-const testFetch  = require('@adobe/helix-fetch').context({
+const testFetch = require('@adobe/helix-fetch').context({
   http1: {
     keepAlive: false,
   },
   httpsProtocols: ['http1'],
   httpProtocols: ['http1'],
 }).fetch;
+const { assertContains } = require('./utils.js');
 
-//proxyquires
-const { main } = proxyquire('../src/index.js', {'@adobe/helix-fetch' :  { fetch: (url) => testFetch(url) }}); 
+const { main } = proxyquire('../src/index.js', { '@adobe/helix-fetch': { fetch: (url) => testFetch(url) } });
 
 describe('Index Tests', () => {
   setupPolly({
@@ -48,12 +47,13 @@ describe('Index Tests', () => {
 
   beforeEach(function beforeEach() {
     this.polly.server.any().on('beforePersist', (req, recording) => {
-      if (recording.response.cookies.length > 0){
-        recording.response.cookies = [];
+      const { response } = recording;
+      if (response.cookies.length > 0) {
+        response.cookies = [];
       }
-      
-      recording.response.headers = recording.response.headers
-      .filter((entry) => (entry.name !== 'set-cookie'));
+
+      response.headers = response.headers
+        .filter((entry) => (entry.name !== 'set-cookie'));
     });
 
     this.polly.configure({

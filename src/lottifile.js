@@ -12,7 +12,7 @@
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "_" }] */
 const { fetch } = require('@adobe/helix-fetch');
 
-const re = /https:\/\/lottiefiles.com/
+const re = /https:\/\/lottiefiles.com/;
 const srcRe = /lottie="(https:\/\/assets.*json)"/;
 
 function pattern(metadata) {
@@ -22,14 +22,14 @@ function pattern(metadata) {
   return false;
 }
 
-async function getSrc(url){
+async function getSrc(url) {
   const resp = await fetch(url);
   if (!resp.ok) {
     return url;
   }
   return resp.text();
 }
-  
+
 async function decorator(metadata) {
   const enriched = { ...metadata };
   enriched.enriched = true;
@@ -47,6 +47,5 @@ async function decorator(metadata) {
 
   return Object.assign(enriched);
 }
-  
+
 module.exports = { pattern, decorator };
-  

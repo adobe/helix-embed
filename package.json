@@ -42,8 +42,6 @@
     "@adobe/openwhisk-action-logger": "2.2.0",
     "@adobe/openwhisk-action-utils": "4.2.2",
     "@braintree/sanitize-url": "4.0.0",
-    "request": "2.88.0",
-    "request-promise-native": "1.0.8",
     "range_check": "1.4.0",
     "unfurl.js": "5.1.0",
     "uri-js": "4.2.2"

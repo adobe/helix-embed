@@ -20,18 +20,24 @@ const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const proxyquire = require('proxyquire');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
-const testFetch = require('@adobe/helix-fetch').context({
+const fetchAPI = require('@adobe/helix-fetch').context({
   http1: {
     keepAlive: false,
   },
   httpsProtocols: ['http1'],
   httpProtocols: ['http1'],
-}).fetch;
+});
+
+const testFetch = fetchAPI.fetch;
 const { assertContains } = require('./utils');
 
 const { embed } = proxyquire('../src/embed', { './unsplash': proxyquire('../src/unsplash.js', { '@adobe/helix-fetch': { fetch: (url) => testFetch(url) } }) });
 
 describe('Standalone Tests', () => {
+  after(async () => {
+    await fetchAPI.disconnectAll();
+  });
+
   // this test fails when recorded with Polly
   it('Supports OEmbed for Youtube', async () => {
     const { headers, body } = await embed('https://www.youtube.com/watch?v=ccYpEv4APec');
@@ -47,6 +53,10 @@ describe('Standalone Tests', () => {
 });
 
 describe('Embed Tests', () => {
+  after(async () => {
+    await fetchAPI.disconnectAll();
+  });
+
   setupPolly({
     recordFailedRequests: false,
     recordIfMissing: false,

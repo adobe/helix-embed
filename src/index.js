@@ -19,7 +19,7 @@ const range = require('range_check');
 const { embed } = require('./embed.js');
 
 const ipList = fetch('https://api.fastly.com/public-ip-list')
-  .then((data) => data.json());
+  .then((resp) => resp.json());
 
 async function isWithinRange(forwardedFor, fastlyPublicIps, whitelistedIps = '') {
   /* eslint-disable camelcase */
@@ -67,11 +67,11 @@ async function serviceembed(params, url, log) {
   });
 
   return fetch(api.href)
-    .then((data) => {
-      if (!data.ok) {
-        throw new Error(`Status ${data.status}: ${data.statusText || 'request failed, check your url'}`);
+    .then((resp) => {
+      if (!resp.ok) {
+        throw new Error(`Status ${resp.status}: ${resp.statusText || 'request failed, check your url'}`);
       } else {
-        return data.json();
+        return resp.json();
       }
     })
     .then((json) => (
@@ -89,7 +89,6 @@ async function serviceembed(params, url, log) {
       return embed(url);
     });
 }
-
 
 /* eslint-disable no-underscore-dangle, no-console, no-param-reassign */
 async function run(params) {

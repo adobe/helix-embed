@@ -32,6 +32,7 @@ const { main } = proxyquire('../src/index.js', { '@adobe/helix-fetch': { fetch: 
 
 describe('Index Tests', () => {
   after(async () => {
+    console.log('cleaning up...');
     await fetchAPI.disconnectAll();
   });
 

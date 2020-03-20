@@ -67,9 +67,9 @@ async function serviceembed(params, url, log) {
   });
 
   return fetch(api.href)
-    .then((resp) => {
+    .then(async (resp) => {
       if (!resp.ok) {
-        throw new Error(`Status ${resp.status}: ${resp.statusText || 'request failed, check your url'}`);
+        throw new Error(`Status ${resp.status}: ${await resp.text()}`);
       } else {
         return resp.json();
       }

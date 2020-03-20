@@ -98,7 +98,7 @@ describe('IFramely Tests', () => {
     };
 
     const result = await main(params);
-    assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?feature=oembed']);
+    assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?rel=0']);
   });
 
   it('IFramely not used for other IP addresses', async () => {
@@ -150,6 +150,6 @@ describe('IFramely Tests', () => {
       OEMBED_RESOLVER_KEY: 'dummy',
     };
     const result = await main(params);
-    assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?feature=oembed']);
+    assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?rel=0']);
   });
 });

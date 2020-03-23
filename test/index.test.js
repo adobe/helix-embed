@@ -84,7 +84,7 @@ describe('Index Tests', () => {
       __ow_path: '/https://www.youtube.com/watch',
       v: 'TTCVn4EByfI',
       w: '1',
-      UNSPLASH_AUTH: '6c943a05de265bfdc9374113489b2430d416ed81cbe5dad91b14f6e283b4469e',
+      UNSPLASH_AUTH: 'SECRET',
     };
     const result = await main(params);
     assertContains(result.body, ['https://www.youtube.com/', 'iframe', 'oembed']);

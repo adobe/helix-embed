@@ -18,8 +18,8 @@ const querystring = require('querystring');
 const range = require('range_check');
 const { embed } = require('./embed.js');
 
-const ipList = fetch('https://api.fastly.com/public-ip-list')
-  .then((resp) => resp.json());
+// lazy-loaded public ip list
+let ipList;
 
 async function isWithinRange(forwardedFor, fastlyPublicIps, whitelistedIps = '') {
   /* eslint-disable camelcase */
@@ -54,10 +54,16 @@ async function serviceembed(params, url, log) {
   // add the URL
   qs.url = url;
   const api = new URL(params.api || params.OEMBED_RESOLVER_URI);
-  if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY
-  && await isWithinRange(params.__ow_headers['x-forwarded-for'], await ipList, params.WHITELISTED_IPS)) {
-    qs[params.OEMBED_RESOLVER_PARAM] = params.OEMBED_RESOLVER_KEY;
-    log.info(`Using embedding service ${params.api || params.OEMBED_RESOLVER_URI} for URL ${url}`);
+  if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY) {
+    if (!ipList) {
+      // lazy-load public ip list
+      const resp = await fetch('https://api.fastly.com/public-ip-list');
+      ipList = await resp.json();
+    }
+    if (await isWithinRange(params.__ow_headers['x-forwarded-for'], ipList, params.WHITELISTED_IPS)) {
+      qs[params.OEMBED_RESOLVER_PARAM] = params.OEMBED_RESOLVER_KEY;
+      log.info(`Using embedding service ${params.api || params.OEMBED_RESOLVER_URI} for URL ${url}`);
+    }
   }
 
   Object.entries(qs).forEach(([k, v]) => {

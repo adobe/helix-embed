@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/adobe/helix-embed#readme",
   "dependencies": {
-    "@adobe/helix-fetch": "1.4.1",
+    "@adobe/helix-fetch": "1.4.2",
     "@adobe/helix-epsagon": "1.1.9",
     "@adobe/helix-status": "7.1.2",
     "@adobe/openwhisk-action-logger": "2.2.0",

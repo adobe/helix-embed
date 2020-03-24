@@ -1,3 +1,10 @@
+## [1.2.14](https://github.com/adobe/helix-embed/compare/v1.2.13...v1.2.14) (2020-03-24)
+
+
+### Bug Fixes
+
+* **index:** fixed loading of public ip list ([#180](https://github.com/adobe/helix-embed/issues/180)) ([650a22b](https://github.com/adobe/helix-embed/commit/650a22bc3d940ec92e209ed43937885ac4a6975f))
+
 ## [1.2.13](https://github.com/adobe/helix-embed/compare/v1.2.12...v1.2.13) (2020-03-19)
 
 

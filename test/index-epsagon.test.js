@@ -13,7 +13,6 @@
 /* eslint-env mocha */
 const proxyquire = require('proxyquire');
 const assert = require('assert');
-const fetchAPI = require('@adobe/helix-fetch');
 
 const DEFAULT_PARAMS = {
   __ow_path: '/',
@@ -35,10 +34,6 @@ const index = proxyquire('../src/index.js', {
 }).main;
 
 describe('Index Epsagon Tests', () => {
-  after(async () => {
-    await fetchAPI.disconnectAll();
-  });
-
   it('index function w/o token does not instrument epsagon', async () => {
     const expected = epsagonified;
     await index(DEFAULT_PARAMS);

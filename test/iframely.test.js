@@ -20,9 +20,6 @@ const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
 const proxyquire = require('proxyquire');
 const fetchAPI = require('@adobe/helix-fetch').context({
-  http1: {
-    keepAlive: false,
-  },
   httpsProtocols: ['http1'],
   httpProtocols: ['http1'],
 });
@@ -127,7 +124,6 @@ describe('IFramely Tests', () => {
       OEMBED_RESOLVER_KEY: 'dummy',
     };
     const result = await main(params);
-
     assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?feature=oembed']);
   });
 
@@ -154,7 +150,6 @@ describe('IFramely Tests', () => {
       OEMBED_RESOLVER_KEY: 'dummy',
     };
     const result = await main(params);
-
     assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?rel=0']);
   });
 });

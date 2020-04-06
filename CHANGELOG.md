@@ -1,3 +1,10 @@
+## [1.2.22](https://github.com/adobe/helix-embed/compare/v1.2.21...v1.2.22) (2020-04-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @braintree/sanitize-url to v4.0.1 ([#195](https://github.com/adobe/helix-embed/issues/195)) ([d4e0dc9](https://github.com/adobe/helix-embed/commit/d4e0dc90559027e4c37e7484c779ef447d85baf2))
+
 ## [1.2.21](https://github.com/adobe/helix-embed/compare/v1.2.20...v1.2.21) (2020-04-06)
 
 

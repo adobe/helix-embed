@@ -21,8 +21,7 @@
     "deploy-ci": "wsk-builder -v --deploy --test=/_status_check/healthcheck.json -p UNSPLASH_AUTH=$UNSPLASH_AUTH -p OEMBED_RESOLVER_KEY=$OEMBED_RESOLVER_KEY -p OEMBED_RESOLVER_PARAM=$OEMBED_RESOLVER_PARAM -p OEMBED_RESOLVER_URI=$OEMBED_RESOLVER_URI -p WHITELISTED_IPS=192.150.10.210 --pkgVersion=ci$CIRCLE_BUILD_NUM -l ci"
   },
   "wsk": {
-    "name": "helix-services-private/embed@${version}",
-    "linksPackage": "helix-services",
+    "name": "helix-services/embed@${version}",
     "rawHttp": true
   },
   "repository": {
@@ -38,7 +37,7 @@
   "dependencies": {
     "@adobe/helix-fetch": "1.6.0",
     "@adobe/helix-epsagon": "1.2.0",
-    "@adobe/helix-status": "7.1.2",
+    "@adobe/helix-status": "7.1.3",
     "@adobe/openwhisk-action-logger": "2.2.0",
     "@adobe/openwhisk-action-utils": "4.2.2",
     "@braintree/sanitize-url": "4.0.1",

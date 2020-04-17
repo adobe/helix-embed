@@ -1,3 +1,10 @@
+## [1.2.26](https://github.com/adobe/helix-embed/compare/v1.2.25...v1.2.26) (2020-04-17)
+
+
+### Bug Fixes
+
+* **deploy:** use helix-services package ([58eb6ae](https://github.com/adobe/helix-embed/commit/58eb6ae4d9847ae9842f98423f6371c9409e7c3b))
+
 ## [1.2.25](https://github.com/adobe/helix-embed/compare/v1.2.24...v1.2.25) (2020-04-14)
 
 

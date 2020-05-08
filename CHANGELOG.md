@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/adobe/helix-embed/compare/v1.2.27...v1.3.0) (2020-05-08)
+
+
+### Bug Fixes
+
+* **deps:** npm audit fix ([7c3ef4d](https://github.com/adobe/helix-embed/commit/7c3ef4d9467a37f96d2dd3d4fefc99ec2d354d38))
+
+
+### Features
+
+* **spotify:** add support for spotify playlists ([5ec817e](https://github.com/adobe/helix-embed/commit/5ec817e7b7ca065cc0937026e770da7008a3953a)), closes [#219](https://github.com/adobe/helix-embed/issues/219)
+
 ## [1.2.27](https://github.com/adobe/helix-embed/compare/v1.2.26...v1.2.27) (2020-05-07)
 
 

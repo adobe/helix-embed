@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/adobe/helix-embed"
+    "url": "https://github.com/adobe/helix-embed.git"
   },
   "author": "",
   "license": "Apache-2.0",

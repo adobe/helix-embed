@@ -71,7 +71,7 @@ function toHTML({
   }
 
 
-  html = [`<div class="${classnames.join(' ')}">`, ...html, '<div>'];
+  html = [`<div class="${classnames.join(' ')}">`, ...html, '</div>'];
 
 
   return html.join('\n');

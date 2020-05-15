@@ -1,3 +1,10 @@
+## [1.3.3](https://github.com/adobe/helix-embed/compare/v1.3.2...v1.3.3) (2020-05-15)
+
+
+### Bug Fixes
+
+* **embed.js:** close enclosing div ([b7e0290](https://github.com/adobe/helix-embed/commit/b7e0290e2ffd9778ce57279041da7bfee599b940))
+
 ## [1.3.2](https://github.com/adobe/helix-embed/compare/v1.3.1...v1.3.2) (2020-05-14)
 
 

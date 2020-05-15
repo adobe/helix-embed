@@ -1,3 +1,51 @@
+## [1.3.2](https://github.com/adobe/helix-embed/compare/v1.3.1...v1.3.2) (2020-05-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-fetch to v1.6.1 ([#226](https://github.com/adobe/helix-embed/issues/226)) ([2f1754f](https://github.com/adobe/helix-embed/commit/2f1754fde63f5d1815b81b17577fa006659646f9))
+
+## [1.3.1](https://github.com/adobe/helix-embed/compare/v1.3.0...v1.3.1) (2020-05-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-epsagon to v1.2.2 ([#223](https://github.com/adobe/helix-embed/issues/223)) ([9a7a9ba](https://github.com/adobe/helix-embed/commit/9a7a9ba8e8602bcd27833bd0bd23e4a81de6f54b))
+
+# [1.3.0](https://github.com/adobe/helix-embed/compare/v1.2.27...v1.3.0) (2020-05-08)
+
+
+### Bug Fixes
+
+* **deps:** npm audit fix ([7c3ef4d](https://github.com/adobe/helix-embed/commit/7c3ef4d9467a37f96d2dd3d4fefc99ec2d354d38))
+
+
+### Features
+
+* **spotify:** add support for spotify playlists ([5ec817e](https://github.com/adobe/helix-embed/commit/5ec817e7b7ca065cc0937026e770da7008a3953a)), closes [#219](https://github.com/adobe/helix-embed/issues/219)
+
+## [1.2.27](https://github.com/adobe/helix-embed/compare/v1.2.26...v1.2.27) (2020-05-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-epsagon to v1.2.1 ([#220](https://github.com/adobe/helix-embed/issues/220)) ([300bad9](https://github.com/adobe/helix-embed/commit/300bad9b2a90b27ef54f2798400d1fb6c2670713))
+
+## [1.2.26](https://github.com/adobe/helix-embed/compare/v1.2.25...v1.2.26) (2020-04-17)
+
+
+### Bug Fixes
+
+* **deploy:** use helix-services package ([58eb6ae](https://github.com/adobe/helix-embed/commit/58eb6ae4d9847ae9842f98423f6371c9409e7c3b))
+
+## [1.2.25](https://github.com/adobe/helix-embed/compare/v1.2.24...v1.2.25) (2020-04-14)
+
+
+### Bug Fixes
+
+* **deploy:** use helix-services package ([066c70e](https://github.com/adobe/helix-embed/commit/066c70eeabd578e2911693ffe6899de7ff3bca3c))
+* **deps:** update dependency @adobe/helix-status to v7.1.3 ([93e793b](https://github.com/adobe/helix-embed/commit/93e793b76319edea5ea0a9372fe8de7606208dce))
+
 ## [1.2.24](https://github.com/adobe/helix-embed/compare/v1.2.23...v1.2.24) (2020-04-08)
 
 

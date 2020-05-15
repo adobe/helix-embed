@@ -180,4 +180,9 @@ describe('Embed Tests', () => {
     const { body } = await embed('https://lottiefiles.com/this-will-definitely-fail-helix-141343151');
     assertContains(body, ['<div class="embed  embed-has-url embed-has-title embed-has-image embed-has-description"']);
   });
+
+  it('Supports Spotify', async () => {
+    const { body } = await embed('https://open.spotify.com/playlist/37i9dQZF1DWYWddJiPzbvb');
+    assertContains(body, ['<iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DWYWddJiPzbvb" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>']);
+  });
 });

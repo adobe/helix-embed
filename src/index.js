@@ -53,6 +53,7 @@ async function serviceembed(params, url, log) {
   }, {});
   // add the URL
   qs.url = url;
+  const { kind } = params;
   const api = new URL(params.api || params.OEMBED_RESOLVER_URI);
   if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY) {
     if (!ipList) {
@@ -67,7 +68,7 @@ async function serviceembed(params, url, log) {
   }
 
   Object.entries(qs).forEach(([k, v]) => {
-    if (!(k in queryParams)) {
+    if (!(k in queryParams) && k !== 'lvl2Dom') {
       api.searchParams.append(k, v);
     }
   });
@@ -88,11 +89,11 @@ async function serviceembed(params, url, log) {
           'Content-Type': 'text/html',
           'Cache-Control': `max-age=${json.cache_age ? json.cache_age : '3600'}`,
         },
-        body: `<div class="embed embed-oembed embed-advanced">${json.html}</div>`,
+        body: `<div class="embed embed-${kind} embed-oembed embed-advanced">${json.html}</div>`,
       })).catch((error) => {
       log.error(error.message);
       // falling back to normal
-      return embed(url);
+      return embed(url, params);
     });
 }
 
@@ -115,6 +116,8 @@ async function run(params) {
     params.__ow_query = query;
   }
   const url = `${params.__ow_path.substring(1)}?${params.__ow_query || ''}`;
+  const lvls = url.split('.');
+  params.kind = lvls[lvls.length - 2];
 
   const result = await embed(url, params);
 

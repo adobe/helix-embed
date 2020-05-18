@@ -87,7 +87,7 @@ describe('Index Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
     };
     const result = await main(params);
-    assertContains(result.body, ['https://www.youtube.com/', 'iframe', 'oembed']);
+    assertContains(result.body, ['https://www.youtube.com/', 'iframe', 'oembed', 'embed-youtube']);
   });
 
   it('Index works with parameters', async () => {

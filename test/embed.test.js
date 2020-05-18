@@ -37,13 +37,13 @@ describe('Standalone Tests', () => {
 
   // this test fails when recorded with Polly
   it('Supports OEmbed for Youtube', async () => {
-    const { headers, body } = await embed('https://www.youtube.com/watch?v=ccYpEv4APec');
+    const { headers, body } = await embed('https://www.youtube.com/watch?v=ccYpEv4APec', { kind: 'youtube' });
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['https://www.youtube.com/', 'iframe', 'oembed']);
   });
 
   it('Supports OEmbed for Youtube II', async () => {
-    const { headers, body } = await embed('https://www.youtube.com/watch?v=TTCVn4EByfI');
+    const { headers, body } = await embed('https://www.youtube.com/watch?v=TTCVn4EByfI', { kind: 'youtube' });
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['https://www.youtube.com/', 'iframe', 'oembed']);
   });
@@ -81,31 +81,31 @@ describe('Embed Tests', () => {
   });
 
   it('Response is cacheable', async () => {
-    const { headers, body } = await embed('http://httpbin.org');
+    const { headers, body } = await embed('http://httpbin.org', { kind: 'httpbin' });
     assert.equal(headers['Cache-Control'], 'max-age=3600');
     assertContains(body, ['http://httpbin.org']);
   });
 
   it('Response is HTML', async () => {
-    const { headers, body } = await embed('https://www.npmjs.com/package/@adobe/helix-cli');
+    const { headers, body } = await embed('https://www.npmjs.com/package/@adobe/helix-cli', { kind: 'npmjs' });
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['https://www.npmjs.com/package/@adobe/helix-cli']);
   });
 
   it('Supports Image Cards', async () => {
-    const { headers, body } = await embed('https://blog.twitter.com/en_us/a/2015/history-of-tbt-on-twitter.html');
+    const { headers, body } = await embed('https://blog.twitter.com/en_us/a/2015/history-of-tbt-on-twitter.html', { kind: 'twitter' });
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['https://blog.twitter.com/en_us/a/2015/history-of-tbt-on-twitter.html']);
   });
 
   it('Supports Images', async () => {
-    const { headers, body } = await embed('https://unsplash.com/photos/VS_kFx4yF5g');
+    const { headers, body } = await embed('https://unsplash.com/photos/VS_kFx4yF5g', { kind: 'unsplash' });
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['embed-has-image']);
   });
 
   it('Supports Adobe Spark', async () => {
-    const { headers, body } = await embed('https://spark.adobe.com/post/z4eHLkF8nZII1/');
+    const { headers, body } = await embed('https://spark.adobe.com/post/z4eHLkF8nZII1/', { kind: 'adobe' });
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['srcset']);
     assertContains(body, ['width/size/1200']);
@@ -117,10 +117,10 @@ describe('Embed Tests', () => {
   });
 
   it('Supports Soundcloud', async () => {
-    const { headers, body } = await embed('https://soundcloud.com/cheryl-lin-fielding/chanson-pour-jeanne?in=cheryl-lin-fielding/sets/website');
+    const { headers, body } = await embed('https://soundcloud.com/cheryl-lin-fielding/chanson-pour-jeanne?in=cheryl-lin-fielding/sets/website', { kind: 'soundcloud' });
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, [
-      'embed-has-url embed-has-title embed-has-image embed-has-description',
+      'embed-has-url embed-soundcloud embed-has-title embed-has-image embed-has-description',
       'Chabrier: Chanson pour Jeanne - Efrain Solis, Baritone & Cheryl Lin Fielding, Piano',
     ]);
   });
@@ -150,7 +150,7 @@ describe('Embed Tests', () => {
       }
     });
 
-    const { headers, body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'dummy' });
+    const { headers, body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: process.env.UNSPLASH_AUTH || 'dummy', kind: 'unsplash' });
     assert.equal(headers['Content-Type'], 'text/html');
     assert.equal(headers['Cache-Control'], 'max-age=3600');
     assertContains(body, ['srcset']);
@@ -161,28 +161,28 @@ describe('Embed Tests', () => {
 
   it('Sanitizes Malicious URLs', async () => {
     // eslint-disable-next-line no-script-url
-    const { headers, body } = await embed('javascript:alert(1)');
+    const { headers, body } = await embed('javascript:alert(1)', { kind: '' });
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['about:blank']);
   });
 
   it('Fails Gracefully', async () => {
-    const { body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: 'superFake' });
+    const { body } = await embed('https://unsplash.com/photos/0lD9SSMC6jo', { UNSPLASH_AUTH: 'superFake', kind: 'unsplash' });
     assertContains(body, ['<a href="https://unsplash.com/photos/0lD9SSMC6jo">']);
   });
 
   it('Supports Lottifiles', async () => {
-    const { body } = await embed('https://lottiefiles.com/17003-control-animated-volume-1');
+    const { body } = await embed('https://lottiefiles.com/17003-control-animated-volume-1', { kind: 'lottiefiles' });
     assertContains(body, ['<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js']);
   });
 
   it('Lottifiles Fails Gracefully', async () => {
-    const { body } = await embed('https://lottiefiles.com/this-will-definitely-fail-helix-141343151');
-    assertContains(body, ['<div class="embed  embed-has-url embed-has-title embed-has-image embed-has-description"']);
+    const { body } = await embed('https://lottiefiles.com/this-will-definitely-fail-helix-141343151', { kind: 'lottiefiles' });
+    assertContains(body, ['<div class="embed  embed-has-url embed-lottiefiles embed-has-title embed-has-image embed-has-description"']);
   });
 
   it('Supports Spotify', async () => {
-    const { body } = await embed('https://open.spotify.com/playlist/37i9dQZF1DWYWddJiPzbvb');
+    const { body } = await embed('https://open.spotify.com/playlist/37i9dQZF1DWYWddJiPzbvb', { kind: 'spotify' });
     assertContains(body, ['<iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DWYWddJiPzbvb" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>']);
   });
 });

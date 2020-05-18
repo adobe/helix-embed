@@ -26,10 +26,10 @@ matchers.push(spotify);
 function toHTML({
   oEmbed = {}, open_graph = {}, twitter_card = {}, other = {},
   title: otherTitle, description: otherDescription, classname,
-}, fallbackURL) {
+}, fallbackURL, kind) {
   // there is a provider preference, let's go with it.
   if (oEmbed.html) {
-    return `<div class="embed embed-oembed">
+    return `<div class="embed embed-oembed embed-${kind}">
   ${oEmbed.html}
 </div>`;
   }
@@ -48,6 +48,7 @@ function toHTML({
   let html = [];
   if (url) {
     classnames.push('embed-has-url');
+    classnames.push(`embed-${kind}`);
     html.push(`  <a href="${sanitizeUrl(url)}">`);
   }
   if (icon) {
@@ -95,7 +96,7 @@ function enrich(params) {
 
 function embed(url, params) {
   const opts = { oembed: true, url };
-
+  const { kind } = params;
   if (!url) {
     return {
       headers: {
@@ -112,7 +113,7 @@ function embed(url, params) {
       'Content-Type': 'text/html',
       'Cache-Control': `max-age=${metadata.oEmbed && metadata.oEmbed.cacheAge ? metadata.oEmbed.cacheAge : '3600'}`,
     },
-    body: toHTML(metadata, url),
+    body: toHTML(metadata, url, kind),
   })).catch((error) => ({
     headers: {
       'Content-Type': 'text/html',

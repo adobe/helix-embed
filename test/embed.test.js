@@ -93,7 +93,7 @@ describe('Embed Tests', () => {
   });
 
   it('Supports Image Cards', async () => {
-    const { headers, body } = await embed('https://blog.twitter.com/en_us/a/2015/history-of-tbt-on-twitter.html', { kind: 'twitter' });
+    const { headers, body } = await embed('https://blog.twitter.com/en_us/a/2015/history-of-tbt-on-twitter.html', { kind: 'blog-twitter' });
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['https://blog.twitter.com/en_us/a/2015/history-of-tbt-on-twitter.html']);
   });
@@ -105,7 +105,7 @@ describe('Embed Tests', () => {
   });
 
   it('Supports Adobe Spark', async () => {
-    const { headers, body } = await embed('https://spark.adobe.com/post/z4eHLkF8nZII1/', { kind: 'adobe' });
+    const { headers, body } = await embed('https://spark.adobe.com/post/z4eHLkF8nZII1/', { kind: 'sparks-adobe' });
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['srcset']);
     assertContains(body, ['width/size/1200']);
@@ -182,7 +182,7 @@ describe('Embed Tests', () => {
   });
 
   it('Supports Spotify', async () => {
-    const { body } = await embed('https://open.spotify.com/playlist/37i9dQZF1DWYWddJiPzbvb', { kind: 'spotify' });
+    const { body } = await embed('https://open.spotify.com/playlist/37i9dQZF1DWYWddJiPzbvb', { kind: 'open-spotify' });
     assertContains(body, ['<iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DWYWddJiPzbvb" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>']);
   });
 });

@@ -41,6 +41,15 @@ async function isWithinRange(forwardedFor, fastlyPublicIps, whitelistedIps = '')
     .some((myranges) => (range.isRange ? range.inRange(ip, myranges) : range === ip)));
 }
 
+async function getEmbedKind(domainList) {
+  const cpy = domainList;
+  // remove first level domain
+  cpy.pop();
+  return cpy
+    .filter((domain) => domain !== 'www')
+    .join('-');
+}
+
 async function serviceembed(params, url, log) {
   const queryParams = querystring.parse(params.__ow_query);
   const qs = Object.keys(params).reduce((pv, cv) => {
@@ -68,7 +77,7 @@ async function serviceembed(params, url, log) {
   }
 
   Object.entries(qs).forEach(([k, v]) => {
-    if (!(k in queryParams) && k !== 'lvl2Dom') {
+    if (!(k in queryParams)) {
       api.searchParams.append(k, v);
     }
   });
@@ -116,8 +125,8 @@ async function run(params) {
     params.__ow_query = query;
   }
   const url = `${params.__ow_path.substring(1)}?${params.__ow_query || ''}`;
-  const lvls = url.split('.');
-  params.kind = lvls[lvls.length - 2];
+  const lvls = new URL(url).hostname.split('.');
+  params.kind = await getEmbedKind(lvls);
 
   const result = await embed(url, params);
 

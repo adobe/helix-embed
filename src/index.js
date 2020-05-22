@@ -41,13 +41,19 @@ async function isWithinRange(forwardedFor, fastlyPublicIps, whitelistedIps = '')
     .some((myranges) => (range.isRange ? range.inRange(ip, myranges) : range === ip)));
 }
 
-async function getEmbedKind(domainList) {
-  const cpy = domainList;
+function getEmbedKind(domainList) {
   // remove first level domain
-  cpy.pop();
-  return cpy
-    .filter((domain) => domain !== 'www')
-    .join('-');
+  domainList.pop();
+  const embedKind = [];
+  domainList
+    .filter((domain) => domain !== 'www' && domain !== 'co')
+    .reverse()
+    .forEach((val, idx, arr) => {
+      embedKind.push(arr.slice(0, idx + 1).join('-'));
+    });
+
+  return embedKind.map((value) => `embed-${value}`)
+    .join(' ');
 }
 
 async function serviceembed(params, url, log) {
@@ -98,7 +104,7 @@ async function serviceembed(params, url, log) {
           'Content-Type': 'text/html',
           'Cache-Control': `max-age=${json.cache_age ? json.cache_age : '3600'}`,
         },
-        body: `<div class="embed embed-${kind} embed-oembed embed-advanced">${json.html}</div>`,
+        body: `<div class="embed embed-oembed ${kind}">${json.html}</div>`,
       })).catch((error) => {
       log.error(error.message);
       // falling back to normal
@@ -126,7 +132,7 @@ async function run(params) {
   }
   const url = `${params.__ow_path.substring(1)}?${params.__ow_query || ''}`;
   const lvls = new URL(url).hostname.split('.');
-  params.kind = await getEmbedKind(lvls);
+  params.kind = getEmbedKind(lvls);
 
   const result = await embed(url, params);
 

@@ -29,7 +29,7 @@ function toHTML({
 }, fallbackURL, kind) {
   // there is a provider preference, let's go with it.
   if (oEmbed.html) {
-    return `<div class="embed embed-oembed embed-${kind}">
+    return `<div class="embed embed-oembed ${kind}">
   ${oEmbed.html}
 </div>`;
   }
@@ -48,7 +48,7 @@ function toHTML({
   let html = [];
   if (url) {
     classnames.push('embed-has-url');
-    classnames.push(`embed-${kind}`);
+    classnames.push(`${kind}`);
     html.push(`  <a href="${sanitizeUrl(url)}">`);
   }
   if (icon) {

@@ -128,6 +128,6 @@ describe('Index Tests', () => {
       __ow_path: '/https://spark.adobe.com/video/FZXqFDNFog5qY',
     };
     const { body } = await main(params);
-    assertContains(body, ['embed-spark-adobe']);
+    assertContains(body, ['embed-adobe-spark', 'embed-adobe']);
   });
 });

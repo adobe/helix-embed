@@ -16,11 +16,17 @@ const { logger } = require('@adobe/openwhisk-action-logger');
 const { epsagon } = require('@adobe/helix-epsagon');
 const querystring = require('querystring');
 const range = require('range_check');
-const { embed } = require('./embed.js');
+const { embed, getEmbedKind } = require('./embed.js');
 
 // lazy-loaded public ip list
 let ipList;
 
+/**
+ *
+ * @param {*} forwardedFor originating ip address of client
+ * @param {*} fastlyPublicIps allowed list of Fastly ip addresses
+ * @param {*} whitelistedIps white listed ip addresses
+ */
 async function isWithinRange(forwardedFor, fastlyPublicIps, whitelistedIps = '') {
   /* eslint-disable camelcase */
   const { addresses, ipv6_addresses } = fastlyPublicIps;
@@ -41,21 +47,13 @@ async function isWithinRange(forwardedFor, fastlyPublicIps, whitelistedIps = '')
     .some((myranges) => (range.isRange ? range.inRange(ip, myranges) : range === ip)));
 }
 
-function getEmbedKind(domainList) {
-  // remove first level domain
-  domainList.pop();
-  const embedKind = [];
-  domainList
-    .filter((domain) => domain !== 'www' && domain !== 'co')
-    .reverse()
-    .forEach((val, idx, arr) => {
-      embedKind.push(arr.slice(0, idx + 1).join('-'));
-    });
-
-  return embedKind.map((value) => `embed-${value}`)
-    .join(' ');
-}
-
+/**
+ * sends request for embed to embedding service
+ * @param {Object} params
+ * @param {string} url
+ * @param {Object} log
+ * @returns HTTP response in JSON
+ */
 async function serviceembed(params, url, log) {
   const queryParams = querystring.parse(params.__ow_query);
   const qs = Object.keys(params).reduce((pv, cv) => {
@@ -131,8 +129,8 @@ async function run(params) {
     params.__ow_query = query;
   }
   const url = `${params.__ow_path.substring(1)}?${params.__ow_query || ''}`;
-  const lvls = new URL(url).hostname.split('.');
-  params.kind = getEmbedKind(lvls);
+
+  params.kind = getEmbedKind(url);
 
   const result = await embed(url, params);
 

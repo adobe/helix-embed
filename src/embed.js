@@ -23,6 +23,13 @@ matchers.push(unsplash);
 matchers.push(lottie);
 matchers.push(spotify);
 
+/**
+ *
+ * @param {Object} param0 metadata from call to unfurl
+ * @param {*} fallbackURL url to fallback to without one from unfurl
+ * @param {*} kind the class attributes for the embed url
+ * @returns html of an embed
+ */
 function toHTML({
   oEmbed = {}, open_graph = {}, twitter_card = {}, other = {},
   title: otherTitle, description: otherDescription, classname,
@@ -94,9 +101,8 @@ function enrich(params) {
   };
 }
 
-function embed(url, params) {
+function embed(url, params = {}) {
   const opts = { oembed: true, url };
-  const { kind } = params;
   if (!url) {
     return {
       headers: {
@@ -107,6 +113,7 @@ function embed(url, params) {
     };
   }
 
+  const { kind } = params;
   return unfurl(url, opts).then(enrich(params)).then((metadata) => ({
     headers: {
       'X-Provider': metadata.enriched ? 'Helix' : 'unfurl.js',
@@ -124,4 +131,24 @@ ${fromURL(url)}`,
   }));
 }
 
-module.exports = { embed };
+/**
+ * Computes the kind of embed for the given url
+ * @param {string} url Embed url
+ * @returns {string} class attribute for enclosing <div> tag
+ */
+function getEmbedKind(url) {
+  const domains = new URL(url).hostname.split('.');
+  // remove first level domain
+  domains.pop();
+  const embedKind = [];
+  domains.filter((domain) => domain !== 'www' && domain !== 'co' && domain !== 'open')
+    .reverse()
+    .forEach((val, idx, arr) => {
+      embedKind.push(arr.slice(0, idx + 1).join('-'));
+    });
+
+  return embedKind.map((value) => `embed-${value}`)
+    .join(' ');
+}
+
+module.exports = { embed, getEmbedKind };

@@ -28,7 +28,7 @@ const fetchAPI = require('@adobe/helix-fetch').context({
 const testFetch = fetchAPI.fetch;
 const { assertContains } = require('./utils');
 
-const { embed } = proxyquire('../src/embed', { './unsplash': proxyquire('../src/unsplash.js', { '@adobe/helix-fetch': { fetch: (url) => testFetch(url) } }) });
+const { embed, getEmbedKind } = proxyquire('../src/embed', { './unsplash': proxyquire('../src/unsplash.js', { '@adobe/helix-fetch': { fetch: (url) => testFetch(url) } }) });
 
 describe('Standalone Tests', () => {
   after(async () => {
@@ -161,7 +161,7 @@ describe('Embed Tests', () => {
 
   it('Sanitizes Malicious URLs', async () => {
     // eslint-disable-next-line no-script-url
-    const { headers, body } = await embed('javascript:alert(1)', { kind: 'embed-' });
+    const { headers, body } = await embed('javascript:alert(1)');
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['about:blank']);
   });
@@ -184,5 +184,25 @@ describe('Embed Tests', () => {
   it('Supports Spotify', async () => {
     const { body } = await embed('https://open.spotify.com/playlist/37i9dQZF1DWYWddJiPzbvb', { kind: 'embed-spotify-open' });
     assertContains(body, ['<iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DWYWddJiPzbvb" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>']);
+  });
+});
+
+describe('getEmbedKind tests', () => {
+  it('getEmbedKind works with co.*', () => {
+    const jp = 'https://www.youtube.co.jp';
+    const spotify = 'https://www.open.spotify.com';
+
+    const resultJp = getEmbedKind(jp);
+    const resultSpotify = getEmbedKind(spotify);
+
+    assert.equal(resultJp, 'embed-youtube');
+    assert.equal(resultSpotify, 'embed-spotify');
+  });
+
+  it('getEmbedKind works with multiple domains', () => {
+    const EXPECTED = 'embed-powerful embed-powerful-is embed-powerful-is-pipeline embed-powerful-is-pipeline-helix';
+    const longDomain = 'https://www.helix.pipeline.is.powerful.com';
+    const result = getEmbedKind(longDomain);
+    assert.equal(result, EXPECTED);
   });
 });

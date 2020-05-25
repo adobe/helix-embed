@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/adobe/helix-embed/compare/v1.3.5...v1.4.0) (2020-05-25)
+
+
+### Features
+
+* **embed.js:** add embed type to class ([#232](https://github.com/adobe/helix-embed/issues/232)) ([2e3af5e](https://github.com/adobe/helix-embed/commit/2e3af5ee8132feeb41ffa0941e9b19d6d26ac5dc)), closes [#211](https://github.com/adobe/helix-embed/issues/211)
+
 ## [1.3.5](https://github.com/adobe/helix-embed/compare/v1.3.4...v1.3.5) (2020-05-18)
 
 

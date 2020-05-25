@@ -87,7 +87,7 @@ describe('Index Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
     };
     const result = await main(params);
-    assertContains(result.body, ['https://www.youtube.com/', 'iframe', 'oembed']);
+    assertContains(result.body, ['https://www.youtube.com/', 'iframe', 'oembed', 'embed-youtube']);
   });
 
   it('Index works with parameters', async () => {
@@ -115,5 +115,19 @@ describe('Index Tests', () => {
       __ow_path: '/https://github.com/request/request-promise',
     };
     assert.ok(await main(params));
+  });
+
+  it('index with many subdomains', async () => {
+    const params = {
+      api_key: 'fake_invalid',
+      setting: 'foo, bar',
+      __ow_method: 'get',
+      __ow_headers: {
+        'Content=Type': 'text/html',
+      },
+      __ow_path: '/https://spark.adobe.com/video/FZXqFDNFog5qY',
+    };
+    const { body } = await main(params);
+    assertContains(body, ['embed-adobe-spark', 'embed-adobe']);
   });
 });

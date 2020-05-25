@@ -16,11 +16,17 @@ const { logger } = require('@adobe/openwhisk-action-logger');
 const { epsagon } = require('@adobe/helix-epsagon');
 const querystring = require('querystring');
 const range = require('range_check');
-const { embed } = require('./embed.js');
+const { embed, getEmbedKind } = require('./embed.js');
 
 // lazy-loaded public ip list
 let ipList;
 
+/**
+ *
+ * @param {*} forwardedFor originating ip address of client
+ * @param {*} fastlyPublicIps allowed list of Fastly ip addresses
+ * @param {*} whitelistedIps white listed ip addresses
+ */
 async function isWithinRange(forwardedFor, fastlyPublicIps, whitelistedIps = '') {
   /* eslint-disable camelcase */
   const { addresses, ipv6_addresses } = fastlyPublicIps;
@@ -41,6 +47,13 @@ async function isWithinRange(forwardedFor, fastlyPublicIps, whitelistedIps = '')
     .some((myranges) => (range.isRange ? range.inRange(ip, myranges) : range === ip)));
 }
 
+/**
+ * sends request for embed to embedding service
+ * @param {Object} params
+ * @param {string} url
+ * @param {Object} log
+ * @returns HTTP response in JSON
+ */
 async function serviceembed(params, url, log) {
   const queryParams = querystring.parse(params.__ow_query);
   const qs = Object.keys(params).reduce((pv, cv) => {
@@ -53,6 +66,7 @@ async function serviceembed(params, url, log) {
   }, {});
   // add the URL
   qs.url = url;
+  const { kind } = params;
   const api = new URL(params.api || params.OEMBED_RESOLVER_URI);
   if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY) {
     if (!ipList) {
@@ -88,11 +102,11 @@ async function serviceembed(params, url, log) {
           'Content-Type': 'text/html',
           'Cache-Control': `max-age=${json.cache_age ? json.cache_age : '3600'}`,
         },
-        body: `<div class="embed embed-oembed embed-advanced">${json.html}</div>`,
+        body: `<div class="embed embed-oembed ${kind}">${json.html}</div>`,
       })).catch((error) => {
       log.error(error.message);
       // falling back to normal
-      return embed(url);
+      return embed(url, params);
     });
 }
 
@@ -115,6 +129,8 @@ async function run(params) {
     params.__ow_query = query;
   }
   const url = `${params.__ow_path.substring(1)}?${params.__ow_query || ''}`;
+
+  params.kind = getEmbedKind(url);
 
   const result = await embed(url, params);
 

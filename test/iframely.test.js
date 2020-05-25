@@ -124,7 +124,7 @@ describe('IFramely Tests', () => {
       OEMBED_RESOLVER_KEY: 'dummy',
     };
     const result = await main(params);
-    assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?feature=oembed']);
+    assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?feature=oembed', 'embed-youtube']);
   });
 
   it('IFramely used for Fastly IP addresses', async () => {

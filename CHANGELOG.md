@@ -1,3 +1,10 @@
+## [1.4.6](https://github.com/adobe/helix-embed/compare/v1.4.5...v1.4.6) (2020-06-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-epsagon to v1.3.7 ([3d665a5](https://github.com/adobe/helix-embed/commit/3d665a583b21744ab979d4c05344e80b9f690c84))
+
 ## [1.4.5](https://github.com/adobe/helix-embed/compare/v1.4.4...v1.4.5) (2020-06-05)
 
 

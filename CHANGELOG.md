@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/adobe/helix-embed/compare/v1.4.8...v1.5.0) (2020-06-09)
+
+
+### Features
+
+* escape path and support 'src' parameter ([#249](https://github.com/adobe/helix-embed/issues/249)) ([d63d369](https://github.com/adobe/helix-embed/commit/d63d36983f30fabfa1f34ebbb4bbe6b203dc7db8)), closes [#187](https://github.com/adobe/helix-embed/issues/187)
+
 ## [1.4.8](https://github.com/adobe/helix-embed/compare/v1.4.7...v1.4.8) (2020-06-08)
 
 

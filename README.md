@@ -29,6 +29,18 @@ $ curl https://adobeioruntime.net/api/v1/web/helix/default/embed/http://www.adob
 <div>
 ```
 
+While the above is simple to type, it is more safe to escape the url and optionally pass it as `src` query parameter:
+
+```bash
+curl https://adobeioruntime.net/api/v1/web/helix/default/embed/http%3A%2F%2Fwww.adobe.com
+```
+
+or
+
+```bash
+curl https://adobeioruntime.net/api/v1/web/helix/default/embed?src=http%3A%2F%2Fwww.adobe.com
+```
+
 ## Deployment
 
 The default deployment can be started with `npm run deploy`.

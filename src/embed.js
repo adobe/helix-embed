@@ -137,7 +137,7 @@ ${fromURL(url)}`,
  * @returns {string} class attribute for enclosing <div> tag
  */
 function getEmbedKind(url) {
-  const domains = new URL(url).hostname.split('.');
+  const domains = url.hostname.split('.');
   // remove first level domain
   domains.pop();
   const embedKind = [];

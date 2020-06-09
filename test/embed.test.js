@@ -189,8 +189,8 @@ describe('Embed Tests', () => {
 
 describe('getEmbedKind tests', () => {
   it('getEmbedKind works with co.*', () => {
-    const jp = 'https://www.youtube.co.jp';
-    const spotify = 'https://www.open.spotify.com';
+    const jp = new URL('https://www.youtube.co.jp');
+    const spotify = new URL('https://www.open.spotify.com');
 
     const resultJp = getEmbedKind(jp);
     const resultSpotify = getEmbedKind(spotify);
@@ -201,7 +201,7 @@ describe('getEmbedKind tests', () => {
 
   it('getEmbedKind works with multiple domains', () => {
     const EXPECTED = 'embed-powerful embed-powerful-is embed-powerful-is-pipeline embed-powerful-is-pipeline-helix';
-    const longDomain = 'https://www.helix.pipeline.is.powerful.com';
+    const longDomain = new URL('https://www.helix.pipeline.is.powerful.com');
     const result = getEmbedKind(longDomain);
     assert.equal(result, EXPECTED);
   });

@@ -17,6 +17,7 @@ const { epsagon } = require('@adobe/helix-epsagon');
 const querystring = require('querystring');
 const range = require('range_check');
 const { embed, getEmbedKind } = require('./embed.js');
+const dataSource = require('./data-source.js');
 
 // lazy-loaded public ip list
 let ipList;
@@ -113,31 +114,22 @@ async function serviceembed(params, url, log) {
 /* eslint-disable no-underscore-dangle, no-console, no-param-reassign */
 async function run(params) {
   const { __ow_logger: log = console } = params;
-
-  if (!params.__ow_query) {
-    // reconstruct __ow_query
-    const query = Object.keys(params)
-      .filter((key) => !/^[A-Z]+_[A-Z]+/.test(key))
-      .filter((key) => key !== 'api')
-      .filter((key) => !/^__ow_/.test(key))
-      .reduce((pv, cv) => {
-        if (pv) {
-          return `${pv}&${cv}=${params[cv]}`;
-        }
-        return `${cv}=${params[cv]}`;
-      }, '');
-    params.__ow_query = query;
+  const url = dataSource((params));
+  if (!url) {
+    return {
+      statusCode: 400,
+      body: 'Expecting a datasource',
+    };
   }
-  const url = `${params.__ow_path.substring(1)}?${params.__ow_query || ''}`;
-
   params.kind = getEmbedKind(url);
 
-  const result = await embed(url, params);
+  const urlString = url.toString();
+  const result = await embed(urlString, params);
 
   if ((params.api || params.OEMBED_RESOLVER_URI) && result.headers['X-Provider'] !== 'Helix') {
     // filter all __ow_something parameters out
     // and all parameters in all caps
-    return serviceembed(params, url, log);
+    return serviceembed(params, urlString, log);
   }
   return result;
 }

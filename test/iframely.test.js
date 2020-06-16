@@ -73,7 +73,7 @@ describe('IFramely Tests', () => {
     });
   });
 
-  it('IFramely used for whitelisted IP addresses', async () => {
+  it('IFramely used for allowed IP addresses', async () => {
     const params = {
       __ow_headers: {
         'accept-encoding': 'gzip, deflate',
@@ -94,7 +94,7 @@ describe('IFramely Tests', () => {
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
       OEMBED_RESOLVER_KEY: 'dummy',
-      WHITELISTED_IPS: '3.80.39.228',
+      ALLOWED_IPS: '3.80.39.228',
     };
 
     const result = await main(params);

@@ -26,18 +26,18 @@ let ipList;
  *
  * @param {*} forwardedFor originating ip address of client
  * @param {*} fastlyPublicIps allowed list of Fastly ip addresses
- * @param {*} whitelistedIps white listed ip addresses
+ * @param {*} allowedIps allowed ip addresses
  */
-async function isWithinRange(forwardedFor, fastlyPublicIps, whitelistedIps = '') {
+async function isWithinRange(forwardedFor, fastlyPublicIps, allowedIps = '') {
   /* eslint-disable camelcase */
   const { addresses, ipv6_addresses } = fastlyPublicIps;
 
-  const whitelistedRanges = whitelistedIps
+  const allowedRanges = allowedIps
     .split(',')
     .map((ip) => ip.trim())
     .filter((ip) => range.isIP(ip) || range.isRange(ip));
 
-  const ranges = [...addresses, ...ipv6_addresses, whitelistedRanges];
+  const ranges = [...addresses, ...ipv6_addresses, allowedRanges];
   const forwarded = forwardedFor
     .split(',')
     .map((ip) => ip.trim())
@@ -75,7 +75,7 @@ async function serviceembed(params, url, log) {
       const resp = await fetch('https://api.fastly.com/public-ip-list');
       ipList = await resp.json();
     }
-    if (await isWithinRange(params.__ow_headers['x-forwarded-for'], ipList, params.WHITELISTED_IPS)) {
+    if (await isWithinRange(params.__ow_headers['x-forwarded-for'], ipList, params.ALLOWED_IPS)) {
       qs[params.OEMBED_RESOLVER_PARAM] = params.OEMBED_RESOLVER_KEY;
       log.info(`Using embedding service ${params.api || params.OEMBED_RESOLVER_URI} for URL ${url}`);
     }

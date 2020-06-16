@@ -78,9 +78,7 @@ function toHTML({
     html.push(`    <p class="description">${description}</p>`);
   }
 
-
   html = [`<div class="${classnames.join(' ')}">`, ...html, '</div>'];
-
 
   return html.join('\n');
 }

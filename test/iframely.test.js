@@ -12,7 +12,6 @@
 
 /* eslint-env mocha */
 
-
 // const assert = require('assert');
 const path = require('path');
 const NodeHttpAdapter = require('@pollyjs/adapter-node-http');

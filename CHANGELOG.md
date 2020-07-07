@@ -1,3 +1,10 @@
+## [1.5.9](https://github.com/adobe/helix-embed/compare/v1.5.8...v1.5.9) (2020-07-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency range_check to v2 ([#270](https://github.com/adobe/helix-embed/issues/270)) ([f63be55](https://github.com/adobe/helix-embed/commit/f63be5543395831d6f5ee258380d1c406c89bcad))
+
 ## [1.5.8](https://github.com/adobe/helix-embed/compare/v1.5.7...v1.5.8) (2020-07-02)
 
 

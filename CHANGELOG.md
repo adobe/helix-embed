@@ -1,3 +1,10 @@
+## [1.5.15](https://github.com/adobe/helix-embed/compare/v1.5.14...v1.5.15) (2020-07-25)
+
+
+### Bug Fixes
+
+* **deps:** update external fixes ([1d92273](https://github.com/adobe/helix-embed/commit/1d92273fa39c085c3fab51ef7bd8b4eb04112dbd))
+
 ## [1.5.14](https://github.com/adobe/helix-embed/compare/v1.5.13...v1.5.14) (2020-07-23)
 
 

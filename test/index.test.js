@@ -130,4 +130,18 @@ describe('Index Tests', () => {
     const { body } = await main(params);
     assertContains(body, ['embed-adobe-spark', 'embed-adobe']);
   });
+
+  it('index with creative cloud', async () => {
+    const params = {
+      api_key: 'fake_invalid',
+      setting: 'foo, bar',
+      __ow_method: 'get',
+      __ow_headers: {
+        'Content=Type': 'text/html',
+      },
+      __ow_path: '/https://www.ccv.adobe.com/v1/player/sc/US%2Fd37f8acc-9fe1-4e91-8c0e-a550bd6f3cbe/embed',
+    };
+    const { body } = await main(params);
+    assertContains(body, ['embed-adobe-ccv', 'embed-adobe']);
+  });
 });

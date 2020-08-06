@@ -16,12 +16,14 @@ const spark = require('./spark');
 const unsplash = require('./unsplash');
 const lottie = require('./lottifile');
 const spotify = require('./spotify');
+const ccv = require('./creativecloud');
 
 const matchers = [];
 matchers.push(spark);
 matchers.push(unsplash);
 matchers.push(lottie);
 matchers.push(spotify);
+matchers.push(ccv);
 
 /**
  *

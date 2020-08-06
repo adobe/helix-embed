@@ -185,6 +185,11 @@ describe('Embed Tests', () => {
     const { body } = await embed('https://open.spotify.com/playlist/37i9dQZF1DWYWddJiPzbvb', { kind: 'embed-spotify-open' });
     assertContains(body, ['<iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DWYWddJiPzbvb" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>']);
   });
+
+  it('Supports creative cloud', async () => {
+    const { body } = await embed('https://www.ccv.adobe.com/v1/player/sc/US%2Fd37f8acc-9fe1-4e91-8c0e-a550bd6f3cbe/embed', { kind: 'embed-adobe-ccv embed-adobe', __ow_path: 'https://www.ccv.adobe.com/v1/player/sc/US%2Fd37f8acc-9fe1-4e91-8c0e-a550bd6f3cbe/embed?bgcolor=%23000000' });
+    assertContains(body, ['iframe', 'https://www.ccv.adobe.com/v1/player/sc/US%2Fd37f8acc-9fe1-4e91-8c0e-a550bd6f3cbe/embed', 'embed-adobe-ccv', 'embed-adobe']);
+  });
 });
 
 describe('getEmbedKind tests', () => {

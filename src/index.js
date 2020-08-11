@@ -95,7 +95,8 @@ async function serviceembed(params, url, log) {
       }
     })
     .then((json) => {
-      json.html = addTitle(json.html, `content from ${params.provider}`)
+      // eslint-disable-next-line no-param-reassign
+      json.html = addTitle(json.html, `content from ${params.provider}`);
       return {
         headers: {
           'X-Provider': params.OEMBED_RESOLVER_URI,

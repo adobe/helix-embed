@@ -12,11 +12,11 @@
 const { unfurl } = require('unfurl.js');
 const URI = require('uri-js');
 const { sanitizeUrl } = require('@braintree/sanitize-url');
+const { JSDOM } = require('jsdom');
 const spark = require('./spark');
 const unsplash = require('./unsplash');
 const lottie = require('./lottifile');
 const spotify = require('./spotify');
-const { JSDOM } = require('jsdom');
 
 const matchers = [];
 matchers.push(spark);
@@ -28,18 +28,17 @@ matchers.push(spotify);
  * Adds title attribute or title span element if missing from embed html
  *
  * @param {string} html html of the embed
- * @returns {string} returns either iframe with title attribute or html with a span element containing a title
+ * @returns {string} returns either iframe with title attribute or html with a span with a title
  */
 function addTitle(html, title) {
   const dom = new JSDOM(html);
   const doc = dom.window.document;
   const iframe = doc.getElementsByTagName('iframe');
 
-  if (iframe.length !== 0 && !(iframe.item(0).title)){
-    const body = iframe.item(0).title = title;
-  }
-  else{
-    const span = doc.createElement("span");
+  if (iframe.length !== 0 && !(iframe.item(0).title)) {
+    iframe.item(0).title = title;
+  } else {
+    const span = doc.createElement('span');
     span.innerHTML = title;
     span.className = 'title';
     doc.body.append(span);

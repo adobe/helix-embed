@@ -142,6 +142,8 @@ function getEmbedKind(url) {
   domains.filter((domain) => domain !== 'www' && domain !== 'co' && domain !== 'open')
     .reverse()
     .forEach((val, idx, arr) => {
+      // eslint-disable-next-line no-param-reassign
+      arr[idx] = val === 'youtu' ? arr[idx] = 'youtube' : arr[idx];
       embedKind.push(arr.slice(0, idx + 1).join('-'));
     });
 

@@ -117,6 +117,26 @@ describe('Index Tests', () => {
     assert.ok(await main(params));
   });
 
+  it('index with youtu.be', async () => {
+    const params = {
+      __ow_headers: {
+        'accept-encoding': 'gzip, deflate',
+        connection: 'close',
+        host: 'controller-a',
+        'perf-br-req-in': '1572859933.107',
+        'user-agent': 'node-superagent/3.8.3',
+        'x-forwarded-for': '3.80.39.228',
+        'x-forwarded-port': '443',
+        'x-forwarded-proto': 'https',
+      },
+      __ow_method: 'get',
+      __ow_path: '/https://youtu.be/8iZTb9NWbz8',
+      UNSPLASH_AUTH: 'SECRET',
+    };
+    const result = await main(params);
+    assertContains(result.body, ['youtube.com/embed', 'iframe', 'oembed', 'embed-youtube']);
+  });
+
   it('index with many subdomains', async () => {
     const params = {
       api_key: 'fake_invalid',

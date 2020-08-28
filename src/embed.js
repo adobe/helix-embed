@@ -12,6 +12,7 @@
 const { unfurl } = require('unfurl.js');
 const URI = require('uri-js');
 const { sanitizeUrl } = require('@braintree/sanitize-url');
+const { JSDOM } = require('jsdom');
 const spark = require('./spark');
 const unsplash = require('./unsplash');
 const lottie = require('./lottifile');
@@ -24,6 +25,29 @@ matchers.push(lottie);
 matchers.push(spotify);
 
 /**
+ * Adds title attribute or title span element if missing from embed html
+ *
+ * @param {string} html html of the embed
+ * @returns {string} returns either iframe with title attribute or html with a span with a title
+ */
+function addTitle(html, title) {
+  const dom = new JSDOM(html);
+  const doc = dom.window.document;
+  const iframe = doc.getElementsByTagName('iframe');
+
+  if (iframe.length !== 0 && !(iframe.item(0).title)) {
+    iframe.item(0).title = title;
+  } else {
+    const span = doc.createElement('span');
+    span.innerHTML = title;
+    span.className = 'title';
+    doc.body.append(span);
+  }
+
+  return doc.body.innerHTML;
+}
+
+/**
  *
  * @param {Object} param0 metadata from call to unfurl
  * @param {*} fallbackURL url to fallback to without one from unfurl
@@ -33,17 +57,10 @@ matchers.push(spotify);
 function toHTML({
   oEmbed = {}, open_graph = {}, twitter_card = {}, other = {},
   title: otherTitle, description: otherDescription, classname,
-}, fallbackURL, kind) {
-  // there is a provider preference, let's go with it.
-  if (oEmbed.html) {
-    return `<div class="embed embed-oembed ${kind}">
-  ${oEmbed.html}
-</div>`;
-  }
-
+}, fallbackURL, kind, provider) {
   // gather information from different providers
   const url = oEmbed.url || twitter_card.url || open_graph.url || other.canonical || fallbackURL;
-  const title = twitter_card.title || open_graph.title || other.title || otherTitle;
+  const title = twitter_card.title || open_graph.title || other.title || otherTitle || `Content from ${provider}`;
   const description = twitter_card.description || open_graph.description || otherDescription;
   const icon = url && other.appleTouchIcon ? URI.resolve(url, other.appleTouchIcon) : null;
   const twitterImage = twitter_card.images ? twitter_card.images[0].url : null;
@@ -51,8 +68,17 @@ function toHTML({
   const oembedImage = oEmbed.url !== url ? oEmbed.url : null;
   const image = oEmbed.thumbnail_url || twitterImage || ogImage || oembedImage;
 
+  // there is a provider preference, let's go with it.
+  if (oEmbed.html) {
+    const html = addTitle(oEmbed.html, title);
+    return `<div class="embed embed-oembed ${kind}">
+  ${html}</div>`;
+  }
+
   const classnames = ['embed', classname];
   let html = [];
+  classnames.push('embed-has-title');
+  html.push(`    <span class="title">${title}</span>`);
   if (url) {
     classnames.push('embed-has-url');
     classnames.push(`${kind}`);
@@ -61,10 +87,6 @@ function toHTML({
   if (icon) {
     classnames.push('embed-has-icon');
     html.push(`    <img src="${icon}" alt="icon" class="icon">`);
-  }
-  if (title) {
-    classnames.push('embed-has-title');
-    html.push(`    <span class="title">${title}</span>`);
   }
   if (url) {
     html.push('  </a>');
@@ -111,14 +133,14 @@ function embed(url, params = {}) {
     };
   }
 
-  const { kind } = params;
+  const { kind, provider } = params;
   return unfurl(url, opts).then(enrich(params)).then((metadata) => ({
     headers: {
       'X-Provider': metadata.enriched ? 'Helix' : 'unfurl.js',
       'Content-Type': 'text/html',
       'Cache-Control': `max-age=${metadata.oEmbed && metadata.oEmbed.cacheAge ? metadata.oEmbed.cacheAge : '3600'}`,
     },
-    body: toHTML(metadata, url, kind),
+    body: toHTML(metadata, url, kind, provider),
   })).catch((error) => ({
     headers: {
       'Content-Type': 'text/html',
@@ -145,8 +167,11 @@ function getEmbedKind(url) {
       embedKind.push(arr.slice(0, idx + 1).join('-'));
     });
 
-  return embedKind.map((value) => `embed-${value}`)
-    .join(' ');
+  return {
+    embedKind: embedKind.map((value) => `embed-${value}`)
+      .join(' '),
+    secondLvlDom: embedKind[0],
+  };
 }
 
-module.exports = { embed, getEmbedKind };
+module.exports = { embed, getEmbedKind, addTitle };

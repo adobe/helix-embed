@@ -120,7 +120,7 @@ describe('Embed Tests', () => {
     const { headers, body } = await embed('https://soundcloud.com/cheryl-lin-fielding/chanson-pour-jeanne?in=cheryl-lin-fielding/sets/website', { kind: 'embed-soundcloud' });
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, [
-      'embed-has-url embed-soundcloud embed-has-title embed-has-image embed-has-description',
+      'embed  embed-has-title embed-has-url embed-soundcloud embed-has-image embed-has-description',
       'Chabrier: Chanson pour Jeanne - Efrain Solis, Baritone & Cheryl Lin Fielding, Piano',
     ]);
   });
@@ -173,17 +173,17 @@ describe('Embed Tests', () => {
 
   it('Supports Lottifiles', async () => {
     const { body } = await embed('https://lottiefiles.com/17003-control-animated-volume-1', { kind: 'embed-lottiefiles' });
-    assertContains(body, ['<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js']);
+    assertContains(body, ['background="transparent" speed="1" loop="" controls="" autoplay="">', 'embed embed-oembed embed-lottiefiles', '<span class="title">Control Animated. Volume 1 on Lottiefiles. Free Lottie Animation</span></div>']);
   });
 
   it('Lottifiles Fails Gracefully', async () => {
     const { body } = await embed('https://lottiefiles.com/this-will-definitely-fail-helix-141343151', { kind: 'embed-lottiefiles' });
-    assertContains(body, ['<div class="embed  embed-has-url embed-lottiefiles embed-has-title embed-has-image embed-has-description"']);
+    assertContains(body, ['<div class="embed  embed-has-title embed-has-url embed-lottiefiles embed-has-image embed-has-description">\n']);
   });
 
   it('Supports Spotify', async () => {
     const { body } = await embed('https://open.spotify.com/playlist/37i9dQZF1DWYWddJiPzbvb', { kind: 'embed-spotify-open' });
-    assertContains(body, ['<iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DWYWddJiPzbvb" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>']);
+    assertContains(body, ['iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DWYWddJiPzbvb" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media" title="Comfort Zone"></iframe></div>']);
   });
 });
 
@@ -195,14 +195,17 @@ describe('getEmbedKind tests', () => {
     const resultJp = getEmbedKind(jp);
     const resultSpotify = getEmbedKind(spotify);
 
-    assert.equal(resultJp, 'embed-youtube');
-    assert.equal(resultSpotify, 'embed-spotify');
+    assert.deepEqual(resultJp, { embedKind: 'embed-youtube', secondLvlDom: 'youtube' });
+    assert.deepEqual(resultSpotify, { embedKind: 'embed-spotify', secondLvlDom: 'spotify' });
   });
 
   it('getEmbedKind works with multiple domains', () => {
-    const EXPECTED = 'embed-powerful embed-powerful-is embed-powerful-is-pipeline embed-powerful-is-pipeline-helix';
+    const EXPECTED = {
+      embedKind: 'embed-powerful embed-powerful-is embed-powerful-is-pipeline embed-powerful-is-pipeline-helix',
+      secondLvlDom: 'powerful',
+    };
     const longDomain = new URL('https://www.helix.pipeline.is.powerful.com');
     const result = getEmbedKind(longDomain);
-    assert.equal(result, EXPECTED);
+    assert.deepEqual(result, EXPECTED);
   });
 });

@@ -16,7 +16,7 @@ const { logger } = require('@adobe/openwhisk-action-logger');
 const { epsagon } = require('@adobe/helix-epsagon');
 const querystring = require('querystring');
 const range = require('range_check');
-const { embed, getEmbedKind } = require('./embed.js');
+const { embed, getEmbedKind, addTitle } = require('./embed.js');
 const dataSource = require('./data-source.js');
 
 // lazy-loaded public ip list
@@ -31,7 +31,6 @@ let ipList;
 async function isWithinRange(forwardedFor, fastlyPublicIps, allowedIps = '') {
   /* eslint-disable camelcase */
   const { addresses, ipv6_addresses } = fastlyPublicIps;
-
   const allowedRanges = allowedIps
     .split(',')
     .map((ip) => ip.trim())
@@ -95,8 +94,10 @@ async function serviceembed(params, url, log) {
         return resp.json();
       }
     })
-    .then((json) => (
-      {
+    .then((json) => {
+      // eslint-disable-next-line no-param-reassign
+      json.html = addTitle(json.html, `content from ${params.provider}`);
+      return {
         headers: {
           'X-Provider': params.OEMBED_RESOLVER_URI,
           'X-Client-IP': params.__ow_headers['x-forwarded-for'],
@@ -104,7 +105,8 @@ async function serviceembed(params, url, log) {
           'Cache-Control': `max-age=${json.cache_age ? json.cache_age : '3600'}`,
         },
         body: `<div class="embed embed-oembed ${kind}">${json.html}</div>`,
-      })).catch((error) => {
+      };
+    }).catch((error) => {
       log.error(error.message);
       // falling back to normal
       return embed(url, params);
@@ -121,14 +123,15 @@ async function run(params) {
       body: 'Expecting a datasource',
     };
   }
-  params.kind = getEmbedKind(url);
+  const { embedKind, secondLvlDom } = getEmbedKind(url);
+  params.kind = embedKind;
+  params.provider = secondLvlDom;
 
   const urlString = url.toString();
   const result = await embed(urlString, params);
 
   if ((params.api || params.OEMBED_RESOLVER_URI) && result.headers['X-Provider'] !== 'Helix') {
     // filter all __ow_something parameters out
-    // and all parameters in all caps
     return serviceembed(params, urlString, log);
   }
   return result;

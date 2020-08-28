@@ -1,3 +1,10 @@
+## [1.5.21](https://github.com/adobe/helix-embed/compare/v1.5.20...v1.5.21) (2020-08-28)
+
+
+### Bug Fixes
+
+* **embed.js:** add title attribute to iframes ([#287](https://github.com/adobe/helix-embed/issues/287)) ([8b0d447](https://github.com/adobe/helix-embed/commit/8b0d44757fac2ea381debc5b79818527611ccbde)), closes [#286](https://github.com/adobe/helix-embed/issues/286)
+
 ## [1.5.20](https://github.com/adobe/helix-embed/compare/v1.5.19...v1.5.20) (2020-08-26)
 
 

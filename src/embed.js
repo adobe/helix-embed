@@ -30,18 +30,21 @@ matchers.push(spotify);
  * @param {string} html html of the embed
  * @returns {string} returns either iframe with title attribute or html with a span with a title
  */
-function addTitle(html, title) {
+function decorateHTML(html, title) {
   const dom = new JSDOM(html);
   const doc = dom.window.document;
-  const iframe = doc.getElementsByTagName('iframe');
+  const iframes = doc.getElementsByTagName('iframe');
 
-  if (iframe.length !== 0 && !(iframe.item(0).title)) {
-    iframe.item(0).title = title;
+  if (iframes.length !== 0 && !(iframes.item(0).title)) {
+    iframes.item(0).title = title;
   } else {
     const span = doc.createElement('span');
     span.innerHTML = title;
     span.className = 'title';
     doc.body.append(span);
+  }
+  if (iframes.length !== 0 && !(iframes.item(0).hasAttribute('loading'))) {
+    iframes.item(0).setAttribute('loading', 'lazy');
   }
 
   return doc.body.innerHTML;
@@ -70,7 +73,7 @@ function toHTML({
 
   // there is a provider preference, let's go with it.
   if (oEmbed.html) {
-    const html = addTitle(oEmbed.html, title);
+    const html = decorateHTML(oEmbed.html, title);
     return `<div class="embed embed-oembed ${kind}">
   ${html}</div>`;
   }
@@ -174,4 +177,4 @@ function getEmbedKind(url) {
   };
 }
 
-module.exports = { embed, getEmbedKind, addTitle };
+module.exports = { embed, getEmbedKind, addTitle: decorateHTML };

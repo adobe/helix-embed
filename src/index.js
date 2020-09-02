@@ -55,6 +55,7 @@ async function isWithinRange(forwardedFor, fastlyPublicIps, allowedIps = '') {
  * @returns HTTP response in JSON
  */
 async function serviceembed(params, url, log) {
+  log.info(`function: serviceembed path: ${params.__ow_path}`);
   const queryParams = querystring.parse(params.__ow_query);
   const qs = Object.keys(params).reduce((pv, cv) => {
     if (/^__ow_/.test(cv) || /^[A-Z]+_[A-Z]+/.test(cv) || cv === 'api') {
@@ -128,6 +129,7 @@ async function run(params) {
   params.provider = secondLvlDom;
 
   const urlString = url.toString();
+  log.info(`URL Being used is : ${urlString}`);
   const result = await embed(urlString, params);
 
   if ((params.api || params.OEMBED_RESOLVER_URI) && result.headers['X-Provider'] !== 'Helix') {

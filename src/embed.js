@@ -122,6 +122,7 @@ function enrich(params) {
 }
 
 function embed(url, params = {}) {
+  const { __ow_logger: log = console } = params;
   const opts = { oembed: true, url };
   if (!url) {
     return {
@@ -132,7 +133,7 @@ function embed(url, params = {}) {
       body: '<!-- nothing to embed -->',
     };
   }
-
+  log.info(`function: embed with url: ${url}`);
   const { kind, provider } = params;
   return unfurl(url, opts).then(enrich(params)).then((metadata) => ({
     headers: {

@@ -64,8 +64,6 @@ async function serviceembed(params, url, log) {
     retval[cv] = params[cv];
     return retval;
   }, {});
-  // add the URL
-  qs.url = url;
   const { kind } = params;
   const api = new URL(params.api || params.OEMBED_RESOLVER_URI);
   if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY) {
@@ -79,7 +77,8 @@ async function serviceembed(params, url, log) {
       log.info(`Using embedding service ${params.api || params.OEMBED_RESOLVER_URI} for URL ${url}`);
     }
   }
-
+  // always add url; it's a necessary query parameter
+  api.searchParams.append('url', url);
   Object.entries(qs).forEach(([k, v]) => {
     if (!(k in queryParams)) {
       api.searchParams.append(k, v);

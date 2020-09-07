@@ -1,3 +1,10 @@
+## [1.5.23](https://github.com/adobe/helix-embed/compare/v1.5.22...v1.5.23) (2020-09-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-utils to v4.3.0 ([#303](https://github.com/adobe/helix-embed/issues/303)) ([b65aaa1](https://github.com/adobe/helix-embed/commit/b65aaa1fa91344b4e7af741afe6a554ea08c9ff4))
+
 ## [1.5.22](https://github.com/adobe/helix-embed/compare/v1.5.21...v1.5.22) (2020-09-02)
 
 

@@ -39,7 +39,7 @@ describe('Standalone Tests', () => {
   it('Supports OEmbed for Youtube', async () => {
     const { headers, body } = await embed('https://www.youtube.com/watch?v=ccYpEv4APec', { kind: 'embed-youtube' });
     assert.equal(headers['Content-Type'], 'text/html');
-    assertContains(body, ['https://www.youtube.com/', 'iframe', 'oembed']);
+    assertContains(body, ['https://www.youtube.com/', 'iframe', 'oembed', 'lazy']);
   });
 
   it('Supports OEmbed for Youtube II', async () => {
@@ -183,7 +183,7 @@ describe('Embed Tests', () => {
 
   it('Supports Spotify', async () => {
     const { body } = await embed('https://open.spotify.com/playlist/37i9dQZF1DWYWddJiPzbvb', { kind: 'embed-spotify-open' });
-    assertContains(body, ['iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DWYWddJiPzbvb" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media" title="Comfort Zone"></iframe></div>']);
+    assertContains(body, ['iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DWYWddJiPzbvb" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media" title="Comfort Zone" loading="lazy"></iframe></div>']);
   });
 });
 

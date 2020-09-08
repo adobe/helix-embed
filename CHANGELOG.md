@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/adobe/helix-embed/compare/v1.5.23...v1.6.0) (2020-09-08)
+
+
+### Features
+
+* **embed:** lazy load all iframes ([2c2e6a3](https://github.com/adobe/helix-embed/commit/2c2e6a33b79fd087d601969812f90b4bfa9cb82b)), closes [#292](https://github.com/adobe/helix-embed/issues/292)
+
 ## [1.5.23](https://github.com/adobe/helix-embed/compare/v1.5.22...v1.5.23) (2020-09-04)
 
 

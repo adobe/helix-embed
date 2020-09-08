@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/adobe/helix-embed/compare/v1.7.0...v1.7.1) (2020-09-08)
+
+
+### Bug Fixes
+
+* **src/index.js:** force-release ([0930097](https://github.com/adobe/helix-embed/commit/093009748e724b1874260f45f842b59a2b239b9c))
+
 # [1.7.0](https://github.com/adobe/helix-embed/compare/v1.6.0...v1.7.0) (2020-09-08)
 
 

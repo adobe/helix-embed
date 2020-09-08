@@ -41,6 +41,7 @@ function decorateHTML(html, title) {
     const span = doc.createElement('span');
     span.innerHTML = title;
     span.className = 'title';
+    span.style = 'display:none';
     doc.body.append(span);
   }
   if (iframes.length !== 0 && !(iframes.item(0).hasAttribute('loading'))) {
@@ -81,7 +82,7 @@ function toHTML({
   const classnames = ['embed', classname];
   let html = [];
   classnames.push('embed-has-title');
-  html.push(`    <span class="title">${title}</span>`);
+  html.push(`    <span class="title" style="display:none">${title}</span>`);
   if (url) {
     classnames.push('embed-has-url');
     classnames.push(`${kind}`);

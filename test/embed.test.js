@@ -173,7 +173,7 @@ describe('Embed Tests', () => {
 
   it('Supports Lottifiles', async () => {
     const { body } = await embed('https://lottiefiles.com/17003-control-animated-volume-1', { kind: 'embed-lottiefiles' });
-    assertContains(body, ['background="transparent" speed="1" loop="" controls="" autoplay="">', 'embed embed-oembed embed-lottiefiles', '<span class="title">Control Animated. Volume 1 on Lottiefiles. Free Lottie Animation</span></div>']);
+    assertContains(body, ['background="transparent" speed="1" loop="" controls="" autoplay="">', 'embed embed-oembed embed-lottiefiles', '<div class="embed embed-oembed embed-lottiefiles">', '<span class="title" style="display: none;">Control Animated. Volume 1 on Lottiefiles. Free Lottie Animation</span>']);
   });
 
   it('Lottifiles Fails Gracefully', async () => {

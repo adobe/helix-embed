@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/adobe/helix-embed/compare/v1.6.0...v1.7.0) (2020-09-08)
+
+
+### Features
+
+* **src/embed.js:** make span invisible ([#306](https://github.com/adobe/helix-embed/issues/306)) ([aae3949](https://github.com/adobe/helix-embed/commit/aae3949078a83af6c0f9e41814bd98106586538a))
+
 # [1.6.0](https://github.com/adobe/helix-embed/compare/v1.5.23...v1.6.0) (2020-09-08)
 
 

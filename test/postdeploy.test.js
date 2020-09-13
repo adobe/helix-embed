@@ -80,3 +80,56 @@ describe('Running Post-Deployment Integration Tests', () => {
       });
   });
 }).timeout(10000);
+
+describe('Running Post-Deployment Integration Tests on Preprod', () => {
+  it('Youtube OEmbed', async () => {
+    await chai
+      .request('https://preprod.adobeioruntime.net/')
+      .get(`${getbaseurl()}/https://www.youtube.com/watch?v=TTCVn4EByfI`)
+      .then((response) => {
+        expect(response).to.have.status(200);
+        expect(response.text).to.contain('youtube.com');
+        expect(response.text).to.contain('iframe');
+        expect(response.text).to.contain('oembed');
+      }).catch((e) => {
+        throw e;
+      });
+  }).timeout(10000);
+
+  it('Spark srcset', async () => {
+    await chai
+      .request('https://preprod.adobeioruntime.net/')
+      .get(`${getbaseurl()}/https://spark.adobe.com/post/z4eHLkF8nZII1/`)
+      .then((response) => {
+        expect(response).to.have.status(200);
+        expect(response.text).to.contain('srcset');
+      }).catch((e) => {
+        throw e;
+      });
+  });
+
+  it('Unsplash srcset', async () => {
+    await chai
+      .request('https://preprod.adobeioruntime.net/')
+      .get(`${getbaseurl()}/https://unsplash.com/photos/0lD9SSMC6jo`)
+      .then((response) => {
+        expect(response).to.have.status(200);
+        expect(response.text).to.contain('Unsplash');
+        expect(response.text).to.contain('srcset');
+      }).catch((e) => {
+        throw e;
+      });
+  });
+
+  it('Service reports status', async () => {
+    await chai
+      .request('https://preprod.adobeioruntime.net/')
+      .get(`${getbaseurl()}/_status_check/healthcheck.json`)
+      .then((response) => {
+        expect(response).to.have.status(200);
+        expect(response).to.have.header('Content-Type', 'application/json');
+      }).catch((e) => {
+        throw e;
+      });
+  });
+}).timeout(10000);

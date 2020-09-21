@@ -41,7 +41,7 @@ describe('Running Post-Deployment Integration Tests', () => {
       }).catch((e) => {
         throw e;
       });
-  }).timeout(10000);
+  }).timeout(60000);
 
   it('Spark srcset', async () => {
     await chai

@@ -53,7 +53,7 @@ describe('Running Post-Deployment Integration Tests', () => {
       }).catch((e) => {
         throw e;
       });
-  });
+  }).timeout(10000);
 
   it('Unsplash srcset', async () => {
     await chai
@@ -66,7 +66,7 @@ describe('Running Post-Deployment Integration Tests', () => {
       }).catch((e) => {
         throw e;
       });
-  });
+  }).timeout(10000);
 
   it('Service reports status', async () => {
     await chai
@@ -78,7 +78,7 @@ describe('Running Post-Deployment Integration Tests', () => {
       }).catch((e) => {
         throw e;
       });
-  });
+  }).timeout(10000);
 }).timeout(10000);
 
 describe('Running Post-Deployment Integration Tests on Preprod', () => {
@@ -106,7 +106,7 @@ describe('Running Post-Deployment Integration Tests on Preprod', () => {
       }).catch((e) => {
         throw e;
       });
-  });
+  }).timeout(10000);
 
   it('Unsplash srcset', async () => {
     await chai
@@ -119,7 +119,7 @@ describe('Running Post-Deployment Integration Tests on Preprod', () => {
       }).catch((e) => {
         throw e;
       });
-  });
+  }).timeout(10000);
 
   it('Service reports status', async () => {
     await chai
@@ -131,5 +131,5 @@ describe('Running Post-Deployment Integration Tests on Preprod', () => {
       }).catch((e) => {
         throw e;
       });
-  });
+  }).timeout(10000);
 }).timeout(10000);

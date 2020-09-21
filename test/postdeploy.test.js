@@ -96,6 +96,20 @@ describe('Running Post-Deployment Integration Tests on Preprod', () => {
       });
   }).timeout(10000);
 
+  it('Youtube OEmbed (Escaped)', async () => {
+    await chai
+      .request('https://preprod.adobeioruntime.net/')
+      .get(`${getbaseurl()}/https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DTTCVn4EByfI%0A`)
+      .then((response) => {
+        expect(response).to.have.status(200);
+        expect(response.text).to.contain('youtube.com');
+        expect(response.text).to.contain('iframe');
+        expect(response.text).to.contain('oembed');
+      }).catch((e) => {
+        throw e;
+      });
+  }).timeout(10000);
+
   it('Spark srcset', async () => {
     await chai
       .request('https://preprod.adobeioruntime.net/')

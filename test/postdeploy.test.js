@@ -94,7 +94,7 @@ describe('Running Post-Deployment Integration Tests on Preprod', () => {
       }).catch((e) => {
         throw e;
       });
-  }).timeout(10000);
+  }).timeout(20000);
 
   it('Youtube OEmbed (Escaped)', async () => {
     await chai

@@ -29,7 +29,8 @@ function dataSource(params) {
 
   // expect the _ow_path to start with /https:// or /https%3a%2f%2f
   if (path.startsWith('/https%3A%2F%')) {
-    return new URL(decodeURIComponent(path.substring(1)));
+    return new URL(decodeURIComponent(path.substring(1)
+      .replace(/^https%3A%2F([^%])/, 'https://$1')));
   }
   if (!path.startsWith('/https:/')) {
     return null;

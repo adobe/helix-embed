@@ -76,4 +76,11 @@ describe('Data Source Tests', () => {
     }),
     'https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2');
   });
+
+  it('returns data source for escaped and mangled path', () => {
+    assert.equal(dataSource({
+      __ow_path: `/${querystring.escape('https:/adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2')}`,
+    }),
+    'https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2');
+  });
 });

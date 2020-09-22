@@ -84,4 +84,11 @@ describe('Data Source Tests', () => {
     }),
     'https://www.youtube.com/watch?v=TTCVn4EByfI');
   });
+
+  it('returns data source for unescaped and mangled path', () => {
+    assert.equal(dataSource({
+      __ow_path: '/https:/www.youtube.com/watch?v=TTCVn4EByfI',
+    }),
+    'https://www.youtube.com/watch?v=TTCVn4EByfI');
+  });
 });

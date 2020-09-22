@@ -99,7 +99,7 @@ describe('Running Post-Deployment Integration Tests on Preprod', () => {
   it('Youtube OEmbed (Escaped)', async () => {
     await chai
       .request('https://preprod.adobeioruntime.net/')
-      .get(`${getbaseurl()}/https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DTTCVn4EByfI%0A`)
+      .get(`${getbaseurl()}/https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DTTCVn4EByfI`)
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('youtube.com');

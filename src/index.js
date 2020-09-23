@@ -85,7 +85,7 @@ async function serviceembed(params, url, log) {
       api.searchParams.append(k, v);
     }
   });
-
+  log.info(`FOLLOWING URL IS USED: ${api.href}`);
   return fetch(api.href)
     .then(async (resp) => {
       if (!resp.ok) {
@@ -129,6 +129,7 @@ async function run(params) {
   params.provider = secondLvlDom;
 
   const urlString = url.toString();
+  log.info(`Entering Helix Embed with: ${urlString}`);
   const result = await embed(urlString, params);
 
   if ((params.api || params.OEMBED_RESOLVER_URI) && result.headers['X-Provider'] !== 'Helix') {

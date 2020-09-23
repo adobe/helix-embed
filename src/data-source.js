@@ -33,10 +33,12 @@ function dataSource(params) {
     return new URL(decodeURIComponent(path.substring(1)
       .replace(/^https(:|%3A)%2F([^%])/, 'https://$2')));
   }
-  if (!path.startsWith('/https://')) {
+  if (!path.startsWith('/https:/')) {
     return null;
   }
-  const url = new URL(path.substring(1));
+  const url = new URL(path.substring(1)
+    // workaround: Adobe I/O Runtime messes up consecutive spaces in URLs
+    .replace(/^https:\/\/?([^/])/, 'https://$1'));
 
   if (!params.__ow_query) {
     // reconstruct __ow_query

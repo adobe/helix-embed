@@ -1,3 +1,27 @@
+## [1.7.4](https://github.com/adobe/helix-embed/compare/v1.7.3...v1.7.4) (2020-09-23)
+
+
+### Bug Fixes
+
+* **data-source:** fix escaped https ([b9b3b09](https://github.com/adobe/helix-embed/commit/b9b3b09bc905b336a05a1e3d240fbd03b618d87c))
+* **data-source:** fix mangled paths ([8a637e6](https://github.com/adobe/helix-embed/commit/8a637e68a1c1e53ec538a63aa50afacadcd1a71b))
+* **data-source:** fix regex ([18681c8](https://github.com/adobe/helix-embed/commit/18681c8d6a17a3c0e55ac4a6614a2fc9c04bf327))
+* **url:** fix URL handling for Runtime bug ([e1ec8f1](https://github.com/adobe/helix-embed/commit/e1ec8f1bea17d29d749cc6e20e6acb9d70e3447e))
+
+## [1.7.3](https://github.com/adobe/helix-embed/compare/v1.7.2...v1.7.3) (2020-09-21)
+
+
+### Bug Fixes
+
+* **deps:** update [@adobe](https://github.com/adobe) fixes ([4bae086](https://github.com/adobe/helix-embed/commit/4bae086439971aa84184de1c9420826a86b9a57d))
+
+## [1.7.2](https://github.com/adobe/helix-embed/compare/v1.7.1...v1.7.2) (2020-09-14)
+
+
+### Bug Fixes
+
+* **deps:** update [@adobe](https://github.com/adobe) fixes ([#309](https://github.com/adobe/helix-embed/issues/309)) ([bdadba2](https://github.com/adobe/helix-embed/commit/bdadba23695df37b5f5c3b0a917a77c05847ec8e))
+
 ## [1.7.1](https://github.com/adobe/helix-embed/compare/v1.7.0...v1.7.1) (2020-09-08)
 
 

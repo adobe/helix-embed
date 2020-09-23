@@ -76,4 +76,19 @@ describe('Data Source Tests', () => {
     }),
     'https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2');
   });
+
+  it('returns data source for escaped and mangled path', () => {
+    // logs say: "message":"invalid source /https:%2F%2Fwww.youtube.com%2Fwatch%3Fv=TTCVn4EByfI"
+    assert.equal(dataSource({
+      __ow_path: '/https:%2F%2Fwww.youtube.com%2Fwatch%3Fv=TTCVn4EByfI',
+    }),
+    'https://www.youtube.com/watch?v=TTCVn4EByfI');
+  });
+
+  it('returns data source for unescaped and mangled path', () => {
+    assert.equal(dataSource({
+      __ow_path: '/https:/www.youtube.com/watch?v=TTCVn4EByfI',
+    }),
+    'https://www.youtube.com/watch?v=TTCVn4EByfI');
+  });
 });

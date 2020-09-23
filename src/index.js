@@ -118,6 +118,7 @@ async function run(params) {
   const { __ow_logger: log = console } = params;
   const url = dataSource((params));
   if (!url) {
+    log.warn('invalid source', params.__ow_path);
     return {
       statusCode: 400,
       body: 'Expecting a datasource',

@@ -86,7 +86,6 @@ describe('Running Post-Deployment Integration Tests on Preprod', () => {
     await chai
       .request('https://preprod.adobeioruntime.net/')
       .get(`${getbaseurl()}/https://www.youtube.com/watch?v=TTCVn4EByfI`)
-      .set({ 'x-ow-test-config': '1' })
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('youtube.com');

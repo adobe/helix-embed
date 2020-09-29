@@ -86,64 +86,74 @@ describe('Running Post-Deployment Integration Tests on Preprod', () => {
     await chai
       .request('https://preprod.adobeioruntime.net/')
       .get(`${getbaseurl()}/https://www.youtube.com/watch?v=TTCVn4EByfI`)
+      .set({ 'x-ow-test-config': '1' })
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('youtube.com');
         expect(response.text).to.contain('iframe');
         expect(response.text).to.contain('oembed');
-      }).catch((e) => {
+      })
+      .catch((e) => {
         throw e;
       });
-  }).timeout(60000);
+  });
 
   it('Youtube OEmbed (Escaped)', async () => {
     await chai
       .request('https://preprod.adobeioruntime.net/')
       .get(`${getbaseurl()}/https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DTTCVn4EByfI`)
+      .set({ 'x-ow-test-config': '1' })
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('youtube.com');
         expect(response.text).to.contain('iframe');
         expect(response.text).to.contain('oembed');
-      }).catch((e) => {
+      })
+      .catch((e) => {
         throw e;
       });
-  }).timeout(10000);
+  });
 
   it('Spark srcset', async () => {
     await chai
       .request('https://preprod.adobeioruntime.net/')
       .get(`${getbaseurl()}/https://spark.adobe.com/post/z4eHLkF8nZII1/`)
+      .set({ 'x-ow-test-config': '1' })
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('srcset');
-      }).catch((e) => {
+      })
+      .catch((e) => {
         throw e;
       });
-  }).timeout(10000);
+  });
 
   it('Unsplash srcset', async () => {
     await chai
       .request('https://preprod.adobeioruntime.net/')
       .get(`${getbaseurl()}/https://unsplash.com/photos/0lD9SSMC6jo`)
+      .set({ 'x-ow-test-config': '1' })
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('Unsplash');
         expect(response.text).to.contain('srcset');
-      }).catch((e) => {
+      })
+      .catch((e) => {
         throw e;
       });
-  }).timeout(10000);
+  });
 
   it('Service reports status', async () => {
     await chai
       .request('https://preprod.adobeioruntime.net/')
       .get(`${getbaseurl()}/_status_check/healthcheck.json`)
+      .set({ 'x-ow-test-config': '1' })
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response).to.have.header('Content-Type', 'application/json');
-      }).catch((e) => {
+      })
+      .catch((e) => {
         throw e;
       });
-  }).timeout(10000);
-}).timeout(10000);
+  });
+});

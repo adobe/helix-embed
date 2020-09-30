@@ -86,7 +86,7 @@ describe('Running Post-Deployment Integration Tests on Preprod', () => {
     await chai
       .request('https://preprod.adobeioruntime.net/')
       .get(`${getbaseurl()}/https://www.youtube.com/watch?v=TTCVn4EByfI`)
-      .set({ 'x-ow-test-config': '2' })
+      .set({ 'x-ow-test-config': '3' })
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('youtube.com');
@@ -102,7 +102,7 @@ describe('Running Post-Deployment Integration Tests on Preprod', () => {
     await chai
       .request('https://preprod.adobeioruntime.net/')
       .get(`${getbaseurl()}/https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DTTCVn4EByfI`)
-      .set({ 'x-ow-test-config': '2' })
+      .set({ 'x-ow-test-config': '3' })
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('youtube.com');
@@ -118,7 +118,7 @@ describe('Running Post-Deployment Integration Tests on Preprod', () => {
     await chai
       .request('https://preprod.adobeioruntime.net/')
       .get(`${getbaseurl()}/https://spark.adobe.com/post/z4eHLkF8nZII1/`)
-      .set({ 'x-ow-test-config': '2' })
+      .set({ 'x-ow-test-config': '3' })
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('srcset');
@@ -132,7 +132,7 @@ describe('Running Post-Deployment Integration Tests on Preprod', () => {
     await chai
       .request('https://preprod.adobeioruntime.net/')
       .get(`${getbaseurl()}/https://unsplash.com/photos/0lD9SSMC6jo`)
-      .set({ 'x-ow-test-config': '2' })
+      .set({ 'x-ow-test-config': '3' })
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('Unsplash');
@@ -147,7 +147,7 @@ describe('Running Post-Deployment Integration Tests on Preprod', () => {
     await chai
       .request('https://preprod.adobeioruntime.net/')
       .get(`${getbaseurl()}/_status_check/healthcheck.json`)
-      .set({ 'x-ow-test-config': '2' })
+      .set({ 'x-ow-test-config': '3' })
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response).to.have.header('Content-Type', 'application/json');

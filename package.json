@@ -37,9 +37,9 @@
   "dependencies": {
     "@adobe/helix-fetch": "1.9.1",
     "@adobe/helix-epsagon": "1.5.3",
-    "@adobe/helix-status": "8.2.0",
+    "@adobe/helix-status": "8.2.1",
     "@adobe/openwhisk-action-logger": "2.2.0",
-    "@adobe/openwhisk-action-utils": "4.3.0",
+    "@adobe/openwhisk-action-utils": "4.3.1",
     "@braintree/sanitize-url": "4.1.1",
     "jsdom": "16.4.0",
     "range_check": "2.0.3",

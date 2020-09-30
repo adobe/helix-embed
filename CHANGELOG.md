@@ -1,3 +1,10 @@
+## [1.7.7](https://github.com/adobe/helix-embed/compare/v1.7.6...v1.7.7) (2020-09-30)
+
+
+### Bug Fixes
+
+* **deps:** update [@adobe](https://github.com/adobe) fixes ([6367fab](https://github.com/adobe/helix-embed/commit/6367fab0f86c8338c3e998fe3e061cd864a58bbe))
+
 ## [1.7.6](https://github.com/adobe/helix-embed/compare/v1.7.5...v1.7.6) (2020-09-28)
 
 

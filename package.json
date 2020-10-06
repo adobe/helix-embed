@@ -40,7 +40,7 @@
     "@adobe/helix-status": "8.2.1",
     "@adobe/openwhisk-action-logger": "2.2.0",
     "@adobe/openwhisk-action-utils": "4.3.1",
-    "@braintree/sanitize-url": "4.1.1",
+    "@braintree/sanitize-url": "5.0.0",
     "jsdom": "16.4.0",
     "range_check": "2.0.3",
     "unfurl.js": "5.1.0",

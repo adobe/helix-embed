@@ -1,3 +1,10 @@
+## [1.7.8](https://github.com/adobe/helix-embed/compare/v1.7.7...v1.7.8) (2020-10-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @braintree/sanitize-url to v5 ([#316](https://github.com/adobe/helix-embed/issues/316)) ([9f3e843](https://github.com/adobe/helix-embed/commit/9f3e8438d096392f240c90a911db50414f62f7ca))
+
 ## [1.7.7](https://github.com/adobe/helix-embed/compare/v1.7.6...v1.7.7) (2020-09-30)
 
 

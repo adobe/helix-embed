@@ -192,15 +192,15 @@ function propagateQueryParams(qp, html) {
 
   if (iframes.length !== 0) {
     const src = iframes.item(0).getAttribute('src');
-    const srcQueryParams = new URL(src);
+    const srcUrl = new URL(src);
 
     Object.keys(qp).forEach((k) => {
-      if (!srcQueryParams.searchParams.has(k)) {
-        srcQueryParams.searchParams.append(k, qp[k]);
+      if (!srcUrl.searchParams.has(k)) {
+        srcUrl.searchParams.append(k, qp[k]);
       }
     });
 
-    iframes.item(0).setAttribute('src', srcQueryParams.toString());
+    iframes.item(0).setAttribute('src', srcUrl.toString());
   }
 
   return doc.body.innerHTML;

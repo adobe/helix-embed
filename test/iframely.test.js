@@ -151,4 +151,31 @@ describe('IFramely Tests', () => {
     const result = await main(params);
     assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?rel=0']);
   });
+
+  it('query params are propagated to rendered html', async () => {
+    const params = {
+      __ow_headers: {
+        'accept-encoding': 'gzip, deflate',
+        connection: 'close',
+        host: 'controller-a',
+        'perf-br-req-in': '1572859933.107',
+        'user-agent': 'node-superagent/3.8.3',
+        // copied from example
+        'x-forwarded-for': '3.80.39.228',
+        'x-forwarded-port': '443',
+        'x-forwarded-proto': 'https',
+      },
+      __ow_method: 'get',
+      __ow_path: '/https://video.tv.adobe.com/v/326530/',
+      __ow_query: 'hidetitle=true',
+      UNSPLASH_AUTH: 'SECRET',
+      OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
+      OEMBED_RESOLVER_PARAM: 'api_key',
+      OEMBED_RESOLVER_KEY: 'dummy',
+      ALLOWED_IPS: '3.80.39.228',
+    };
+
+    const result = await main(params);
+    assertContains(result.body, ['https://video.tv.adobe.com/v/326530\\?hidetitle=true']);
+  });
 });

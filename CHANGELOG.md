@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/adobe/helix-embed/compare/v1.7.9...v1.8.0) (2020-10-14)
+
+
+### Features
+
+* **src/embed.js:** ensures query params are added ([#322](https://github.com/adobe/helix-embed/issues/322)) ([8f3099f](https://github.com/adobe/helix-embed/commit/8f3099f1e4ae160b863ff81516c5c65d76d4cfce)), closes [#320](https://github.com/adobe/helix-embed/issues/320)
+
 ## [1.7.9](https://github.com/adobe/helix-embed/compare/v1.7.8...v1.7.9) (2020-10-12)
 
 

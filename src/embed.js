@@ -47,7 +47,6 @@ function decorateHTML(html, title) {
   if (iframes.length !== 0 && !(iframes.item(0).hasAttribute('loading'))) {
     iframes.item(0).setAttribute('loading', 'lazy');
   }
-
   return doc.body.innerHTML;
 }
 
@@ -178,4 +177,35 @@ function getEmbedKind(url) {
   };
 }
 
-module.exports = { embed, getEmbedKind, addTitle: decorateHTML };
+/**
+ * ensures query parameters are propagated to src attribute
+ * of rendered iframe
+ * @param qp query parameters from url
+ * @param html rendered html for an embed
+ *
+ * @returns corrected src attribute with missing query parameters
+ */
+function propagateQueryParams(qp, html) {
+  const dom = new JSDOM(html);
+  const doc = dom.window.document;
+  const iframes = doc.getElementsByTagName('iframe');
+
+  if (iframes.length !== 0) {
+    const src = iframes.item(0).getAttribute('src');
+    const srcUrl = new URL(src);
+
+    Object.keys(qp).forEach((k) => {
+      if (!srcUrl.searchParams.has(k)) {
+        srcUrl.searchParams.append(k, qp[k]);
+      }
+    });
+
+    iframes.item(0).setAttribute('src', srcUrl.toString());
+  }
+
+  return doc.body.innerHTML;
+}
+
+module.exports = {
+  embed, getEmbedKind, addTitle: decorateHTML, propagateQueryParams,
+};

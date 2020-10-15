@@ -1,3 +1,38 @@
+## [1.8.1](https://github.com/adobe/helix-embed/compare/v1.8.0...v1.8.1) (2020-10-14)
+
+
+### Bug Fixes
+
+* **releng:** trigger release ([d8fb0fa](https://github.com/adobe/helix-embed/commit/d8fb0fab12e416efff05bd437e19a115e1b8b0f8))
+
+# [1.8.0](https://github.com/adobe/helix-embed/compare/v1.7.9...v1.8.0) (2020-10-14)
+
+
+### Features
+
+* **src/embed.js:** ensures query params are added ([#322](https://github.com/adobe/helix-embed/issues/322)) ([8f3099f](https://github.com/adobe/helix-embed/commit/8f3099f1e4ae160b863ff81516c5c65d76d4cfce)), closes [#320](https://github.com/adobe/helix-embed/issues/320)
+
+## [1.7.9](https://github.com/adobe/helix-embed/compare/v1.7.8...v1.7.9) (2020-10-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-logger to v2.2.1 ([d0d8986](https://github.com/adobe/helix-embed/commit/d0d89869303b99704b80fba865579475351296fa))
+
+## [1.7.8](https://github.com/adobe/helix-embed/compare/v1.7.7...v1.7.8) (2020-10-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @braintree/sanitize-url to v5 ([#316](https://github.com/adobe/helix-embed/issues/316)) ([9f3e843](https://github.com/adobe/helix-embed/commit/9f3e8438d096392f240c90a911db50414f62f7ca))
+
+## [1.7.7](https://github.com/adobe/helix-embed/compare/v1.7.6...v1.7.7) (2020-09-30)
+
+
+### Bug Fixes
+
+* **deps:** update [@adobe](https://github.com/adobe) fixes ([6367fab](https://github.com/adobe/helix-embed/commit/6367fab0f86c8338c3e998fe3e061cd864a58bbe))
+
 ## [1.7.6](https://github.com/adobe/helix-embed/compare/v1.7.5...v1.7.6) (2020-09-28)
 
 

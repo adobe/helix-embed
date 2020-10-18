@@ -72,13 +72,17 @@ async function serviceembed(params, url, log) {
   const api = new URL(params.api || params.OEMBED_RESOLVER_URI);
   if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY) {
     if (!ipList) {
+      const now = Date.now();
       // lazy-load public ip list
       const resp = await fetch('https://api.fastly.com/public-ip-list');
       ipList = await resp.json();
+      log.info(`fetched public ip list from fastly in ${Date.now() - now}ms`, ipList);
     }
     if (await isWithinRange(params.__ow_headers['x-forwarded-for'], ipList, params.ALLOWED_IPS)) {
       qs[params.OEMBED_RESOLVER_PARAM] = params.OEMBED_RESOLVER_KEY;
-      log.info(`Using embedding service ${params.api || params.OEMBED_RESOLVER_URI} for URL ${url}`);
+      log.info(`Using embedding service ${api} for URL ${url}`);
+    } else {
+      log.info(`No using embedding service. IP ${params.__ow_headers['x-forwarded-for']} is not allowed.`);
     }
   }
 

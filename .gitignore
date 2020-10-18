@@ -8,3 +8,4 @@ logs
 test-results.xml
 embed.zip
 dist
+.env

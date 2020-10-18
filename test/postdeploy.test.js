@@ -30,9 +30,12 @@ function getbaseurl() {
 
 describe('Running Post-Deployment Integration Tests', () => {
   it('Youtube OEmbed', async () => {
+    const path = `${getbaseurl()}/https://www.youtube.com/watch?v=TTCVn4EByfI`;
+    // eslint-disable-next-line no-console
+    console.log(`testing https://adobeioruntime.net/${path}`);
     await chai
       .request('https://adobeioruntime.net/')
-      .get(`${getbaseurl()}/https://www.youtube.com/watch?v=TTCVn4EByfI`)
+      .get(path)
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('youtube.com');
@@ -44,9 +47,12 @@ describe('Running Post-Deployment Integration Tests', () => {
   }).timeout(60000);
 
   it('Spark srcset', async () => {
+    const path = `${getbaseurl()}/https://spark.adobe.com/post/z4eHLkF8nZII1/`;
+    // eslint-disable-next-line no-console
+    console.log(`testing https://adobeioruntime.net/${path}`);
     await chai
       .request('https://adobeioruntime.net/')
-      .get(`${getbaseurl()}/https://spark.adobe.com/post/z4eHLkF8nZII1/`)
+      .get(path)
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('srcset');
@@ -56,9 +62,12 @@ describe('Running Post-Deployment Integration Tests', () => {
   }).timeout(10000);
 
   it('Unsplash srcset', async () => {
+    const path = `${getbaseurl()}/https://unsplash.com/photos/0lD9SSMC6jo`;
+    // eslint-disable-next-line no-console
+    console.log(`testing https://adobeioruntime.net/${path}`);
     await chai
       .request('https://adobeioruntime.net/')
-      .get(`${getbaseurl()}/https://unsplash.com/photos/0lD9SSMC6jo`)
+      .get(path)
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response.text).to.contain('Unsplash');
@@ -69,9 +78,12 @@ describe('Running Post-Deployment Integration Tests', () => {
   }).timeout(10000);
 
   it('Service reports status', async () => {
+    const path = `${getbaseurl()}/_status_check/healthcheck.json`;
+    // eslint-disable-next-line no-console
+    console.log(`testing https://adobeioruntime.net/${path}`);
     await chai
       .request('https://adobeioruntime.net/')
-      .get(`${getbaseurl()}/_status_check/healthcheck.json`)
+      .get(path)
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response).to.have.header('Content-Type', 'application/json');

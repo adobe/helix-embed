@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/adobe/helix-embed/compare/v1.8.1...v1.9.0) (2020-10-18)
+
+
+### Features
+
+* **releng:** triggering release ([e1c8d36](https://github.com/adobe/helix-embed/commit/e1c8d365bb48c35ca2de1ee893147ce0d34ab7dc))
+
 ## [1.8.1](https://github.com/adobe/helix-embed/compare/v1.8.0...v1.8.1) (2020-10-14)
 
 

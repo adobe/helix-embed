@@ -30,6 +30,7 @@ let ipList;
  * @param {*} fastlyPublicIps allowed list of Fastly ip addresses
  * @param {*} allowedIps allowed ip addresses
  */
+
 async function isWithinRange(forwardedFor, fastlyPublicIps, allowedIps = '') {
   /* eslint-disable camelcase */
   const { addresses, ipv6_addresses } = fastlyPublicIps;
@@ -117,14 +118,18 @@ async function serviceembed(params, url, log) {
     }).catch((error) => {
       log.error(error.message);
       // falling back to normal
-      return embed(url, params);
+      return 'failed';
     });
 }
 
 /* eslint-disable no-underscore-dangle, no-console, no-param-reassign */
 async function run(params) {
+  let hlxEmbed;
+  let serviceEmbed;
   const { __ow_logger: log = console } = params;
   const url = dataSource((params));
+  const promises = [];
+
   if (!url) {
     log.warn('invalid source', params.__ow_path);
     return {
@@ -137,13 +142,30 @@ async function run(params) {
   params.provider = secondLvlDom;
 
   const urlString = url.toString();
-  const result = await embed(urlString, params);
 
-  if ((params.api || params.OEMBED_RESOLVER_URI) && result.headers['X-Provider'] !== 'Helix') {
-    // filter all __ow_something parameters out
-    return serviceembed(params, urlString, log);
+  // check that OEMBED_RESOLVER_URI and a OEMBED service key are included
+  if ((params.api || params.OEMBED_RESOLVER_URI)) {
+    // add service based embed to be concurrently resolved
+    promises.push(serviceembed(params, urlString, log));
   }
-  return result;
+  promises.push(embed(urlString, params));
+  const resolvedPromises = await Promise.all(promises);
+
+  // if params for external embed service are provided; the array
+  // of resolved promises will be of length 2 so we test for this case
+  if (promises.length === 2) {
+    [serviceEmbed, hlxEmbed] = resolvedPromises;
+    if (hlxEmbed.headers['X-Provider'] !== 'Helix' && serviceEmbed !== 'failed') {
+      return serviceEmbed;
+    } else {
+      return hlxEmbed;
+    }
+  }
+  // otherwise the array has length one because only the
+  // helix embed was constructed and resolved.
+  [hlxEmbed] = resolvedPromises;
+
+  return hlxEmbed;
 }
 
 /**

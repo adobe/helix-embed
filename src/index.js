@@ -113,12 +113,16 @@ async function serviceembed(params, url, log) {
           'Content-Type': 'text/html',
           'Cache-Control': `max-age=${json.cache_age ? json.cache_age : '3600'}`,
         },
+        status: 200,
         body: `<div class="embed embed-oembed ${kind}">${json.html}</div>`,
       };
     }).catch((error) => {
       log.error(error.message);
       // falling back to normal
-      return 'failed';
+      return {
+        status: 400,
+        body: error.message,
+      };
     });
 }
 
@@ -155,7 +159,7 @@ async function run(params) {
   // of resolved promises will be of length 2 so we test for this case
   if (promises.length === 2) {
     [serviceEmbed, hlxEmbed] = resolvedPromises;
-    if (hlxEmbed.headers['X-Provider'] !== 'Helix' && serviceEmbed !== 'failed') {
+    if (hlxEmbed.headers['X-Provider'] !== 'Helix' && serviceEmbed.status !== 400) {
       return serviceEmbed;
     } else {
       return hlxEmbed;

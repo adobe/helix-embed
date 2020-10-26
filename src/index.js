@@ -128,8 +128,6 @@ async function serviceembed(params, url, log) {
 
 /* eslint-disable no-underscore-dangle, no-console, no-param-reassign */
 async function run(params) {
-  let hlxEmbed;
-  let serviceEmbed;
   const { __ow_logger: log = console } = params;
   const url = dataSource((params));
   const promises = [];
@@ -147,28 +145,21 @@ async function run(params) {
 
   const urlString = url.toString();
 
+  // start promise for hlx inhouse built embeds using unfurl
+  promises.push(embed(urlString, params));
+
   // check that OEMBED_RESOLVER_URI and a OEMBED service key are included
   if ((params.api || params.OEMBED_RESOLVER_URI)) {
     // add service based embed to be concurrently resolved
     promises.push(serviceembed(params, urlString, log));
   }
-  promises.push(embed(urlString, params));
-  const resolvedPromises = await Promise.all(promises);
+  const [hlxEmbed, serviceEmbed] = await Promise.all(promises);
 
   // if params for external embed service are provided; the array
   // of resolved promises will be of length 2 so we test for this case
-  if (promises.length === 2) {
-    [serviceEmbed, hlxEmbed] = resolvedPromises;
-    if (hlxEmbed.headers['X-Provider'] !== 'Helix' && serviceEmbed.status !== 400) {
-      return serviceEmbed;
-    } else {
-      return hlxEmbed;
-    }
+  if ((serviceEmbed) && (hlxEmbed.headers['X-Provider'] !== 'Helix') && (serviceEmbed.status !== 400)) {
+    return serviceEmbed;
   }
-  // otherwise the array has length one because only the
-  // helix embed was constructed and resolved.
-  [hlxEmbed] = resolvedPromises;
-
   return hlxEmbed;
 }
 

@@ -30,6 +30,7 @@ let ipList;
  * @param {*} fastlyPublicIps allowed list of Fastly ip addresses
  * @param {*} allowedIps allowed ip addresses
  */
+
 async function isWithinRange(forwardedFor, fastlyPublicIps, allowedIps = '') {
   /* eslint-disable camelcase */
   const { addresses, ipv6_addresses } = fastlyPublicIps;
@@ -112,12 +113,16 @@ async function serviceembed(params, url, log) {
           'Content-Type': 'text/html',
           'Cache-Control': `max-age=${json.cache_age ? json.cache_age : '3600'}`,
         },
+        status: 200,
         body: `<div class="embed embed-oembed ${kind}">${json.html}</div>`,
       };
     }).catch((error) => {
       log.error(error.message);
       // falling back to normal
-      return embed(url, params);
+      return {
+        status: 400,
+        body: error.message,
+      };
     });
 }
 
@@ -125,6 +130,8 @@ async function serviceembed(params, url, log) {
 async function run(params) {
   const { __ow_logger: log = console } = params;
   const url = dataSource((params));
+  const promises = [];
+
   if (!url) {
     log.warn('invalid source', params.__ow_path);
     return {
@@ -137,13 +144,23 @@ async function run(params) {
   params.provider = secondLvlDom;
 
   const urlString = url.toString();
-  const result = await embed(urlString, params);
 
-  if ((params.api || params.OEMBED_RESOLVER_URI) && result.headers['X-Provider'] !== 'Helix') {
-    // filter all __ow_something parameters out
-    return serviceembed(params, urlString, log);
+  // start promise for hlx inhouse built embeds using unfurl
+  promises.push(embed(urlString, params));
+
+  // check that OEMBED_RESOLVER_URI and a OEMBED service key are included
+  if ((params.api || params.OEMBED_RESOLVER_URI)) {
+    // add service based embed to be concurrently resolved
+    promises.push(serviceembed(params, urlString, log));
   }
-  return result;
+  const [hlxEmbed, serviceEmbed] = await Promise.all(promises);
+
+  // if params for external embed service are provided; the array
+  // of resolved promises will be of length 2 so we test for this case
+  if ((serviceEmbed) && (hlxEmbed.headers['X-Provider'] !== 'Helix') && (serviceEmbed.status !== 400)) {
+    return serviceEmbed;
+  }
+  return hlxEmbed;
 }
 
 /**

@@ -20,6 +20,7 @@ const {
   embed, getEmbedKind, addTitle, propagateQueryParams,
 } = require('./embed.js');
 const dataSource = require('./data-source.js');
+const { fetchAndRetry } = require('../test/utils.js');
 
 // lazy-loaded public ip list
 let ipList;
@@ -75,8 +76,7 @@ async function serviceembed(params, url, log) {
     if (!ipList) {
       const now = Date.now();
       // lazy-load public ip list
-      const resp = await fetch('https://api.fastly.com/public-ip-list');
-      ipList = await resp.json();
+      ipList = await fetchAndRetry('https://api.fastly.com/public-ip-list');
       log.info(`fetched public ip list from fastly in ${Date.now() - now}ms`, ipList);
     }
     if (await isWithinRange(params.__ow_headers['x-forwarded-for'], ipList, params.ALLOWED_IPS)) {

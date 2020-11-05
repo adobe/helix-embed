@@ -28,6 +28,12 @@ commands:
     - run:
         name: prepare test git user
         command: git config --global user.email "circleci@example.com" && git config --global user.name "CircleCi Build"
+    - run:
+        name: download fastly public ip list
+        command: curl "https://api.fastly.com/public-ip-list" > ip-list.json
+    - run: 
+        name: commit fastly public ip list
+        command: git add ip-list.json; git commit -m "[ci skip]";
 
 jobs:
   build:

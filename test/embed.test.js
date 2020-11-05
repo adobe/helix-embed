@@ -27,6 +27,7 @@ const fetchAPI = require('@adobe/helix-fetch').context({
 
 const testFetch = fetchAPI.fetch;
 const { assertContains } = require('./utils');
+const { getIPList } = require('../src/embed');
 
 const { embed, getEmbedKind } = proxyquire('../src/embed', { './unsplash': proxyquire('../src/unsplash.js', { '@adobe/helix-fetch': { fetch: (url) => testFetch(url) } }) });
 
@@ -46,6 +47,10 @@ describe('Standalone Tests', () => {
     const { headers, body } = await embed('https://www.youtube.com/watch?v=TTCVn4EByfI', { kind: 'embed-youtube' });
     assert.equal(headers['Content-Type'], 'text/html');
     assertContains(body, ['https://www.youtube.com/', 'iframe', 'oembed']);
+  });
+
+  it('error thrown when ip-list.json not found', async () => {
+    assert.rejects(getIPList('fakeGonnaFailSoHardOmg.json'));
   });
 });
 

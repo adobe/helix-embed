@@ -17,12 +17,11 @@ const { epsagon } = require('@adobe/helix-epsagon');
 const querystring = require('querystring');
 const range = require('range_check');
 const {
-  embed, getEmbedKind, addTitle, propagateQueryParams,
+  embed, getEmbedKind, addTitle, propagateQueryParams, getIPList,
 } = require('./embed.js');
 const dataSource = require('./data-source.js');
-const { fetchAndRetry } = require('../test/utils.js');
 
-// lazy-loaded public ip list
+// lazy load ip list
 let ipList;
 
 /**
@@ -75,9 +74,8 @@ async function serviceembed(params, url, log) {
   if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY) {
     if (!ipList) {
       const now = Date.now();
-      // lazy-load public ip list
-      ipList = await fetchAndRetry('https://api.fastly.com/public-ip-list');
-      log.info(`fetched public ip list from fastly in ${Date.now() - now}ms`, ipList);
+      ipList = await getIPList('ip-list.json');
+      log.info(`loaded public ip list from file in ${Date.now() - now}ms`, ipList);
     }
     if (await isWithinRange(params.__ow_headers['x-forwarded-for'], ipList, params.ALLOWED_IPS)) {
       qs[params.OEMBED_RESOLVER_PARAM] = params.OEMBED_RESOLVER_KEY;

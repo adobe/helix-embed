@@ -23,7 +23,10 @@
   "wsk": {
     "namespace": "helix",
     "name": "helix-services/embed@${version}",
-    "rawHttp": true
+    "rawHttp": true,
+    "static": [
+      "ip-list.json"
+    ]
   },
   "repository": {
     "type": "git",

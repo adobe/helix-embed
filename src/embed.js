@@ -13,6 +13,8 @@ const { unfurl } = require('unfurl.js');
 const URI = require('uri-js');
 const { sanitizeUrl } = require('@braintree/sanitize-url');
 const { JSDOM } = require('jsdom');
+const fs = require('fs');
+const path = require('path');
 const spark = require('./spark');
 const unsplash = require('./unsplash');
 const lottie = require('./lottifile');
@@ -23,6 +25,26 @@ matchers.push(spark);
 matchers.push(unsplash);
 matchers.push(lottie);
 matchers.push(spotify);
+
+/**
+ * function reads file and returns json object
+ * @param {string} file name of file to be loaded
+ * @param {object} log handle on logging object
+ * @returns json object of fastly public ips
+ */
+async function getIPList(file, log = console) {
+  const fd = path.resolve(file);
+  return new Promise((resolve, reject) => {
+    fs.readFile(fd, (err, data) => {
+      if (err) {
+        log.error(`${err.message}`);
+        reject(new Error('file load failed'));
+      } else {
+        resolve(JSON.parse(data));
+      }
+    });
+  });
+}
 
 /**
  * Adds title attribute or title span element if missing from embed html
@@ -207,5 +229,5 @@ function propagateQueryParams(qp, html) {
 }
 
 module.exports = {
-  embed, getEmbedKind, addTitle: decorateHTML, propagateQueryParams,
+  embed, getEmbedKind, addTitle: decorateHTML, propagateQueryParams, getIPList,
 };

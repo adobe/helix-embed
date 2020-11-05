@@ -9,28 +9,10 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const { fetch, timeoutSignal, AbortError } = require('@adobe/helix-fetch');
 const assert = require('assert');
 
 function assertContains(actual, patterns) {
   patterns.map((expected) => assert.ok(new RegExp(expected).test(actual), `${actual} does not match ${expected}`));
 }
 
-async function fetchAndRetry(url, duration = 0, defaultTimeout = 300) {
-  if (duration >= 1000) {
-    throw new Error(`Request to ${url} failing after multiple connection retries`);
-  }
-  let resp;
-  try {
-    resp = await fetch(url, { signal: timeoutSignal(defaultTimeout) });
-  } catch (err) {
-    if (err instanceof AbortError) {
-      fetchAndRetry(url, duration + defaultTimeout);
-    } else {
-      throw err;
-    }
-  }
-  return resp.json();
-}
-
-module.exports = { assertContains, fetchAndRetry };
+module.exports = { assertContains };

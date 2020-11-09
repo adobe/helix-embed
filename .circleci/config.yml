@@ -34,7 +34,7 @@ commands:
     - run: 
         name: commit fastly public ip list
         command: |
-	  if [ ! -z "`git status --porcelain`" ]; then
+          if [ ! -z "`git status --porcelain`" ]; then
             git add ip-list.json
             git commit -m "chore: updating ip-list [skip ci]"
           fi

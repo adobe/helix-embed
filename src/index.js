@@ -20,9 +20,8 @@ const {
   embed, getEmbedKind, addTitle, propagateQueryParams,
 } = require('./embed.js');
 const dataSource = require('./data-source.js');
-
-// lazy-loaded public ip list
-let ipList;
+// require ip-list.json which is updated every build
+const ipList = require('../ip-list.json');
 
 /**
  *
@@ -72,13 +71,6 @@ async function serviceembed(params, url, log) {
   const { kind } = params;
   const api = new URL(params.api || params.OEMBED_RESOLVER_URI);
   if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY) {
-    if (!ipList) {
-      const now = Date.now();
-      // lazy-load public ip list
-      const resp = await fetch('https://api.fastly.com/public-ip-list');
-      ipList = await resp.json();
-      log.info(`fetched public ip list from fastly in ${Date.now() - now}ms`, ipList);
-    }
     if (await isWithinRange(params.__ow_headers['x-forwarded-for'], ipList, params.ALLOWED_IPS)) {
       qs[params.OEMBED_RESOLVER_PARAM] = params.OEMBED_RESOLVER_KEY;
       log.info(`Using embedding service ${api} for URL ${url}`);

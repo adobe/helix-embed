@@ -17,12 +17,11 @@ const { epsagon } = require('@adobe/helix-epsagon');
 const querystring = require('querystring');
 const range = require('range_check');
 const {
-  embed, getEmbedKind, addTitle, propagateQueryParams, getIPList,
+  embed, getEmbedKind, addTitle, propagateQueryParams,
 } = require('./embed.js');
 const dataSource = require('./data-source.js');
-
-// lazy load ip list
-let ipList;
+// require ip-list.json which is updated every build
+const ipList = require('../ip-list.json');
 
 /**
  *
@@ -72,11 +71,6 @@ async function serviceembed(params, url, log) {
   const { kind } = params;
   const api = new URL(params.api || params.OEMBED_RESOLVER_URI);
   if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY) {
-    if (!ipList) {
-      const now = Date.now();
-      ipList = await getIPList('ip-list.json');
-      log.info(`loaded public ip list from file in ${Date.now() - now}ms`, ipList);
-    }
     if (await isWithinRange(params.__ow_headers['x-forwarded-for'], ipList, params.ALLOWED_IPS)) {
       qs[params.OEMBED_RESOLVER_PARAM] = params.OEMBED_RESOLVER_KEY;
       log.info(`Using embedding service ${api} for URL ${url}`);

@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/adobe/helix-embed/compare/v1.9.0...v1.9.1) (2020-11-09)
+
+
+### Bug Fixes
+
+* **src/index.js:** add timeout to fastly request ([#335](https://github.com/adobe/helix-embed/issues/335)) ([b6ad629](https://github.com/adobe/helix-embed/commit/b6ad6297d5e4ea8fafe31fa64eefea57c69e686b)), closes [#326](https://github.com/adobe/helix-embed/issues/326)
+
 # [1.9.0](https://github.com/adobe/helix-embed/compare/v1.8.1...v1.9.0) (2020-10-18)
 
 

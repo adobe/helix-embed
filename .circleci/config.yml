@@ -33,7 +33,12 @@ commands:
         command: curl "https://api.fastly.com/public-ip-list" > ip-list.json
     - run: 
         name: commit fastly public ip list
-        command: git add ip-list.json; git commit -m "[ci skip]";
+        command: |
+          git checkout -- package-lock.json
+          if [ ! -z "`git status --porcelain`" ]; then
+            git add ip-list.json
+            git commit -m "chore: updating ip-list [skip ci]"
+          fi
 
 jobs:
   build:

@@ -1,3 +1,11 @@
+## [1.9.4](https://github.com/adobe/helix-embed/compare/v1.9.3...v1.9.4) (2021-01-06)
+
+
+### Bug Fixes
+
+* **deps:** update external fixes ([#343](https://github.com/adobe/helix-embed/issues/343)) ([04726bf](https://github.com/adobe/helix-embed/commit/04726bf89eaaac109a2ca4683b977da56edfb8c8))
+* **deps:** update unfurl.js to fixed version ([b024add](https://github.com/adobe/helix-embed/commit/b024add6fbaa9744413f7b155ac395be8dc0bce3))
+
 ## [1.9.3](https://github.com/adobe/helix-embed/compare/v1.9.2...v1.9.3) (2020-11-21)
 
 

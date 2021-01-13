@@ -12,7 +12,30 @@
 /* eslint-env mocha */
 const assert = require('assert');
 const querystring = require('querystring');
-const dataSource = require('../src/data-source.js');
+const universalDataSource = require('../src/data-source.js');
+
+const dataSource = (params) => {
+  const {
+    __ow_path: suffix,
+    // eslint-disable-next-line camelcase
+    __ow_query,
+    ...rest
+  } = params;
+  const qs = querystring.parse(__ow_query);
+  const query = querystring.encode({
+    ...qs,
+    ...rest,
+  });
+
+  return universalDataSource({
+    url: `https://embed.com/foo?${query}`,
+  }, {
+    log: console,
+    pathInfo: {
+      suffix,
+    },
+  });
+};
 
 describe('Data Source Tests', () => {
   it('returns null for no path or src', () => {

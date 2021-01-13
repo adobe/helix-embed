@@ -31,7 +31,7 @@ commands:
     - run:
         name: download fastly public ip list
         command: curl "https://api.fastly.com/public-ip-list" > ip-list.json
-    - run: 
+    - run:
         name: commit fastly public ip list
         command: |
           git checkout -- package-lock.json
@@ -126,10 +126,10 @@ workflows:
           - build
         filters:
           branches:
-            ignore: master
+            ignore: main
     - semantic-release:
         requires:
         - build
         filters:
           branches:
-            only: master
+            only: main

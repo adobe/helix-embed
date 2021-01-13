@@ -122,14 +122,14 @@ workflows:
     jobs:
     - build
     - branch-deploy:
-        context: Proejct Helix
+        context: Project Helix
         requires:
           - build
         filters:
           branches:
             ignore: main
     - semantic-release:
-        context: Proejct Helix
+        context: Project Helix
         requires:
         - build
         filters:

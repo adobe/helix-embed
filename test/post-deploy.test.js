@@ -57,7 +57,7 @@ createTargets().forEach((target) => {
         });
     }).timeout(10000);
 
-    it('Unsplash srcset', async () => {
+    it.skip('Unsplash srcset', async () => {
       const path = `${target.urlPath()}/https://unsplash.com/photos/0lD9SSMC6jo`;
       // eslint-disable-next-line no-console
       console.log(`testing ${target.host()}${path}`);

@@ -64,7 +64,6 @@ async function serviceembed(req, context, params, url) {
   api.searchParams.append('url', url);
 
   if (env.OEMBED_RESOLVER_PARAM && env.OEMBED_RESOLVER_KEY) {
-    log.info(`checking if allowed ip: ${xf}`);
     if (isWithinRange(xf, ipList, env.ALLOWED_IPS)) {
       api.searchParams.append(env.OEMBED_RESOLVER_PARAM, env.OEMBED_RESOLVER_KEY);
       log.info(`Using embedding service ${api} for URL ${url}`);

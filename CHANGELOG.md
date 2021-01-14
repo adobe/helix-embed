@@ -1,3 +1,10 @@
+## [1.9.7](https://github.com/adobe/helix-embed/compare/v1.9.6...v1.9.7) (2021-01-14)
+
+
+### Bug Fixes
+
+* **build:** migrate to helix-deploy ([fc2faf8](https://github.com/adobe/helix-embed/commit/fc2faf878f3736794b409ee086cfd2c2e4a9dd6a)), closes [#348](https://github.com/adobe/helix-embed/issues/348)
+
 ## [1.9.6](https://github.com/adobe/helix-embed/compare/v1.9.5...v1.9.6) (2021-01-06)
 
 

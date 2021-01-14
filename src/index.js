@@ -9,12 +9,11 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+const { Response } = require('node-fetch');
 const { fetch } = require('@adobe/helix-fetch');
 const { wrap: status } = require('@adobe/helix-status');
 const { wrap } = require('@adobe/openwhisk-action-utils');
 const { logger } = require('@adobe/openwhisk-action-logger');
-const { epsagon } = require('@adobe/helix-epsagon');
-const querystring = require('querystring');
 const range = require('range_check');
 const {
   embed, getEmbedKind, addTitle, propagateQueryParams,
@@ -30,7 +29,7 @@ const ipList = require('../ip-list.json');
  * @param {*} allowedIps allowed ip addresses
  */
 
-async function isWithinRange(forwardedFor, fastlyPublicIps, allowedIps = '') {
+function isWithinRange(forwardedFor, fastlyPublicIps, allowedIps = '') {
   /* eslint-disable camelcase */
   const { addresses, ipv6_addresses } = fastlyPublicIps;
   const allowedRanges = allowedIps
@@ -56,32 +55,25 @@ async function isWithinRange(forwardedFor, fastlyPublicIps, allowedIps = '') {
  * @param {Object} log
  * @returns HTTP response in JSON
  */
-async function serviceembed(params, url, log) {
-  const queryParams = querystring.parse(params.__ow_query);
-  const qs = Object.keys(params).reduce((pv, cv) => {
-    if (/^__ow_/.test(cv) || /^[A-Z]+_[A-Z]+/.test(cv) || cv === 'api') {
-      return pv;
-    }
-    const retval = { ...pv };
-    retval[cv] = params[cv];
-    return retval;
-  }, {});
-  // add the URL
-  qs.url = url;
+async function serviceembed(req, context, params, url) {
+  const { log, env } = context;
   const { kind } = params;
-  const api = new URL(params.api || params.OEMBED_RESOLVER_URI);
-  if (params.OEMBED_RESOLVER_PARAM && params.OEMBED_RESOLVER_KEY) {
-    if (await isWithinRange(params.__ow_headers['x-forwarded-for'], ipList, params.ALLOWED_IPS)) {
-      qs[params.OEMBED_RESOLVER_PARAM] = params.OEMBED_RESOLVER_KEY;
+  const xf = req.headers.get('x-forwarded-for');
+
+  const api = new URL(params.api || env.OEMBED_RESOLVER_URI);
+  api.searchParams.append('url', url);
+
+  if (env.OEMBED_RESOLVER_PARAM && env.OEMBED_RESOLVER_KEY) {
+    if (isWithinRange(xf, ipList, env.ALLOWED_IPS)) {
+      api.searchParams.append(env.OEMBED_RESOLVER_PARAM, env.OEMBED_RESOLVER_KEY);
       log.info(`Using embedding service ${api} for URL ${url}`);
     } else {
-      log.info(`No using embedding service. IP ${params.__ow_headers['x-forwarded-for']} is not allowed.`);
+      log.info(`No using embedding service. IP ${xf} is not allowed.`);
     }
   }
-
-  Object.entries(qs).forEach(([k, v]) => {
-    if (!(k in queryParams)) {
-      api.searchParams.append(k, v);
+  Object.entries(params).forEach(([key, value]) => {
+    if (!/^[A-Z]+_[A-Z]+/.test(key) && key !== 'api') {
+      api.searchParams.append(key, value);
     }
   });
 
@@ -97,11 +89,11 @@ async function serviceembed(params, url, log) {
       // eslint-disable-next-line no-param-reassign
       json.html = addTitle(json.html, `content from ${params.provider}`);
       // eslint-disable-next-line no-param-reassign
-      json.html = propagateQueryParams(queryParams, json.html);
+      json.html = propagateQueryParams(params, json.html);
       return {
         headers: {
-          'X-Provider': params.OEMBED_RESOLVER_URI,
-          'X-Client-IP': params.__ow_headers['x-forwarded-for'],
+          'X-Provider': env.OEMBED_RESOLVER_URI,
+          'X-Client-IP': xf,
           'Content-Type': 'text/html',
           'Cache-Control': `max-age=${json.cache_age ? json.cache_age : '3600'}`,
         },
@@ -118,18 +110,23 @@ async function serviceembed(params, url, log) {
     });
 }
 
-/* eslint-disable no-underscore-dangle, no-console, no-param-reassign */
-async function run(params) {
-  const { __ow_logger: log = console } = params;
-  const url = dataSource((params));
+async function run(req, context) {
+  const { log, env } = context;
+  const { searchParams } = new URL(req.url);
+  const params = Array.from(searchParams.entries()).reduce((p, [key, value]) => {
+    // eslint-disable-next-line no-param-reassign
+    p[key] = value;
+    return p;
+  }, {});
+
+  const url = dataSource(req, context);
   const promises = [];
 
   if (!url) {
-    log.warn('invalid source', params.__ow_path);
-    return {
-      statusCode: 400,
-      body: 'Expecting a datasource',
-    };
+    log.warn('invalid source', context.pathInfo.suffix);
+    return new Response('Expecting a datasource', {
+      status: 400,
+    });
   }
   const { embedKind, secondLvlDom } = getEmbedKind(url);
   params.kind = embedKind;
@@ -141,18 +138,22 @@ async function run(params) {
   promises.push(embed(urlString, params));
 
   // check that OEMBED_RESOLVER_URI and a OEMBED service key are included
-  if ((params.api || params.OEMBED_RESOLVER_URI)) {
+  if ((params.api || env.OEMBED_RESOLVER_URI)) {
     // add service based embed to be concurrently resolved
-    promises.push(serviceembed(params, urlString, log));
+    promises.push(serviceembed(req, context, params, urlString));
   }
   const [hlxEmbed, serviceEmbed] = await Promise.all(promises);
+  let result = hlxEmbed;
 
   // if params for external embed service are provided; the array
   // of resolved promises will be of length 2 so we test for this case
-  if ((serviceEmbed) && (hlxEmbed.headers['X-Provider'] !== 'Helix') && (serviceEmbed.status !== 400)) {
-    return serviceEmbed;
+  if (serviceEmbed && (hlxEmbed.headers['X-Provider'] !== 'Helix') && (serviceEmbed.status !== 400)) {
+    result = serviceEmbed;
   }
-  return hlxEmbed;
+  return new Response(result.body, {
+    status: result.statusCode,
+    headers: result.headers,
+  });
 }
 
 /**
@@ -161,7 +162,6 @@ async function run(params) {
  * @returns {Promise<*>} The response
  */
 module.exports.main = wrap(run)
-  .with(epsagon)
   .with(status)
   .with(logger.trace)
   .with(logger);

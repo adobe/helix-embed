@@ -24,11 +24,12 @@ const fetchAPI = require('@adobe/helix-fetch').context({
   httpsProtocols: ['http1'],
   httpProtocols: ['http1'],
 });
+const { assertContains, retrofit } = require('./utils.js');
 
 const testFetch = fetchAPI.fetch;
-const { assertContains } = require('./utils.js');
 
-const { main } = proxyquire('../src/index.js', { '@adobe/helix-fetch': { fetch: (url) => testFetch(url) } });
+const { main: universalMain } = proxyquire('../src/index.js', { '@adobe/helix-fetch': { fetch: (url) => testFetch(url) } });
+const main = retrofit(universalMain);
 
 describe('Index Tests', () => {
   after(async () => {
@@ -80,13 +81,14 @@ describe('Index Tests', () => {
         'x-forwarded-port': '443',
         'x-forwarded-proto': 'https',
       },
-      __ow_method: 'get',
       __ow_path: '/https://www.youtube.com/watch',
       v: 'TTCVn4EByfI',
       w: '1',
+    };
+    const env = {
       UNSPLASH_AUTH: 'SECRET',
     };
-    const result = await main(params);
+    const result = await main(params, env);
     assertContains(result.body, ['https://www.youtube.com/', 'iframe', 'oembed', 'embed-youtube']);
   });
 
@@ -95,7 +97,6 @@ describe('Index Tests', () => {
       api: 'http://iframe.ly/api/oembed',
       api_key: 'fake_invalid',
       setting: 'foo, bar',
-      __ow_method: 'get',
       __ow_headers: {
         'Content=Type': 'text/html',
       },
@@ -108,7 +109,6 @@ describe('Index Tests', () => {
     const params = {
       api_key: 'fake_invalid',
       setting: 'foo, bar',
-      __ow_method: 'get',
       __ow_headers: {
         'Content=Type': 'text/html',
       },
@@ -121,7 +121,6 @@ describe('Index Tests', () => {
     const params = {
       api_key: 'fake_invalid',
       setting: 'foo, bar',
-      __ow_method: 'get',
       __ow_headers: {
         'Content=Type': 'text/html',
       },

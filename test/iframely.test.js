@@ -24,10 +24,10 @@ const fetchAPI = require('@adobe/helix-fetch').context({
 });
 
 const testFetch = fetchAPI.fetch;
-const { assertContains } = require('./utils.js');
+const { assertContains, retrofit } = require('./utils.js');
 
-// proxyquires
-const { main } = proxyquire('../src/index.js', { '@adobe/helix-fetch': { fetch: (url) => testFetch(url) } });
+const { main: universalMain } = proxyquire('../src/index.js', { '@adobe/helix-fetch': { fetch: (url) => testFetch(url) } });
+const main = retrofit(universalMain);
 
 describe('IFramely Tests', () => {
   after(async () => {
@@ -85,10 +85,11 @@ describe('IFramely Tests', () => {
         'x-forwarded-port': '443',
         'x-forwarded-proto': 'https',
       },
-      __ow_method: 'get',
       __ow_path: '/https://www.youtube.com/watch',
       v: 'TTCVn4EByfI',
       w: '1',
+    };
+    const env = {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
@@ -96,7 +97,7 @@ describe('IFramely Tests', () => {
       ALLOWED_IPS: '3.80.39.228',
     };
 
-    const result = await main(params);
+    const result = await main(params, env);
     assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?rel=0']);
   });
 
@@ -113,16 +114,17 @@ describe('IFramely Tests', () => {
         'x-forwarded-port': '443',
         'x-forwarded-proto': 'https',
       },
-      __ow_method: 'get',
       __ow_path: '/https://www.youtube.com/watch',
       v: 'TTCVn4EByfI',
       w: '1',
+    };
+    const env = {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
       OEMBED_RESOLVER_KEY: 'dummy',
     };
-    const result = await main(params);
+    const result = await main(params, env);
     assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?feature=oembed', 'embed-youtube']);
   });
 
@@ -139,16 +141,17 @@ describe('IFramely Tests', () => {
         'x-forwarded-port': '443',
         'x-forwarded-proto': 'https',
       },
-      __ow_method: 'get',
       __ow_path: '/https://www.youtube.com/watch',
       v: 'TTCVn4EByfI',
       w: '1',
+    };
+    const env = {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
       OEMBED_RESOLVER_KEY: 'dummy',
     };
-    const result = await main(params);
+    const result = await main(params, env);
     assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?rel=0']);
   });
 
@@ -165,9 +168,10 @@ describe('IFramely Tests', () => {
         'x-forwarded-port': '443',
         'x-forwarded-proto': 'https',
       },
-      __ow_method: 'get',
       __ow_path: '/https://video.tv.adobe.com/v/326530/',
-      __ow_query: 'hidetitle=true',
+      hidetitle: true,
+    };
+    const env = {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
@@ -175,7 +179,7 @@ describe('IFramely Tests', () => {
       ALLOWED_IPS: '3.80.39.228',
     };
 
-    const result = await main(params);
+    const result = await main(params, env);
     assertContains(result.body, ['https://video.tv.adobe.com/v/326530\\?hidetitle=true']);
   });
 });

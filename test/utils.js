@@ -10,9 +10,44 @@
  * governing permissions and limitations under the License.
  */
 const assert = require('assert');
+const querystring = require('querystring');
 
 function assertContains(actual, patterns) {
   patterns.map((expected) => assert.ok(new RegExp(expected).test(actual), `${actual} does not match ${expected}`));
 }
 
-module.exports = { assertContains };
+function retrofit(fn) {
+  const resolver = {
+    createURL({ package, name, version }) {
+      return new URL(`https://adobeioruntime.net/api/v1/web/helix/${package}/${name}@${version}`);
+    },
+  };
+  return async (params = {}, env = {}) => {
+    const {
+      __ow_headers: headers = {},
+      __ow_path: suffix = '',
+      ...rest
+    } = params;
+    const resp = await fn({
+      url: `https://embed.com/embed?${querystring.encode(rest)}`,
+      headers: new Map(Object.entries(headers)),
+    }, {
+      resolver,
+      env,
+      pathInfo: {
+        suffix,
+      },
+    });
+    return {
+      statusCode: resp.status,
+      body: String(resp.body),
+      headers: [...resp.headers.keys()].reduce((result, key) => {
+        // eslint-disable-next-line no-param-reassign
+        result[key] = resp.headers.get(key);
+        return result;
+      }, {}),
+    };
+  };
+}
+
+module.exports = { assertContains, retrofit };

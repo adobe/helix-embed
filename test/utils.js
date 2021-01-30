@@ -40,7 +40,7 @@ function retrofit(fn) {
     });
     return {
       statusCode: resp.status,
-      body: String(resp.body),
+      body: String(await resp.text()),
       headers: [...resp.headers.keys()].reduce((result, key) => {
         // eslint-disable-next-line no-param-reassign
         result[key] = resp.headers.get(key);

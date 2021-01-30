@@ -20,9 +20,10 @@ const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const proxyquire = require('proxyquire');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
-const fetchAPI = require('@adobe/helix-fetch').context({
-  httpsProtocols: ['http1'],
-  httpProtocols: ['http1'],
+const { context, ALPN_HTTP1_1 } = require('@adobe/helix-fetch');
+
+const fetchAPI = context({
+  alpnProtocols: [ALPN_HTTP1_1],
 });
 
 const testFetch = fetchAPI.fetch;
@@ -32,7 +33,7 @@ const { embed, getEmbedKind } = proxyquire('../src/embed', { './unsplash': proxy
 
 describe('Standalone Tests', () => {
   after(async () => {
-    await fetchAPI.disconnectAll();
+    await fetchAPI.reset();
   });
 
   // this test fails when recorded with Polly
@@ -51,7 +52,7 @@ describe('Standalone Tests', () => {
 
 describe('Embed Tests', () => {
   after(async () => {
-    await fetchAPI.disconnectAll();
+    await fetchAPI.reset();
   });
 
   setupPolly({

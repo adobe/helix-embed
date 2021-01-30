@@ -20,9 +20,10 @@ const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
 const proxyquire = require('proxyquire');
-const fetchAPI = require('@adobe/helix-fetch').context({
-  httpsProtocols: ['http1'],
-  httpProtocols: ['http1'],
+const { context, ALPN_HTTP1_1 } = require('@adobe/helix-fetch');
+
+const fetchAPI = context({
+  alpnProtocols: [ALPN_HTTP1_1],
 });
 const { assertContains, retrofit } = require('./utils.js');
 
@@ -33,7 +34,7 @@ const main = retrofit(universalMain);
 
 describe('Index Tests', () => {
   after(async () => {
-    await fetchAPI.disconnectAll();
+    await fetchAPI.reset();
   });
 
   setupPolly({

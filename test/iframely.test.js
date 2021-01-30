@@ -12,28 +12,19 @@
 
 /* eslint-env mocha */
 
+process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
+
 // const assert = require('assert');
 const path = require('path');
 const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
-const proxyquire = require('proxyquire');
-const { context, ALPN_HTTP1_1 } = require('@adobe/helix-fetch');
 const { assertContains, retrofit } = require('./utils.js');
+const { main: universalMain } = require('../src/index.js');
 
-const fetchAPI = context({
-  alpnProtocols: [ALPN_HTTP1_1],
-});
-const testFetch = fetchAPI.fetch;
-
-const { main: universalMain } = proxyquire('../src/index.js', { '@adobe/helix-fetch': { fetch: (url) => testFetch(url) } });
 const main = retrofit(universalMain);
 
 describe('IFramely Tests', () => {
-  after(async () => {
-    await fetchAPI.reset();
-  });
-
   setupPolly({
     recordFailedRequests: false,
     recordIfMissing: false,

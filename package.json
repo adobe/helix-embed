@@ -47,7 +47,7 @@
     "@braintree/sanitize-url": "5.0.0",
     "jsdom": "16.4.0",
     "range_check": "2.0.4",
-    "unfurl.js": "5.2.2",
+    "unfurl.js": "5.2.3",
     "uri-js": "4.4.1"
   },
   "devDependencies": {
@@ -64,7 +64,7 @@
     "chai-http": "4.3.0",
     "codecov": "3.8.1",
     "dotenv": "8.2.0",
-    "eslint": "7.18.0",
+    "eslint": "7.19.0",
     "eslint-plugin-header": "3.1.0",
     "eslint-plugin-import": "2.22.1",
     "junit-report-builder": "2.1.0",

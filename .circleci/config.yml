@@ -93,6 +93,7 @@ jobs:
         statuspage_name: Helix Embed
         statuspage_group: Delivery
         newrelic_group_policy: Delivery Repeated Failure
+        aws: true
 
   branch-deploy:
     executor: node12

@@ -1,3 +1,10 @@
+## [1.9.8](https://github.com/adobe/helix-embed/compare/v1.9.7...v1.9.8) (2021-02-02)
+
+
+### Bug Fixes
+
+* **ci:** enable AWS monitor ([ca9684a](https://github.com/adobe/helix-embed/commit/ca9684a66fd326797e95a9206ee40889ee1d1813))
+
 ## [1.9.7](https://github.com/adobe/helix-embed/compare/v1.9.6...v1.9.7) (2021-01-14)
 
 

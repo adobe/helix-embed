@@ -15,6 +15,7 @@ const fetchAPI = require('@adobe/helix-fetch');
 const { fetch, Response } = process.env.HELIX_FETCH_FORCE_HTTP1
   /* istanbul ignore next */
   ? fetchAPI.context({
+    userAgent: 'helix-fetch', // static user-agent for recorded tests
     alpnProtocols: [fetchAPI.ALPN_HTTP1_1],
   })
   : fetchAPI;

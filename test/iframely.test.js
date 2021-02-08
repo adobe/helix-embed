@@ -12,30 +12,23 @@
 
 /* eslint-env mocha */
 
+process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
+
 // const assert = require('assert');
 const path = require('path');
 const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
-const proxyquire = require('proxyquire');
-const fetchAPI = require('@adobe/helix-fetch').context({
-  httpsProtocols: ['http1'],
-  httpProtocols: ['http1'],
-});
-
-const testFetch = fetchAPI.fetch;
 const { assertContains, retrofit } = require('./utils.js');
+const { main: universalMain } = require('../src/index.js');
 
-const { main: universalMain } = proxyquire('../src/index.js', { '@adobe/helix-fetch': { fetch: (url) => testFetch(url) } });
 const main = retrofit(universalMain);
 
-describe('IFramely Tests', () => {
-  after(async () => {
-    await fetchAPI.disconnectAll();
-  });
+const OEMBED_RESOLVER_KEY = 'dummy';
 
+describe('IFramely Tests', () => {
   setupPolly({
-    recordFailedRequests: false,
+    recordFailedRequests: true,
     recordIfMissing: false,
     adapters: [NodeHttpAdapter],
     persister: FSPersister,
@@ -45,7 +38,16 @@ describe('IFramely Tests', () => {
       },
     },
     matchRequestsBy: {
-      url: false,
+      url: {
+        protocol: true,
+        username: false,
+        password: false,
+        hostname: true,
+        port: false,
+        pathname: true,
+        query: false,
+        hash: true,
+      },
       body: false,
       headers: true,
       method: true,
@@ -93,7 +95,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: 'dummy',
+      OEMBED_RESOLVER_KEY,
       ALLOWED_IPS: '3.80.39.228',
     };
 
@@ -122,7 +124,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: 'dummy',
+      OEMBED_RESOLVER_KEY,
     };
     const result = await main(params, env);
     assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?feature=oembed', 'embed-youtube']);
@@ -149,7 +151,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: 'dummy',
+      OEMBED_RESOLVER_KEY,
     };
     const result = await main(params, env);
     assertContains(result.body, ['https://www.youtube.com/embed/TTCVn4EByfI\\?rel=0']);
@@ -175,7 +177,7 @@ describe('IFramely Tests', () => {
       UNSPLASH_AUTH: 'SECRET',
       OEMBED_RESOLVER_URI: 'https://iframe.ly/api/oembed',
       OEMBED_RESOLVER_PARAM: 'api_key',
-      OEMBED_RESOLVER_KEY: 'dummy',
+      OEMBED_RESOLVER_KEY,
       ALLOWED_IPS: '3.80.39.228',
     };
 

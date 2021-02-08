@@ -9,8 +9,17 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const { Response } = require('node-fetch');
-const { fetch } = require('@adobe/helix-fetch');
+
+const fetchAPI = require('@adobe/helix-fetch');
+
+const { fetch, Response } = process.env.HELIX_FETCH_FORCE_HTTP1
+  /* istanbul ignore next */
+  ? fetchAPI.context({
+    userAgent: 'helix-fetch', // static user-agent for recorded tests
+    alpnProtocols: [fetchAPI.ALPN_HTTP1_1],
+  })
+  : fetchAPI;
+
 const { wrap: status } = require('@adobe/helix-status');
 const { wrap } = require('@adobe/openwhisk-action-utils');
 const { logger } = require('@adobe/openwhisk-action-logger');

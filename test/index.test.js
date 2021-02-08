@@ -14,28 +14,19 @@
 
 'use strict';
 
+process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
+
 const assert = require('assert');
 const path = require('path');
 const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
-const proxyquire = require('proxyquire');
-const fetchAPI = require('@adobe/helix-fetch').context({
-  httpsProtocols: ['http1'],
-  httpProtocols: ['http1'],
-});
 const { assertContains, retrofit } = require('./utils.js');
+const { main: universalMain } = require('../src/index.js');
 
-const testFetch = fetchAPI.fetch;
-
-const { main: universalMain } = proxyquire('../src/index.js', { '@adobe/helix-fetch': { fetch: (url) => testFetch(url) } });
 const main = retrofit(universalMain);
 
 describe('Index Tests', () => {
-  after(async () => {
-    await fetchAPI.disconnectAll();
-  });
-
   setupPolly({
     recordFailedRequests: false,
     recordIfMissing: false,

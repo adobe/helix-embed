@@ -13,8 +13,8 @@
     "semantic-release": "semantic-release",
     "semantic-prepare": "node ./build/prepare.js",
     "preversion": "npm run test-ci",
-    "deploy-iframely": "npm run zip && wsk action update embed embed.zip --kind nodejs:10 --web raw --web-secure false -p api http://iframe.ly/api/oembed -p api_key insert-here",
-    "deploy-embedly": "npm run zip && wsk action update embed embed.zip --kind nodejs:10 --web raw --web-secure false -p api https://api.embedly.com/1/oembed -p key insert-here",
+    "deploy-iframely": "npm run zip && wsk action update embed embed.zip --kind nodejs:12 --web raw --web-secure false -p api http://iframe.ly/api/oembed -p api_key insert-here",
+    "deploy-embedly": "npm run zip && wsk action update embed embed.zip --kind nodejs:12 --web raw --web-secure false -p api https://api.embedly.com/1/oembed -p key insert-here",
     "build": "hedy -v",
     "deploy": "hedy -v --deploy --test=/_status_check/healthcheck.json -p UNSPLASH_AUTH=$UNSPLASH_AUTH -p OEMBED_RESOLVER_KEY=$OEMBED_RESOLVER_KEY -p OEMBED_RESOLVER_PARAM=$OEMBED_RESOLVER_PARAM -p OEMBED_RESOLVER_URI=$OEMBED_RESOLVER_URI -p ALLOWED_IPS=192.150.10.210",
     "deploy-sequences": "hedy --no-build -no-hints -l latest -l major -l minor",
@@ -40,13 +40,12 @@
   },
   "homepage": "https://github.com/adobe/helix-embed#readme",
   "dependencies": {
-    "@adobe/helix-fetch": "1.9.2",
+    "@adobe/helix-fetch": "2.1.2",
     "@adobe/helix-status": "9.0.1",
     "@adobe/openwhisk-action-logger": "2.3.1",
     "@adobe/openwhisk-action-utils": "4.4.0",
     "@braintree/sanitize-url": "5.0.0",
     "jsdom": "16.4.0",
-    "node-fetch": "2.6.1",
     "range_check": "2.0.4",
     "unfurl.js": "5.2.3",
     "uri-js": "4.4.1"
@@ -54,7 +53,6 @@
   "devDependencies": {
     "@adobe/eslint-config-helix": "1.1.3",
     "@adobe/helix-deploy": "3.0.11",
-    "@pollyjs/adapter-fetch": "5.1.0",
     "@pollyjs/adapter-node-http": "5.1.0",
     "@pollyjs/core": "5.1.0",
     "@pollyjs/persister-fs": "5.0.0",
@@ -74,7 +72,6 @@
     "mocha-junit-reporter": "2.0.0",
     "mocha-parallel-tests": "2.3.0",
     "nyc": "15.1.0",
-    "proxyquire": "2.1.3",
     "semantic-release": "17.3.7"
   }
 }

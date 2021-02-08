@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/adobe/helix-embed/compare/v1.9.9...v1.10.0) (2021-02-08)
+
+
+### Features
+
+* update to helix-fetch v2 ([0816b32](https://github.com/adobe/helix-embed/commit/0816b32b0a8a8a8bf47282f0ff383c82548a533e))
+
 ## [1.9.9](https://github.com/adobe/helix-embed/compare/v1.9.8...v1.9.9) (2021-02-02)
 
 

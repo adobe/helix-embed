@@ -28,7 +28,7 @@ const OEMBED_RESOLVER_KEY = 'dummy';
 
 describe('IFramely Tests', () => {
   setupPolly({
-    recordFailedRequests: true,
+    recordFailedRequests: false,
     recordIfMissing: false,
     adapters: [NodeHttpAdapter],
     persister: FSPersister,

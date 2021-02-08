@@ -185,7 +185,7 @@ function getEmbedKind(url) {
  *
  * @returns corrected src attribute with missing query parameters
  */
-function propagateQueryParams(qp, html) {
+function propagateQueryParams(html, qp) {
   const dom = new JSDOM(html);
   const doc = dom.window.document;
   const iframes = doc.getElementsByTagName('iframe');
@@ -206,6 +206,19 @@ function propagateQueryParams(qp, html) {
   return doc.body.innerHTML;
 }
 
+function removeStyling(html) {
+  const dom = new JSDOM(html);
+  const doc = dom.window.document;
+
+  const styleElements = doc.querySelectorAll('[style]');
+
+  styleElements.forEach((val) => {
+    val.removeAttribute('style');
+  });
+
+  return doc.body.innerHTML;
+}
+
 module.exports = {
-  embed, getEmbedKind, addTitle: decorateHTML, propagateQueryParams,
+  embed, getEmbedKind, addTitle: decorateHTML, propagateQueryParams, removeStyling,
 };

@@ -17,7 +17,7 @@ const { epsagon } = require('@adobe/helix-epsagon');
 const querystring = require('querystring');
 const range = require('range_check');
 const {
-  embed, getEmbedKind, addTitle, propagateQueryParams,
+  embed, getEmbedKind, addTitle, propagateQueryParams, removeStyling,
 } = require('./embed.js');
 const dataSource = require('./data-source.js');
 // require ip-list.json which is updated every build
@@ -97,7 +97,9 @@ async function serviceembed(params, url, log) {
       // eslint-disable-next-line no-param-reassign
       json.html = addTitle(json.html, `content from ${params.provider}`);
       // eslint-disable-next-line no-param-reassign
-      json.html = propagateQueryParams(queryParams, json.html);
+      json.html = propagateQueryParams(json.html, queryParams);
+      // eslint-disable-next-line no-param-reassign
+      json.html = removeStyling(json.html);
       return {
         headers: {
           'X-Provider': params.OEMBED_RESOLVER_URI,

@@ -1,3 +1,10 @@
+## [1.10.5](https://github.com/adobe/helix-embed/compare/v1.10.4...v1.10.5) (2021-02-25)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-logger to v2.4.1 ([#389](https://github.com/adobe/helix-embed/issues/389)) ([99d83e2](https://github.com/adobe/helix-embed/commit/99d83e237c78b3a37f0a6f80d222b9d6f498d777))
+
 ## [1.10.4](https://github.com/adobe/helix-embed/compare/v1.10.3...v1.10.4) (2021-02-17)
 
 

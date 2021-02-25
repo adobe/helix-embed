@@ -40,7 +40,7 @@
   },
   "homepage": "https://github.com/adobe/helix-embed#readme",
   "dependencies": {
-    "@adobe/helix-fetch": "2.1.5",
+    "@adobe/helix-fetch": "2.1.6",
     "@adobe/helix-status": "9.0.5",
     "@adobe/openwhisk-action-logger": "2.4.1",
     "@adobe/openwhisk-action-utils": "4.4.1",

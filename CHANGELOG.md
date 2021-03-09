@@ -1,3 +1,10 @@
+## [1.10.14](https://github.com/adobe/helix-embed/compare/v1.10.13...v1.10.14) (2021-03-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-deploy to v3.9.1 ([#411](https://github.com/adobe/helix-embed/issues/411)) ([10e841b](https://github.com/adobe/helix-embed/commit/10e841b9166e5d11f809790854abb979aa174d57))
+
 ## [1.10.13](https://github.com/adobe/helix-embed/compare/v1.10.12...v1.10.13) (2021-03-09)
 
 

@@ -41,7 +41,7 @@
   "homepage": "https://github.com/adobe/helix-embed#readme",
   "dependencies": {
     "@adobe/helix-fetch": "2.1.7",
-    "@adobe/helix-status": "9.0.8",
+    "@adobe/helix-status": "9.0.9",
     "@adobe/openwhisk-action-logger": "2.4.1",
     "@adobe/openwhisk-action-utils": "4.4.1",
     "@braintree/sanitize-url": "5.0.0",

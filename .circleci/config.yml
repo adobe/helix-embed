@@ -9,6 +9,7 @@ executors:
 
 orbs:
   helix-post-deploy: adobe/helix-post-deploy@2.0.10
+  helix-gcloud-setup: adobe/helix-gcloud-setup@1.0.0
 
 commands:
   setup:
@@ -71,8 +72,8 @@ jobs:
         command: git checkout -- package-lock.json
 
     - helix-post-deploy/config-wsk
-
     - helix-post-deploy/config-env
+    - helix-gcloud-setup/load-config
 
     - run:
         name: Semantic Release
@@ -105,6 +106,7 @@ jobs:
         command: git checkout -- package-lock.json
 
     - helix-post-deploy/config-wsk
+    - helix-gcloud-setup/load-config
 
     - run:
         name: Branch Deployment

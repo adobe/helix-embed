@@ -92,7 +92,6 @@ const ALL_TARGETS = [
   GoogleTarget,
 ];
 
-
 function createTargets(opts) {
   return ALL_TARGETS.map((TargetClass) => new TargetClass(opts));
 }

@@ -82,7 +82,7 @@ createTargets().forEach((target) => {
         .get(path)
         .then((response) => {
           expect(response).to.have.status(200);
-          expect(response).to.have.header('Content-Type', 'application/json');
+          expect(response).to.have.header('Content-Type', /^application\/json/);
         }).catch((e) => {
           throw e;
         });

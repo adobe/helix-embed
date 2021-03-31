@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/adobe/helix-embed/compare/v1.10.19...v1.11.0) (2021-03-31)
+
+
+### Features
+
+* **deploy:** deploy to google ([15ff2cc](https://github.com/adobe/helix-embed/commit/15ff2cc08b6c697406e745e33b082b4e63af9cae))
+
 ## [1.10.19](https://github.com/adobe/helix-embed/compare/v1.10.18...v1.10.19) (2021-03-26)
 
 

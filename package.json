@@ -45,7 +45,7 @@
     "@adobe/openwhisk-action-logger": "2.4.3",
     "@adobe/openwhisk-action-utils": "4.4.3",
     "@braintree/sanitize-url": "5.0.0",
-    "jsdom": "16.5.1",
+    "jsdom": "16.5.2",
     "range_check": "2.0.4",
     "unfurl.js": "5.2.5",
     "uri-js": "4.4.1"
@@ -59,7 +59,7 @@
     "@semantic-release/changelog": "5.0.1",
     "@semantic-release/exec": "5.0.0",
     "@semantic-release/git": "9.0.0",
-    "ajv": "8.0.1",
+    "ajv": "8.0.5",
     "chai": "4.3.4",
     "chai-http": "4.3.0",
     "codecov": "3.8.1",

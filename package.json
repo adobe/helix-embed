@@ -42,7 +42,7 @@
   "dependencies": {
     "@adobe/helix-fetch": "2.2.0",
     "@adobe/helix-status": "9.1.6",
-    "@adobe/openwhisk-action-logger": "2.4.3",
+    "@adobe/openwhisk-action-logger": "2.4.4",
     "@adobe/openwhisk-action-utils": "4.4.4",
     "@braintree/sanitize-url": "5.0.0",
     "jsdom": "16.5.2",

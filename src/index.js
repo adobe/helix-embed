@@ -12,7 +12,7 @@
 
 const fetchAPI = require('@adobe/helix-fetch');
 
-const { fetch, Response } = process.env.HELIX_FETCH_FORCE_HTTP1
+const { fetch } = process.env.HELIX_FETCH_FORCE_HTTP1
   /* istanbul ignore next */
   ? fetchAPI.context({
     userAgent: 'helix-fetch', // static user-agent for recorded tests
@@ -21,8 +21,9 @@ const { fetch, Response } = process.env.HELIX_FETCH_FORCE_HTTP1
   : fetchAPI;
 
 const { wrap: status } = require('@adobe/helix-status');
-const { wrap } = require('@adobe/openwhisk-action-utils');
-const { logger } = require('@adobe/openwhisk-action-logger');
+const { wrap } = require('@adobe/helix-shared');
+const { logger } = require('@adobe/helix-universal-logger');
+const { Response } = require('@adobe/helix-universal');
 const range = require('range_check');
 const {
   embed, getEmbedKind, addTitle, propagateQueryParams,

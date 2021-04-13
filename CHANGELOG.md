@@ -1,3 +1,10 @@
+## [1.11.5](https://github.com/adobe/helix-embed/compare/v1.11.4...v1.11.5) (2021-04-13)
+
+
+### Bug Fixes
+
+* use helix-universal ([3e7fd64](https://github.com/adobe/helix-embed/commit/3e7fd642f6f7b3a89a3881008b6f2fbbc97de62e))
+
 ## [1.11.4](https://github.com/adobe/helix-embed/compare/v1.11.3...v1.11.4) (2021-04-12)
 
 

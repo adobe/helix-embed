@@ -41,9 +41,10 @@
   "homepage": "https://github.com/adobe/helix-embed#readme",
   "dependencies": {
     "@adobe/helix-fetch": "2.2.0",
+    "@adobe/helix-shared": "7.24.0",
     "@adobe/helix-status": "9.1.6",
-    "@adobe/openwhisk-action-logger": "2.4.4",
-    "@adobe/openwhisk-action-utils": "4.4.4",
+    "@adobe/helix-universal": "1.0.0",
+    "@adobe/helix-universal-logger": "1.0.2",
     "@braintree/sanitize-url": "5.0.0",
     "jsdom": "16.5.2",
     "range_check": "2.0.4",
@@ -52,7 +53,7 @@
   },
   "devDependencies": {
     "@adobe/eslint-config-helix": "1.1.4",
-    "@adobe/helix-deploy": "4.0.0",
+    "@adobe/helix-deploy": "4.0.1",
     "@pollyjs/adapter-node-http": "5.1.0",
     "@pollyjs/core": "5.1.0",
     "@pollyjs/persister-fs": "5.0.0",
@@ -70,7 +71,6 @@
     "junit-report-builder": "3.0.0",
     "mocha": "8.3.2",
     "mocha-junit-reporter": "2.0.0",
-    "mocha-parallel-tests": "2.3.0",
     "nyc": "15.1.0",
     "semantic-release": "17.4.2"
   }

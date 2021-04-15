@@ -1,3 +1,10 @@
+## [1.11.6](https://github.com/adobe/helix-embed/compare/v1.11.5...v1.11.6) (2021-04-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared to v7.25.0 ([#448](https://github.com/adobe/helix-embed/issues/448)) ([6e366e3](https://github.com/adobe/helix-embed/commit/6e366e3d15646d71e3f18c448ac62db97cff3deb))
+
 ## [1.11.5](https://github.com/adobe/helix-embed/compare/v1.11.4...v1.11.5) (2021-04-13)
 
 

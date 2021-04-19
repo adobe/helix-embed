@@ -41,9 +41,9 @@
   "homepage": "https://github.com/adobe/helix-embed#readme",
   "dependencies": {
     "@adobe/helix-fetch": "2.2.0",
-    "@adobe/helix-shared": "7.25.1",
+    "@adobe/helix-shared": "7.26.1",
     "@adobe/helix-status": "9.1.6",
-    "@adobe/helix-universal": "1.0.0",
+    "@adobe/helix-universal": "1.1.0",
     "@adobe/helix-universal-logger": "1.0.2",
     "@braintree/sanitize-url": "5.0.0",
     "jsdom": "16.5.3",
@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "@adobe/eslint-config-helix": "1.1.4",
-    "@adobe/helix-deploy": "4.0.1",
+    "@adobe/helix-deploy": "4.0.3",
     "@pollyjs/adapter-node-http": "5.1.0",
     "@pollyjs/core": "5.1.0",
     "@pollyjs/persister-fs": "5.0.0",

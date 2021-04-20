@@ -91,18 +91,6 @@ describe('Embed Tests', () => {
     assertContains(body, ['embed-has-image']);
   });
 
-  it('Supports Adobe Spark', async () => {
-    const { headers, body } = await embed('https://spark.adobe.com/post/z4eHLkF8nZII1/', { kind: 'embed-spark-adobe' });
-    assert.equal(headers['Content-Type'], 'text/html');
-    assertContains(body, ['srcset']);
-    assertContains(body, ['width/size/1200']);
-    assertContains(body, ['width/size/900']);
-    assertContains(body, ['width/size/600']);
-    assertContains(body, ['width/size/300']);
-    assertContains(body, ['Helix Hackathon']);
-    assertContains(body, ['embed-spark']);
-  });
-
   it('Supports Soundcloud', async () => {
     const { headers, body } = await embed('https://soundcloud.com/cheryl-lin-fielding/chanson-pour-jeanne?in=cheryl-lin-fielding/sets/website', { kind: 'embed-soundcloud' });
     assert.equal(headers['Content-Type'], 'text/html');

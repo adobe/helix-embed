@@ -42,21 +42,6 @@ createTargets().forEach((target) => {
         });
     }).timeout(60000);
 
-    it('Spark srcset', async () => {
-      const path = `${target.urlPath()}/https://spark.adobe.com/post/z4eHLkF8nZII1/`;
-      // eslint-disable-next-line no-console
-      console.log(`testing ${target.host()}${path}`);
-      await chai
-        .request(target.host())
-        .get(path)
-        .then((response) => {
-          expect(response).to.have.status(200);
-          expect(response.text).to.contain('srcset');
-        }).catch((e) => {
-          throw e;
-        });
-    }).timeout(10000);
-
     it.skip('Unsplash srcset', async () => {
       const path = `${target.urlPath()}/https://unsplash.com/photos/0lD9SSMC6jo`;
       // eslint-disable-next-line no-console

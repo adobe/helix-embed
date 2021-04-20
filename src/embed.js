@@ -13,13 +13,11 @@ const { unfurl } = require('unfurl.js');
 const URI = require('uri-js');
 const { sanitizeUrl } = require('@braintree/sanitize-url');
 const { JSDOM } = require('jsdom');
-const spark = require('./spark');
 const unsplash = require('./unsplash');
 const lottie = require('./lottifile');
 const spotify = require('./spotify');
 
 const matchers = [];
-matchers.push(spark);
 matchers.push(unsplash);
 matchers.push(lottie);
 matchers.push(spotify);

@@ -1,3 +1,10 @@
+## [1.11.11](https://github.com/adobe/helix-embed/compare/v1.11.10...v1.11.11) (2021-04-21)
+
+
+### Bug Fixes
+
+* **spark:** remove support for spark ([3c79af9](https://github.com/adobe/helix-embed/commit/3c79af9a3cece78429e4772fcaa028e6fee9c35a))
+
 ## [1.11.10](https://github.com/adobe/helix-embed/compare/v1.11.9...v1.11.10) (2021-04-20)
 
 

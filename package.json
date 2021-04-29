@@ -41,7 +41,7 @@
   "homepage": "https://github.com/adobe/helix-embed#readme",
   "dependencies": {
     "@adobe/helix-fetch": "2.2.0",
-    "@adobe/helix-shared": "7.27.0",
+    "@adobe/helix-shared": "8.0.1",
     "@adobe/helix-status": "9.1.6",
     "@adobe/helix-universal": "1.2.1",
     "@adobe/helix-universal-logger": "1.0.2",

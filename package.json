@@ -52,7 +52,7 @@
     "uri-js": "4.4.1"
   },
   "devDependencies": {
-    "@adobe/eslint-config-helix": "1.1.4",
+    "@adobe/eslint-config-helix": "1.1.5",
     "@adobe/helix-deploy": "4.5.1",
     "@pollyjs/adapter-node-http": "5.1.0",
     "@pollyjs/core": "5.1.0",

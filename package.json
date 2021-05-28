@@ -43,7 +43,7 @@
     "@adobe/helix-fetch": "2.2.1",
     "@adobe/helix-shared-wrap": "1.0.0",
     "@adobe/helix-status": "9.1.7",
-    "@adobe/helix-universal": "1.5.1",
+    "@adobe/helix-universal": "1.6.0",
     "@adobe/helix-universal-logger": "1.0.4",
     "@braintree/sanitize-url": "5.0.1",
     "jsdom": "16.5.3",
@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "@adobe/eslint-config-helix": "1.1.5",
-    "@adobe/helix-deploy": "4.7.1",
+    "@adobe/helix-deploy": "4.7.2",
     "@pollyjs/adapter-node-http": "5.1.0",
     "@pollyjs/core": "5.1.0",
     "@pollyjs/persister-fs": "5.0.0",

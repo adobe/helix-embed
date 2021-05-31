@@ -1,3 +1,10 @@
+## [1.11.17](https://github.com/adobe/helix-embed/compare/v1.11.16...v1.11.17) (2021-05-31)
+
+
+### Bug Fixes
+
+* use latest post-deploy orb ([230a5a9](https://github.com/adobe/helix-embed/commit/230a5a9f9c6710c2fd218a2644c80e3d82c47a8b))
+
 ## [1.11.16](https://github.com/adobe/helix-embed/compare/v1.11.15...v1.11.16) (2021-05-31)
 
 

@@ -153,7 +153,7 @@ describe('Embed Tests', () => {
 
   it('Lottifiles Fails Gracefully', async () => {
     const { body } = await embed('https://lottiefiles.com/this-will-definitely-fail-helix-141343151', { kind: 'embed-lottiefiles' });
-    assertContains(body, ['<div class="embed  embed-has-title embed-has-url embed-lottiefiles embed-has-image embed-has-description">\n']);
+    assertContains(body, ['<!-- BAD_HTTP_STATUS']);
   });
 
   it('Supports Spotify', async () => {

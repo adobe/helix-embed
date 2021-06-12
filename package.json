@@ -40,7 +40,7 @@
   },
   "homepage": "https://github.com/adobe/helix-embed#readme",
   "dependencies": {
-    "@adobe/helix-fetch": "2.2.1",
+    "@adobe/helix-fetch": "2.3.0",
     "@adobe/helix-shared-wrap": "1.0.0",
     "@adobe/helix-status": "9.1.7",
     "@adobe/helix-universal": "1.6.2",

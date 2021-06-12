@@ -1,3 +1,10 @@
+## [1.11.19](https://github.com/adobe/helix-embed/compare/v1.11.18...v1.11.19) (2021-06-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-fetch to v2.3.0 ([#484](https://github.com/adobe/helix-embed/issues/484)) ([daa1213](https://github.com/adobe/helix-embed/commit/daa12134a3e359a6d199ad9600a7fb10fb0c6a23))
+
 ## [1.11.18](https://github.com/adobe/helix-embed/compare/v1.11.17...v1.11.18) (2021-06-08)
 
 

@@ -42,7 +42,7 @@
   "dependencies": {
     "@adobe/helix-fetch": "2.3.0",
     "@adobe/helix-shared-wrap": "1.0.0",
-    "@adobe/helix-status": "9.1.8",
+    "@adobe/helix-status": "9.2.0",
     "@adobe/helix-universal": "1.6.5",
     "@adobe/helix-universal-logger": "1.0.5",
     "@braintree/sanitize-url": "5.0.2",

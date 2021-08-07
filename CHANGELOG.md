@@ -1,3 +1,10 @@
+## [1.11.22](https://github.com/adobe/helix-embed/compare/v1.11.21...v1.11.22) (2021-08-07)
+
+
+### Bug Fixes
+
+* **deps:** update external fixes ([#504](https://github.com/adobe/helix-embed/issues/504)) ([0793201](https://github.com/adobe/helix-embed/commit/0793201cef927c895d49ea37216ceffd25b634c3))
+
 ## [1.11.21](https://github.com/adobe/helix-embed/compare/v1.11.20...v1.11.21) (2021-07-28)
 
 

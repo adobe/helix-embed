@@ -1,3 +1,10 @@
+## [1.11.23](https://github.com/adobe/helix-embed/compare/v1.11.22...v1.11.23) (2021-08-17)
+
+
+### Bug Fixes
+
+* **deps:** update dependency jsdom to v17 ([#508](https://github.com/adobe/helix-embed/issues/508)) ([baf7e82](https://github.com/adobe/helix-embed/commit/baf7e8220c937cbcd880d93b1cd2fcc20c7757a8))
+
 ## [1.11.22](https://github.com/adobe/helix-embed/compare/v1.11.21...v1.11.22) (2021-08-07)
 
 

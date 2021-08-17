@@ -1,7 +1,7 @@
 {
   "name": "@adobe/helix-embed",
   "private": true,
-  "version": "1.11.22",
+  "version": "1.11.23",
   "description": "Helix Embed",
   "main": "src/index.js",
   "scripts": {
@@ -46,14 +46,14 @@
     "@adobe/helix-universal": "1.6.6",
     "@adobe/helix-universal-logger": "1.0.6",
     "@braintree/sanitize-url": "5.0.2",
-    "jsdom": "16.7.0",
+    "jsdom": "17.0.0",
     "range_check": "2.0.4",
     "unfurl.js": "5.6.0",
     "uri-js": "4.4.1"
   },
   "devDependencies": {
     "@adobe/eslint-config-helix": "1.1.5",
-    "@adobe/helix-deploy": "4.9.5",
+    "@adobe/helix-deploy": "4.9.6",
     "@pollyjs/adapter-node-http": "5.1.1",
     "@pollyjs/core": "5.1.1",
     "@pollyjs/persister-fs": "5.1.1",

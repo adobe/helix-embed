@@ -72,7 +72,7 @@ function toHTML({
   // there is a provider preference, let's go with it.
   if (oEmbed.html) {
     const html = decorateHTML(oEmbed.html, title);
-    return `<div class="embed embed-oembed ${kind}">
+    return `<div class="embed embed-oembed ${kind}" data-url="${fallbackURL}">
   ${html}</div>`;
   }
 
@@ -101,7 +101,7 @@ function toHTML({
     html.push(`    <p class="description">${description}</p>`);
   }
 
-  html = [`<div class="${classnames.join(' ')}">`, ...html, '</div>'];
+  html = [`<div class="${classnames.join(' ')}"  data-url="${fallbackURL}">`, ...html, '</div>'];
 
   return html.join('\n');
 }

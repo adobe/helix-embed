@@ -11,6 +11,8 @@
  */
 const { unfurl } = require('unfurl.js');
 const URI = require('uri-js');
+const { encode } = require('html-entities');
+
 const { sanitizeUrl } = require('@braintree/sanitize-url');
 const { JSDOM } = require('jsdom');
 const unsplash = require('./unsplash');
@@ -72,7 +74,7 @@ function toHTML({
   // there is a provider preference, let's go with it.
   if (oEmbed.html) {
     const html = decorateHTML(oEmbed.html, title);
-    return `<div class="embed embed-oembed ${kind}" data-url="${encodeURI(fallbackURL)}">
+    return `<div class="embed embed-oembed ${kind}" data-url="${encode(fallbackURL)}">
   ${html}</div>`;
   }
 
@@ -101,7 +103,7 @@ function toHTML({
     html.push(`    <p class="description">${description}</p>`);
   }
 
-  html = [`<div class="${classnames.join(' ')}"  data-url="${encodeURI(fallbackURL)}">`, ...html, '</div>'];
+  html = [`<div class="${classnames.join(' ')}"  data-url="${encode(fallbackURL)}">`, ...html, '</div>'];
 
   return html.join('\n');
 }

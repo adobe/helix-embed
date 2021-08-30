@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/adobe/helix-embed/compare/v1.11.25...v1.12.0) (2021-08-30)
+
+
+### Features
+
+* add source url as a data attribute ([a6df4ac](https://github.com/adobe/helix-embed/commit/a6df4ac3a4d36f5908083db2084d7f5c2cfee164))
+
 ## [1.11.25](https://github.com/adobe/helix-embed/compare/v1.11.24...v1.11.25) (2021-08-18)
 
 

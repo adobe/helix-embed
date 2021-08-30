@@ -9,7 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
+const escapeHtml = require('escape-html');
 const fetchAPI = require('@adobe/helix-fetch');
 
 const { fetch } = process.env.HELIX_FETCH_FORCE_HTTP1
@@ -108,7 +108,7 @@ async function serviceembed(req, context, params, url) {
           'Cache-Control': `max-age=${json.cache_age ? json.cache_age : '3600'}`,
         },
         status: 200,
-        body: `<div class="embed embed-oembed ${kind}">${json.html}</div>`,
+        body: `<div class="embed embed-oembed ${kind}" data-url="${escapeHtml(url)}">${json.html}</div>`,
       };
     }).catch((error) => {
       log.error(error.message);

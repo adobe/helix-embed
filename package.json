@@ -46,6 +46,7 @@
     "@adobe/helix-universal": "1.6.7",
     "@adobe/helix-universal-logger": "1.0.7",
     "@braintree/sanitize-url": "5.0.2",
+    "escape-html": "1.0.3",
     "jsdom": "17.0.0",
     "range_check": "2.0.4",
     "unfurl.js": "5.6.0",

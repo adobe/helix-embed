@@ -29,17 +29,11 @@ createTargets().forEach((target) => {
       const path = `${target.urlPath()}/https://www.youtube.com/watch?v=TTCVn4EByfI`;
       // eslint-disable-next-line no-console
       console.log(`testing ${target.host()}${path}`);
-      await chai
-        .request(target.host())
-        .get(path)
-        .then((response) => {
-          expect(response).to.have.status(200);
-          expect(response.text).to.contain('youtube.com');
-          expect(response.text).to.contain('iframe');
-          expect(response.text).to.contain('oembed');
-        }).catch((e) => {
-          throw e;
-        });
+      const response = await chai.request(target.host()).get(path);
+      expect(response).to.have.status(200);
+      expect(response.text).to.contain('youtube.com');
+      expect(response.text).to.contain('iframe');
+      expect(response.text).to.contain('oembed');
     }).timeout(60000);
 
     it.skip('Unsplash srcset', async () => {

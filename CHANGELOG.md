@@ -1,3 +1,10 @@
+## [1.12.1](https://github.com/adobe/helix-embed/compare/v1.12.0...v1.12.1) (2021-08-30)
+
+
+### Bug Fixes
+
+* add source url for iframely case ([d145d12](https://github.com/adobe/helix-embed/commit/d145d122f9d2d3247323f2ac9a56e063519448a5))
+
 # [1.12.0](https://github.com/adobe/helix-embed/compare/v1.11.25...v1.12.0) (2021-08-30)
 
 

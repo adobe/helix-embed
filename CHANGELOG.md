@@ -1,3 +1,10 @@
+## [1.12.3](https://github.com/adobe/helix-embed/compare/v1.12.2...v1.12.3) (2021-09-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-universal-logger to v1.0.8 ([#524](https://github.com/adobe/helix-embed/issues/524)) ([793cce2](https://github.com/adobe/helix-embed/commit/793cce20e801b17435caece1dc3e2742b956ffa2))
+
 ## [1.12.2](https://github.com/adobe/helix-embed/compare/v1.12.1...v1.12.2) (2021-09-03)
 
 

@@ -1,3 +1,10 @@
+## [1.12.6](https://github.com/adobe/helix-embed/compare/v1.12.5...v1.12.6) (2021-09-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency unfurl.js to v5.6.2 ([#531](https://github.com/adobe/helix-embed/issues/531)) ([bb51a82](https://github.com/adobe/helix-embed/commit/bb51a82dd9407ac399dc49b0d3eb4f5a5023636a))
+
 ## [1.12.5](https://github.com/adobe/helix-embed/compare/v1.12.4...v1.12.5) (2021-09-11)
 
 

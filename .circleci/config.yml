@@ -1,8 +1,8 @@
 version: 2.1
 executors:
-  node12:
+  node14:
     docker:
-    - image: circleci/node:12
+    - image: circleci/node:14
       environment:
         NPM_CONFIG_PREFIX: "~/.npm-global"
     working_directory: ~/repo
@@ -43,7 +43,7 @@ commands:
 
 jobs:
   build:
-    executor: node12
+    executor: node14
 
     steps:
     - setup
@@ -63,7 +63,7 @@ jobs:
         path: junit
 
   semantic-release:
-    executor: node12
+    executor: node14
 
     steps:
     - setup
@@ -97,7 +97,7 @@ jobs:
         targets: universal, aws
 
   branch-deploy:
-    executor: node12
+    executor: node14
 
     steps:
     - setup

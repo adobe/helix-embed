@@ -1,3 +1,10 @@
+## [1.12.10](https://github.com/adobe/helix-embed/compare/v1.12.9...v1.12.10) (2021-09-28)
+
+
+### Bug Fixes
+
+* **deps:** use secrets-manager ([3be27ea](https://github.com/adobe/helix-embed/commit/3be27ea1a3538ab0d899c8418d287ac4b9234e1a))
+
 ## [1.12.9](https://github.com/adobe/helix-embed/compare/v1.12.8...v1.12.9) (2021-09-21)
 
 

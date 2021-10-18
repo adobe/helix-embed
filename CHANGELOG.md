@@ -1,3 +1,10 @@
+## [1.12.11](https://github.com/adobe/helix-embed/compare/v1.12.10...v1.12.11) (2021-10-18)
+
+
+### Bug Fixes
+
+* **deps:** update external major (major) ([#550](https://github.com/adobe/helix-embed/issues/550)) ([8aed272](https://github.com/adobe/helix-embed/commit/8aed272824ef30eed110884bd60ffbb9c3b99ba8))
+
 ## [1.12.10](https://github.com/adobe/helix-embed/compare/v1.12.9...v1.12.10) (2021-09-28)
 
 

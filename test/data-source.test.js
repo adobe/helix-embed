@@ -43,75 +43,95 @@ describe('Data Source Tests', () => {
   });
 
   it('rejects paths not starting with https://', () => {
-    assert.equal(dataSource({
-    }),
-    null);
+    assert.equal(
+      dataSource({
+      }),
+      null,
+    );
   });
 
   it('rejects escaped paths not starting with https://', () => {
-    assert.equal(dataSource({
-      __ow_path: `/${querystring.escape('http://example.com')}`,
-    }),
-    null);
+    assert.equal(
+      dataSource({
+        __ow_path: `/${querystring.escape('http://example.com')}`,
+      }),
+      null,
+    );
   });
 
   it('rejects src parameters not starting with https://', () => {
-    assert.equal(dataSource({
-      src: '/http://example.com',
-    }),
-    null);
+    assert.equal(
+      dataSource({
+        src: '/http://example.com',
+      }),
+      null,
+    );
   });
 
   it('returns data source for `src` parameter', () => {
-    assert.equal(dataSource({
-      src: 'https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2',
-    }),
-    'https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2');
+    assert.equal(
+      dataSource({
+        src: 'https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2',
+      }),
+      'https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2',
+    );
   });
 
   it('returns data source for backward compat path parameter with no query', () => {
-    assert.equal(dataSource({
-      __ow_path: '/https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2',
-    }),
-    'https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2');
+    assert.equal(
+      dataSource({
+        __ow_path: '/https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2',
+      }),
+      'https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2',
+    );
   });
 
   it('returns data source for backward compat path parameter with query', () => {
-    assert.equal(dataSource({
-      __ow_path: '/https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500',
-      __ow_query: 'a=1&b=2',
-    }),
-    'https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2');
+    assert.equal(
+      dataSource({
+        __ow_path: '/https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500',
+        __ow_query: 'a=1&b=2',
+      }),
+      'https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2',
+    );
   });
 
   it('returns data source for backward compat path parameter with query in params', () => {
-    assert.equal(dataSource({
-      __ow_path: '/https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500',
-      a: 1,
-      b: 2,
-    }),
-    'https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2');
+    assert.equal(
+      dataSource({
+        __ow_path: '/https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500',
+        a: 1,
+        b: 2,
+      }),
+      'https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2',
+    );
   });
 
   it('returns data source for escaped path', () => {
-    assert.equal(dataSource({
-      __ow_path: `/${querystring.escape('https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2')}`,
-    }),
-    'https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2');
+    assert.equal(
+      dataSource({
+        __ow_path: `/${querystring.escape('https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2')}`,
+      }),
+      'https://adobeioruntime.net/api/v1/web/helix/helix-services/run-query@2.4.11/error500?a=1&b=2',
+    );
   });
 
   it('returns data source for escaped and mangled path', () => {
     // logs say: "message":"invalid source /https:%2F%2Fwww.youtube.com%2Fwatch%3Fv=TTCVn4EByfI"
-    assert.equal(dataSource({
-      __ow_path: '/https:%2F%2Fwww.youtube.com%2Fwatch%3Fv=TTCVn4EByfI',
-    }),
-    'https://www.youtube.com/watch?v=TTCVn4EByfI');
+    assert.equal(
+      dataSource({
+        __ow_path: '/https:%2F%2Fwww.youtube.com%2Fwatch%3Fv=TTCVn4EByfI',
+      }),
+      'https://www.youtube.com/watch?v=TTCVn4EByfI',
+    );
   });
 
   it('returns data source for unescaped and mangled path', () => {
-    assert.equal(dataSource({
-      __ow_path: '/https:/www.youtube.com/watch?v=TTCVn4EByfI',
-    }),
-    'https://www.youtube.com/watch?v=TTCVn4EByfI');
+    assert.equal(
+      dataSource({
+        __ow_path: '/https:/www.youtube.com/watch?v=TTCVn4EByfI',
+      }),
+      'https://www.youtube.com/watch?v=TTCVn4EByfI',
+    );
   });
 });

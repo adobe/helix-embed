@@ -92,8 +92,7 @@ jobs:
 
     - helix-post-deploy/monitoring:
         statuspage_name: Helix Embed
-        statuspage_group: Delivery
-        newrelic_group_policy: Delivery Repeated Failure
+        statuspage_group: Delivery (Legacy)
         targets: universal, aws
 
   branch-deploy:

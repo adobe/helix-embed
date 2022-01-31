@@ -22,8 +22,9 @@ const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha: setupPolly } = require('@pollyjs/core');
 const { assertContains } = require('./utils');
-
 const { embed, getEmbedKind } = require('../src/embed');
+
+require('dotenv').config();
 
 describe('Standalone Tests', () => {
   // this test fails when recorded with Polly

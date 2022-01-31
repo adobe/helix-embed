@@ -22,14 +22,16 @@ const { setupMocha: setupPolly } = require('@pollyjs/core');
 const { assertContains, retrofit } = require('./utils.js');
 const { main: universalMain } = require('../src/index.js');
 
+require('dotenv').config();
+
 const main = retrofit(universalMain);
 
-const OEMBED_RESOLVER_KEY = 'dummy';
+const OEMBED_RESOLVER_KEY = process.env.OEMBED_RESOLVER_KEY || 'dummy';
 
 describe('IFramely Tests', () => {
   setupPolly({
-    recordFailedRequests: false,
-    recordIfMissing: false,
+    recordFailedRequests: true,
+    recordIfMissing: true,
     adapters: [NodeHttpAdapter],
     persister: FSPersister,
     persisterOptions: {

@@ -28,7 +28,7 @@ const main = retrofit(universalMain);
 
 describe('Index Tests', () => {
   setupPolly({
-    recordFailedRequests: false,
+    recordFailedRequests: true,
     recordIfMissing: false,
     logging: false,
     adapters: [NodeHttpAdapter],

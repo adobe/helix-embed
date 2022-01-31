@@ -23,7 +23,7 @@ const { fetch } = process.env.HELIX_FETCH_FORCE_HTTP1
 const { wrap: status } = require('@adobe/helix-status');
 const wrap = require('@adobe/helix-shared-wrap');
 const { logger } = require('@adobe/helix-universal-logger');
-const { Response } = require('@adobe/helix-universal');
+const { Response } = require('@adobe/helix-fetch');
 const range = require('range_check');
 const {
   embed, getEmbedKind, addTitle, propagateQueryParams,

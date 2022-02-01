@@ -1,3 +1,10 @@
+## [1.12.16](https://github.com/adobe/helix-embed/compare/v1.12.15...v1.12.16) (2022-02-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-universal to v3.0.2 ([#584](https://github.com/adobe/helix-embed/issues/584)) ([a3bd8fb](https://github.com/adobe/helix-embed/commit/a3bd8fb776546f61bf0c7b9af5f9a1a07c44e6dd))
+
 ## [1.12.15](https://github.com/adobe/helix-embed/compare/v1.12.14...v1.12.15) (2021-11-26)
 
 

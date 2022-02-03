@@ -1,7 +1,7 @@
 {
   "name": "@adobe/helix-embed",
   "private": true,
-  "version": "1.12.16",
+  "version": "1.12.17",
   "description": "Helix Embed",
   "main": "src/index.js",
   "scripts": {

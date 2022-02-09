@@ -1,3 +1,10 @@
+## [1.12.19](https://github.com/adobe/helix-embed/compare/v1.12.18...v1.12.19) (2022-02-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared-wrap to v1.0.2 ([#595](https://github.com/adobe/helix-embed/issues/595)) ([79d3b33](https://github.com/adobe/helix-embed/commit/79d3b33ec307376e022fb66ac2e6f5bc9172b4a5))
+
 ## [1.12.18](https://github.com/adobe/helix-embed/compare/v1.12.17...v1.12.18) (2022-02-04)
 
 

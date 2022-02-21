@@ -1,3 +1,10 @@
+## [1.12.21](https://github.com/adobe/helix-embed/compare/v1.12.20...v1.12.21) (2022-02-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-status to v9.2.7 ([1df80af](https://github.com/adobe/helix-embed/commit/1df80af3359540d4b1d34a82c012f8d9d69f0b20))
+
 ## [1.12.20](https://github.com/adobe/helix-embed/compare/v1.12.19...v1.12.20) (2022-02-21)
 
 
